@@ -4,6 +4,7 @@
   "main": "prisma/index.js",
   "types": "prisma/index.d.ts",
   "scripts": {
+    "build": "prisma generate",
     "generate": "prisma generate",
     "db:push": "prisma db push --preview-feature --accept-data-loss",
     "db:seed": "prisma db seed --preview-feature"
