@@ -7,7 +7,7 @@
     "copy": "yarn copy:hub && yarn copy:frontend && yarn copy:prisma && yarn copy:graphql && yarn copy:certificates && yarn copy:license",
     "copy:hub": "cp -R ../aiacta-hub/dist ../../dist",
     "copy:frontend": "cp -R ../aiacta-frontend/dist ../../dist/frontend",
-    "copy:prisma": "cp ../aiacta-prisma/prisma/schema.prisma ../../dist/schema.prisma",
+    "copy:prisma": "cp ../aiacta-prisma/prisma/schema.prisma ../../dist/schema.prisma && cp ../aiacta-prisma/prisma/query-engine-* ../../dist",
     "copy:graphql": "cp -R ../aiacta-graphql/graphql ../../dist/graphql",
     "copy:certificates": "cp ../aiacta-hub/server.crt ../../dist/server.crt && cp ../aiacta-hub/server.key ../../dist/server.key",
     "copy:license": "cp ../../LICENSE.md ../../dist/LICENSE.md",

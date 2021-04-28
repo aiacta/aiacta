@@ -4,8 +4,9 @@ datasource db {
 }
 
 generator client {
-  provider = "prisma-client-js"
-  output   = "./"
+  provider      = "prisma-client-js"
+  output        = "./"
+  binaryTargets = ["linux-arm-openssl-1.1.x", "native"]
 }
 
 model Player {
