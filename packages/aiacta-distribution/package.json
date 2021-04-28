@@ -11,7 +11,7 @@
     "copy:graphql": "cp -R ../aiacta-graphql/graphql ../../dist/graphql",
     "copy:certificates": "cp ../aiacta-hub/server.crt ../../dist/server.crt && cp ../aiacta-hub/server.key ../../dist/server.key",
     "copy:license": "cp ../../LICENSE.md ../../dist/LICENSE.md",
-    "write:env": "echo \"PORT=4000\nDATABASE_URL=postgres://jonathan@localhost:5432/aiacta?schema=public\nGRAPHQL_SCHEMA=./graphql/**/*.gql\nSSL_KEY=./server.key\nSSL_CERTIFICATE=./server.crt\" > ./dist/.env",
+    "write:env": "echo \"PORT=4000\nDATABASE_URL=postgres://jonathan@localhost:5432/aiacta?schema=public\nGRAPHQL_SCHEMA=./graphql/**/*.gql\nSSL_KEY=./server.key\nSSL_CERTIFICATE=./server.crt\" > ../../dist/.env",
     "seal": "cd ../../dist && zip -r ../aiacta.zip *"
   },
   "dependencies": {
