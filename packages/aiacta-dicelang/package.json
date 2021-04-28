@@ -1,0 +1,21 @@
+{
+  "name": "@aiacta/dicelang",
+  "version": "0.0.0",
+  "devDependencies": {
+    "@swc-node/jest": "1.1.0",
+    "@types/jest": "26.0.20",
+    "jest": "26.6.3",
+    "typescript": "4.2.3"
+  },
+  "main": "src/dicelang",
+  "scripts": {
+    "test": "jest"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.(t|j)sx?$": [
+        "@swc-node/jest"
+      ]
+    }
+  }
+}

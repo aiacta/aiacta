@@ -1,0 +1,14 @@
+schema: ../aiacta-graphql/graphql/**/*.gql
+documents:
+  - src/**/*.gql
+  - '!src/api/**/*'
+generates:
+  src/api/schema.json:
+    plugins:
+      - urql-introspection
+  src/api/hooks.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-urql:
+          gqlImport: urql#gql

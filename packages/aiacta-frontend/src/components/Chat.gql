@@ -1,0 +1,28 @@
+query ChatMessages {
+  world(id: "cknvk4vzp0000t106p579o0xm") {
+    messages {
+      id
+      component
+      text
+    }
+  }
+}
+
+mutation SendMessage($text: String, $component: String) {
+  sendMessage(
+    worldId: "cknvk4vzp0000t106p579o0xm"
+    input: { text: $text, component: $component }
+  ) {
+    id
+    component
+    text
+  }
+}
+
+subscription NewChatMessages {
+  newMessages(worldId: "cknvk4vzp0000t106p579o0xm") {
+    id
+    component
+    text
+  }
+}

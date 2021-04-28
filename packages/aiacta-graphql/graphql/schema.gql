@@ -1,0 +1,50 @@
+type World {
+  id: ID!
+  name: String!
+  players: [PlayerInWorld]
+  messages: [Message]
+}
+
+interface PlayerInfo {
+  id: ID!
+  name: String!
+  color: String!
+}
+
+type PlayerInWorld implements PlayerInfo {
+  id: ID!
+  name: String!
+  color: String!
+  role: Role!
+}
+
+type Player implements PlayerInfo {
+  id: ID!
+  name: String!
+  color: String!
+  worlds: [World]
+}
+
+type Message {
+  id: ID!
+  component: String
+  text: String
+}
+
+input MessageInput {
+  component: String
+  text: String
+}
+
+type Query {
+  worlds: [World]
+  world(id: ID!): World
+}
+
+type Mutation {
+  sendMessage(worldId: ID!, input: MessageInput!): Message
+}
+
+type Subscription {
+  newMessages(worldId: ID!): [Message]!
+}

@@ -1,0 +1,10 @@
+projects:
+  frontend:
+    schema: 'packages/aiacta-graphql/graphql/**/*.gql'
+    documents: 'packages/aiacta-frontend/src/**/*.{gql,graphql,js,ts,jsx,tsx}'
+    extensions:
+      endpoints:
+        default:
+          url: 'https://localhost:8080'
+          headers:
+            # Authorization: `Bearer ${process.env.API_TOKEN}`

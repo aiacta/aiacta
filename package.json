@@ -1,0 +1,31 @@
+{
+  "name": "aiacta",
+  "private": true,
+  "scripts": {
+    "dist": "yarn workspaces foreach -p run build && rm -Rf ./dist && cp -R ./packages/aiacta-hub/dist ./dist && cp -R ./packages/aiacta-frontend/dist ./dist/frontend && cp ./packages/aiacta-prisma/prisma/schema.prisma ./dist/schema.prisma && cp -R ./packages/aiacta-graphql/graphql ./dist/graphql && cp ./packages/aiacta-hub/server.crt ./dist/server.crt && cp ./packages/aiacta-hub/server.key ./dist/server.key && echo \"PORT=4000\nDATABASE_URL=postgres://jonathan@localhost:5432/aiacta?schema=public\nGRAPHQL_SCHEMA=./graphql/**/*.gql\nSSL_KEY=./server.key\nSSL_CERTIFICATE=./server.crt\" > ./dist/.env",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@swc-node/jest": "1.1.0",
+    "@swc-node/register": "1.0.4",
+    "@types/jest": "26.0.20",
+    "@typescript-eslint/eslint-plugin": "4.16.1",
+    "@typescript-eslint/parser": "4.16.1",
+    "eslint": "7.21.0",
+    "jest": "26.6.3",
+    "prettier": "2.2.1",
+    "tslib": "2.1.0",
+    "typescript": "4.2.3"
+  },
+  "workspaces": [
+    "./packages/tooling/*",
+    "./packages/*"
+  ],
+  "jest": {
+    "transform": {
+      "^.+\\.(t|j)sx?$": [
+        "@swc-node/jest"
+      ]
+    }
+  }
+}

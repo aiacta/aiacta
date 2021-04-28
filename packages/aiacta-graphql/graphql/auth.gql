@@ -1,0 +1,13 @@
+enum Role {
+  GAMEMASTER
+  USER
+}
+
+type AuthInfo {
+  token: String!
+  player: Player!
+}
+
+extend type Mutation {
+  login(name: String!, password: String!): AuthInfo
+}

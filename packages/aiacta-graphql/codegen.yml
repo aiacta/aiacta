@@ -1,0 +1,8 @@
+schema: graphql/**/*.gql
+generates:
+  src/resolvers.ts:
+    config:
+      noSchemaStitching: true
+    plugins:
+      - typescript
+      - typescript-resolvers
