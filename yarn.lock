@@ -65,7 +65,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@aiacta/graphql@0.0.0, @aiacta/graphql@workspace:packages/aiacta-graphql":
+"@aiacta/graphql@workspace:*, @aiacta/graphql@workspace:packages/aiacta-graphql":
   version: 0.0.0-use.local
   resolution: "@aiacta/graphql@workspace:packages/aiacta-graphql"
   dependencies:
@@ -88,8 +88,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@aiacta/hub@workspace:packages/aiacta-hub"
   dependencies:
-    "@aiacta/graphql": 0.0.0
-    "@aiacta/prisma": 0.0.0
+    "@aiacta/graphql": "workspace:*"
+    "@aiacta/prisma": "workspace:*"
     "@types/bcryptjs": ^2
     "@types/events": ^3
     "@types/jsonwebtoken": ^8
@@ -112,7 +112,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@aiacta/prisma@0.0.0, @aiacta/prisma@workspace:packages/aiacta-prisma":
+"@aiacta/prisma@workspace:*, @aiacta/prisma@workspace:packages/aiacta-prisma":
   version: 0.0.0-use.local
   resolution: "@aiacta/prisma@workspace:packages/aiacta-prisma"
   dependencies:
