@@ -1,0 +1,19 @@
+{
+  "name": "@aiacta/distribution",
+  "version": "0.0.0",
+  "scripts": {
+    "build": "yarn packages/aiacta-distribution workspaces foreach --parallel --topological --verbose --recursive run build && yarn clean && yarn copy",
+    "clean": "rm -Rf ../../dist",
+    "copy": "yarn copy:hub && yarn copy:frontend && yarn copy:prisma && yarn copy:graphql && yarn copy:certificates && yarn makeEnv",
+    "copy:hub": "cp -R ../aiacta-hub/dist ../../dist",
+    "copy:frontend": "cp -R ../aiacta-frontend/dist ../../dist/frontend",
+    "copy:prisma": "cp ../aiacta-prisma/prisma/schema.prisma ../../dist/schema.prisma",
+    "copy:graphql": "cp -R ../aiacta-graphql/graphql ../../dist/graphql",
+    "copy:certificates": "cp ../aiacta-hub/server.crt ../../dist/server.crt && cp ../aiacta-hub/server.key ../../dist/server.key",
+    "makeEnv": "echo \"PORT=4000\nDATABASE_URL=postgres://jonathan@localhost:5432/aiacta?schema=public\nGRAPHQL_SCHEMA=./graphql/**/*.gql\nSSL_KEY=./server.key\nSSL_CERTIFICATE=./server.crt\" > ./dist/.env"
+  },
+  "dependencies": {
+    "@aiacta/frontend": "workspace:*",
+    "@aiacta/hub": "workspace:*"
+  }
+}

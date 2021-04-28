@@ -16,7 +16,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@aiacta/frontend@workspace:packages/aiacta-frontend":
+"@aiacta/distribution@workspace:packages/aiacta-distribution":
+  version: 0.0.0-use.local
+  resolution: "@aiacta/distribution@workspace:packages/aiacta-distribution"
+  dependencies:
+    "@aiacta/frontend": "workspace:*"
+    "@aiacta/hub": "workspace:*"
+  languageName: unknown
+  linkType: soft
+
+"@aiacta/frontend@workspace:*, @aiacta/frontend@workspace:packages/aiacta-frontend":
   version: 0.0.0-use.local
   resolution: "@aiacta/frontend@workspace:packages/aiacta-frontend"
   dependencies:
@@ -84,7 +93,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@aiacta/hub@workspace:packages/aiacta-hub":
+"@aiacta/hub@workspace:*, @aiacta/hub@workspace:packages/aiacta-hub":
   version: 0.0.0-use.local
   resolution: "@aiacta/hub@workspace:packages/aiacta-hub"
   dependencies:

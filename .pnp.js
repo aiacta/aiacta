@@ -27,6 +27,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:packages/aiacta-dicelang"
       },
       {
+        "name": "@aiacta/distribution",
+        "reference": "workspace:packages/aiacta-distribution"
+      },
+      {
         "name": "@aiacta/frontend",
         "reference": "workspace:packages/aiacta-frontend"
       },
@@ -47,6 +51,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
     "ignorePatternData": "(^(?:\\.yarn\\/sdks(?:\\/(?!\\.)(?:(?:(?!(?:^|\\/)\\.).)*?)|$))$)",
     "fallbackExclusionList": [
       ["@aiacta/dicelang", ["workspace:packages/aiacta-dicelang"]],
+      ["@aiacta/distribution", ["workspace:packages/aiacta-distribution"]],
       ["@aiacta/frontend", ["workspace:packages/aiacta-frontend"]],
       ["@aiacta/graphql", ["workspace:packages/aiacta-graphql"]],
       ["@aiacta/hub", ["workspace:packages/aiacta-hub"]],
@@ -85,6 +90,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/jest", "npm:26.0.20"],
             ["jest", "npm:26.6.3"],
             ["typescript", "patch:typescript@npm%3A4.2.3#builtin<compat/typescript>::version=4.2.3&hash=a45b0e"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
+      ["@aiacta/distribution", [
+        ["workspace:packages/aiacta-distribution", {
+          "packageLocation": "./packages/aiacta-distribution/",
+          "packageDependencies": [
+            ["@aiacta/distribution", "workspace:packages/aiacta-distribution"],
+            ["@aiacta/frontend", "workspace:packages/aiacta-frontend"],
+            ["@aiacta/hub", "workspace:packages/aiacta-hub"]
           ],
           "linkType": "SOFT",
         }]

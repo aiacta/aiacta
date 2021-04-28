@@ -20,7 +20,7 @@ jobs:
       - name: 'Constraints'
         run: yarn constraints
       - name: 'Build'
-        run: yarn dist
+        run: yarn build
       - uses: 'marvinpinto/action-automatic-releases@latest'
         with:
           repo_token: '${{ secrets.GITHUB_TOKEN }}'
