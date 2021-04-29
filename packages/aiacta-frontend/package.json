@@ -3,9 +3,11 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build && yarn i18n:extract && yarn i18n:compile",
     "serve": "vite preview",
-    "generate": "graphql-codegen && prettier --write src/api/hooks.ts"
+    "generate": "graphql-codegen && prettier --write src/api/hooks.ts",
+    "i18n:extract": "formatjs extract 'src/**/*.ts*' --out-file lang/en.json --id-interpolation-pattern '[sha512:contenthash:base64:6]'",
+    "i18n:compile": "formatjs compile lang/en.json --ast --out-file dist/lang/en.json"
   },
   "dependencies": {
     "@babylonjs/core": "4.2.0",
@@ -39,6 +41,7 @@
     "urql": "2.0.2"
   },
   "devDependencies": {
+    "@formatjs/cli": "4.2.10",
     "@graphql-codegen/cli": "1.21.3",
     "@graphql-codegen/typescript": "1.21.1",
     "@graphql-codegen/typescript-operations": "^1.17.16",

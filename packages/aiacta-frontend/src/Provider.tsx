@@ -5,13 +5,33 @@ import { ApiProvider } from './api';
 import { StyleProvider } from './hooks';
 
 export function Provider({ children }: { children: React.ReactNode }) {
+  const messages = useMessages();
+
   return (
     <RecoilRoot>
       <StyleProvider>
-        <IntlProvider locale="en">
+        <IntlProvider locale="en" messages={messages}>
           <ApiProvider>{children}</ApiProvider>
         </IntlProvider>
       </StyleProvider>
     </RecoilRoot>
   );
+}
+
+function useMessages() {
+  if (import.meta.env.PROD) {
+    const [messages, setMessages] = React.useState(undefined);
+    React.useEffect(() => {
+      fetch('/lang/en.json')
+        .then((resp) => resp.json())
+        .then((msg) => setMessages(msg));
+    }, []);
+    return messages;
+  } else {
+    const [messages] = React.useState(undefined);
+    React.useEffect(() => {
+      // noop
+    }, []);
+    return messages;
+  }
 }

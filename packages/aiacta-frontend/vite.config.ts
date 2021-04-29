@@ -1,5 +1,5 @@
 import reactRefresh from '@vitejs/plugin-react-refresh';
-import { createHmac } from 'crypto';
+import { createHash } from 'crypto';
 import { defineConfig, Plugin } from 'vite';
 
 // https://vitejs.dev/config/
@@ -35,7 +35,7 @@ function reactIntl() {
       ];
       if (matches.length > 0) {
         const code = matches.reduce((code, match) => {
-          const hash = createHmac('sha512', 'my-plugin');
+          const hash = createHash('sha512');
           hash.update(match[4]);
           return code
             .split(match[0])
@@ -43,10 +43,7 @@ function reactIntl() {
               match[0]
                 .replace(
                   match[1],
-                  match[1] +
-                    `id: "${Buffer.from(hash.digest('hex'))
-                      .toString('base64')
-                      .substr(0, 6)}", `,
+                  match[1] + `id: "${hash.digest('base64').substr(0, 6)}", `,
                 )
                 .replace(match[2], isProduction ? '' : match[2]),
             );
