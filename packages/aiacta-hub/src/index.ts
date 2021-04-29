@@ -74,19 +74,20 @@ createServer({
     );
     console.log('');
     console.log(
-      `  > Local:    ${chalk.cyan(`https://localhost:${portColored}/`)}`,
+      `  > Local:    ${chalk.cyan(`http://localhost:${portColored}/`)}`,
     );
     console.log(
-      `              ${chalk.cyan(`wss://localhost:${portColored}/`)}`,
+      `              ${chalk.cyan(`ws://localhost:${portColored}/`)}`,
     );
-    console.log(`  > Network:  ${chalk.cyan(`https://${ip}:${portColored}/`)}`);
-    console.log(`              ${chalk.cyan(`wss://${ip}:${portColored}/`)}`);
+    console.log(`  > Network:  ${chalk.cyan(`http://${ip}:${portColored}/`)}`);
+    console.log(`              ${chalk.cyan(`ws://${ip}:${portColored}/`)}`);
   } else {
     console.log(
       `  ${chalk.cyan('aiacta')} ${chalk.green('server running at:')}`,
     );
     console.log('');
-    console.log(`    ${chalk.cyan(`https://${ip}:${portColored}/`)}`);
+    console.log(`    ${chalk.cyan(`http://${ip}:${portColored}/`)}`);
+    console.log(`    ${chalk.cyan(`ws://${ip}:${portColored}/`)}`);
   }
   console.log('');
 });
