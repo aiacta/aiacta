@@ -14,10 +14,16 @@ const graphql = buildExecutableSchema({
 });
 
 const frontend = new StaticServer(resolve(__dirname, 'frontend'));
+let disposeServer: (cb: () => void) => void;
+
 createServer({
   onRequest: async (request, response) => {
     if (request.method === 'GET') {
-      frontend.serve(request as any, response as any);
+      frontend.serve(request, response, (err: any) => {
+        if (err?.status === 404 && !request.url?.match(/\.\w{2,4}$/)) {
+          frontend.serveFile('/index.html', 200, {}, request, response);
+        }
+      });
     } else {
       const { query, variables } = JSON.parse(request.body ?? '{}');
       const result = await graphql.execute({
@@ -60,7 +66,8 @@ createServer({
     // notify server that the socket closed
     socket.once('close', (code, reason) => closed(code, reason));
   },
-}).then((port) => {
+}).then(([dispose, port]) => {
+  disposeServer = dispose;
   const portColored = chalk.cyanBright(port);
   const ip = Object.values(networkInterfaces())
     .flat()
@@ -93,5 +100,7 @@ createServer({
 });
 
 process.on('SIGTERM', () => {
-  process.exit(0);
+  disposeServer?.(() => {
+    process.exit(0);
+  });
 });

@@ -48,7 +48,15 @@ export function createServer({
   });
   wsServer.on('connection', (ws, request) => onSocket(ws, request));
 
-  return new Promise<number>((resolve) => {
-    server.listen(port, () => resolve(port));
+  return new Promise<[(cb: () => void) => void, number]>((resolve) => {
+    server.listen(port, () =>
+      resolve([
+        (cb) => {
+          wsServer.close(() => server.close(cb));
+          setTimeout(cb, 2500);
+        },
+        port,
+      ]),
+    );
   });
 }
