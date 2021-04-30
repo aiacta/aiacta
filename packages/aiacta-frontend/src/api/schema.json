@@ -41,8 +41,116 @@
       },
       {
         "kind": "OBJECT",
+        "name": "Query",
+        "fields": [
+          {
+            "name": "invitesToWorlds",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "World"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "me",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Player"
+            },
+            "args": []
+          },
+          {
+            "name": "world",
+            "type": {
+              "kind": "OBJECT",
+              "name": "World"
+            },
+            "args": [
+              {
+                "name": "id",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "worlds",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "World"
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "Mutation",
         "fields": [
+          {
+            "name": "createWorld",
+            "type": {
+              "kind": "OBJECT",
+              "name": "World"
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "joinWorld",
+            "type": {
+              "kind": "OBJECT",
+              "name": "World"
+            },
+            "args": [
+              {
+                "name": "worldId",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "password",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "joinKey",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
           {
             "name": "login",
             "type": {
@@ -178,6 +286,14 @@
                 "kind": "OBJECT",
                 "name": "Message"
               }
+            },
+            "args": []
+          },
+          {
+            "name": "creator",
+            "type": {
+              "kind": "OBJECT",
+              "name": "PlayerInWorld"
             },
             "args": []
           }
@@ -376,43 +492,6 @@
               "name": "Any"
             },
             "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "Query",
-        "fields": [
-          {
-            "name": "worlds",
-            "type": {
-              "kind": "LIST",
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "World"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "world",
-            "type": {
-              "kind": "OBJECT",
-              "name": "World"
-            },
-            "args": [
-              {
-                "name": "id",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              }
-            ]
           }
         ],
         "interfaces": []

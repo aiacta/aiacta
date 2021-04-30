@@ -5,7 +5,7 @@ interface Engine<T> {
   unsubscribe(id: number): Promise<void>;
 }
 
-export class PubSub<T = any> implements Engine<T> {
+export class PubSub<T extends Record<string, any> = any> implements Engine<T> {
   async subscribe(eventName: string, cb: (value: T) => void) {
     this.#eventEmitter.on(eventName, cb);
     const subId = this.#idCounter++;
@@ -19,15 +19,21 @@ export class PubSub<T = any> implements Engine<T> {
     this.#subscriptions.delete(id);
   }
 
-  async publish(eventName: string, payload: T) {
+  async publish<TEvent extends keyof T & string>(
+    eventName: TEvent,
+    payload: T[TEvent],
+  ) {
     this.#eventEmitter.emit(eventName, payload);
   }
 
-  asyncIterator<TMapped = T>(
-    eventName: string,
-    mapper?: (value: T) => TMapped,
+  asyncIterator<TEvent extends keyof T & string, TMapped = T[TEvent]>(
+    eventName: TEvent,
+    opt: {
+      map?: (value: T[TEvent]) => TMapped;
+      filter?: (value: T[TEvent]) => boolean;
+    },
   ) {
-    return new PubSubAsyncIterator<TMapped>(this, eventName, mapper);
+    return new PubSubAsyncIterator<TMapped>(this, eventName, opt);
   }
 
   #eventEmitter = new EventEmitter();
@@ -40,12 +46,19 @@ class PubSubAsyncIterator<T, TReturn = any, TNext = unknown>
   constructor(
     engine: Engine<any>,
     eventName: string,
-    mapper?: (value: any) => T,
+    {
+      map,
+      filter,
+    }: {
+      map?: (value: any) => T;
+      filter?: (value: any) => boolean;
+    },
   ) {
     this.#engine = engine;
     this.#eventName = eventName;
     this.#running = true;
-    this.#mapper = mapper;
+    this.#map = map;
+    this.#filter = filter;
   }
 
   async next(): Promise<IteratorResult<T, TReturn>> {
@@ -78,14 +91,18 @@ class PubSubAsyncIterator<T, TReturn = any, TNext = unknown>
   #queue: ((value: IteratorResult<T, TReturn>) => void)[] = [];
   #values: T[] = [];
   #running = false;
-  #mapper: ((value: any) => T) | undefined;
+  #map: ((value: any) => T) | undefined;
+  #filter: ((value: any) => boolean) | undefined;
 
   private async pushValue(value: T) {
+    if (this.#filter && !this.#filter(value)) {
+      return;
+    }
     await this.#subscriptionId;
     if (this.#queue.length > 0) {
       this.#queue.shift()!(
         this.#running
-          ? { value: this.#mapper?.(value) ?? value, done: false }
+          ? { value: this.#map?.(value) ?? value, done: false }
           : { value: undefined as any, done: true },
       );
     } else {
@@ -99,7 +116,7 @@ class PubSubAsyncIterator<T, TReturn = any, TNext = unknown>
         const value = this.#values.shift()!;
         resolve(
           this.#running
-            ? { value: this.#mapper?.(value) ?? value, done: false }
+            ? { value: this.#map?.(value) ?? value, done: false }
             : { value: undefined as any, done: true },
         );
       } else {

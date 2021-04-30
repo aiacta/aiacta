@@ -26,6 +26,7 @@ async function main() {
     update: {},
     create: {
       name: 'Test World 1',
+      creator: { connect: { id: gamemaster.id } },
     },
   });
 

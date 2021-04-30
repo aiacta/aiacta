@@ -1,0 +1,13 @@
+query AvailableWorlds {
+  worlds {
+    id
+    name
+    creator {
+      id
+      name
+    }
+    players {
+      id
+    }
+  }
+}

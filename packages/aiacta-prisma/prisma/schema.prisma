@@ -10,18 +10,26 @@ generator client {
 }
 
 model Player {
-  id       String          @id @default(cuid())
-  name     String          @unique
-  password String
-  color    String          @default("white")
-  worlds   PlayerInWorld[]
+  id              String          @id @default(cuid())
+  name            String          @unique
+  password        String
+  color           String          @default("white")
+  worlds          PlayerInWorld[]
+  worldsCreated   World[]         @relation("creator")
+  worldsInvitedTo World[]
 }
 
 model World {
-  id       String          @id @default(cuid())
-  name     String          @unique
-  players  PlayerInWorld[]
-  messages ChatMessage[]
+  id             String          @id @default(cuid())
+  name           String          @unique
+  creator        Player          @relation("creator", fields: [creatorId], references: [id])
+  creatorId      String
+  players        PlayerInWorld[]
+  messages       ChatMessage[]
+  inviteOnly     Boolean         @default(true)
+  joinKey        String?
+  playersInvited Player[]
+  password       String?
 }
 
 enum Role {

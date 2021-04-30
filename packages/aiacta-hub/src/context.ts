@@ -1,10 +1,14 @@
-import { PrismaClient } from '@aiacta/prisma';
+import { ChatMessage, PrismaClient } from '@aiacta/prisma';
 import { IncomingMessage } from 'http';
 import { Http2ServerRequest } from 'http2';
 import { getPlayerId } from './auth';
 import { PubSub } from './pubsub';
 
-const pubsub = new PubSub();
+interface PubSubMessages {
+  createMessage: ChatMessage;
+}
+
+const pubsub = new PubSub<PubSubMessages>();
 const prisma = new PrismaClient();
 
 type Resolved<T> = T extends Promise<infer U> ? U : never;

@@ -13,7 +13,7 @@ export function getPlayerId(
     if (authHeader) {
       const token = authHeader.replace('Bearer ', '');
       if (!token) {
-        throw new Error('No token found');
+        return null;
       }
       const { playerId } = getTokenPayload(token);
       return playerId;
@@ -24,5 +24,9 @@ export function getPlayerId(
 }
 
 function getTokenPayload(token: string) {
-  return verify(token, process.env.JWT_SECRET ?? 'aiacta') as any;
+  try {
+    return verify(token, process.env.JWT_SECRET ?? 'aiacta') as any;
+  } catch {
+    return { playerId: null };
+  }
 }

@@ -8,3 +8,11 @@ mutation SignUp($name: String!, $password: String!) {
     token
   }
 }
+
+query Me {
+  me {
+    id
+    name
+    color
+  }
+}

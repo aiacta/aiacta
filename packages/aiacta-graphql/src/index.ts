@@ -54,6 +54,7 @@ export function buildExecutableSchema<TContext>({
           document: parse(message.payload.query),
           schema,
           contextValue: await context(ctx.extra.request),
+          variableValues: message.payload.variables,
         };
       },
     }),

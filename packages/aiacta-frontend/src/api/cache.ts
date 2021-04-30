@@ -6,11 +6,14 @@ export const cacheExchange = urqlCacheExchange({
   schema: schema as any,
   updates: {
     Subscription: {
-      newMessages(result, _args, cache, _info) {
-        cache.updateQuery({ query: ChatMessagesDocument }, (data) => {
-          data.world.messages.push(...(result.newMessages as any[]));
-          return data;
-        });
+      newMessages(result, variables, cache, _info) {
+        cache.updateQuery(
+          { query: ChatMessagesDocument, variables },
+          (data) => {
+            data.world.messages.push(...(result.newMessages as any[]));
+            return data;
+          },
+        );
       },
     },
   },

@@ -7,7 +7,10 @@ export const QueryWorldResolver: Resolvers<Context> = {
       prisma.world
         .findUnique({
           where: { id },
-          include: { messages: true, players: { include: { player: true } } },
+          include: {
+            messages: true,
+            players: { include: { player: true } },
+          },
         })
         .then((world) => {
           if (!world?.players.some((p) => p.playerId === playerId)) {

@@ -29,11 +29,35 @@ export type AuthInfo = {
   player: Player;
 };
 
+export type Query = {
+  __typename?: 'Query';
+  invitesToWorlds?: Maybe<Array<Maybe<World>>>;
+  me?: Maybe<Player>;
+  world?: Maybe<World>;
+  worlds?: Maybe<Array<Maybe<World>>>;
+};
+
+export type QueryWorldArgs = {
+  id: Scalars['ID'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
+  createWorld?: Maybe<World>;
+  joinWorld?: Maybe<World>;
   login?: Maybe<AuthInfo>;
   sendMessage?: Maybe<Message>;
   signUp?: Maybe<AuthInfo>;
+};
+
+export type MutationCreateWorldArgs = {
+  input: WorldInput;
+};
+
+export type MutationJoinWorldArgs = {
+  worldId: Scalars['ID'];
+  password?: Maybe<Scalars['String']>;
+  joinKey?: Maybe<Scalars['String']>;
 };
 
 export type MutationLoginArgs = {
@@ -57,6 +81,7 @@ export type World = {
   name: Scalars['String'];
   players?: Maybe<Array<Maybe<PlayerInWorld>>>;
   messages?: Maybe<Array<Maybe<Message>>>;
+  creator?: Maybe<PlayerInWorld>;
 };
 
 export type PlayerInfo = {
@@ -93,14 +118,10 @@ export type MessageInput = {
   text?: Maybe<Scalars['String']>;
 };
 
-export type Query = {
-  __typename?: 'Query';
-  worlds?: Maybe<Array<Maybe<World>>>;
-  world?: Maybe<World>;
-};
-
-export type QueryWorldArgs = {
-  id: Scalars['ID'];
+export type WorldInput = {
+  name?: Maybe<Scalars['String']>;
+  inviteOnly?: Maybe<Scalars['Boolean']>;
+  password?: Maybe<Scalars['String']>;
 };
 
 export type Subscription = {
@@ -112,7 +133,9 @@ export type SubscriptionNewMessagesArgs = {
   worldId: Scalars['ID'];
 };
 
-export type ChatMessagesQueryVariables = Exact<{ [key: string]: never }>;
+export type ChatMessagesQueryVariables = Exact<{
+  worldId: Scalars['ID'];
+}>;
 
 export type ChatMessagesQuery = { __typename?: 'Query' } & {
   world?: Maybe<
@@ -132,6 +155,7 @@ export type ChatMessagesQuery = { __typename?: 'Query' } & {
 };
 
 export type SendMessageMutationVariables = Exact<{
+  worldId: Scalars['ID'];
   text?: Maybe<Scalars['String']>;
   component?: Maybe<Scalars['String']>;
 }>;
@@ -143,7 +167,7 @@ export type SendMessageMutation = { __typename?: 'Mutation' } & {
 };
 
 export type NewChatMessagesSubscriptionVariables = Exact<{
-  [key: string]: never;
+  worldId: Scalars['ID'];
 }>;
 
 export type NewChatMessagesSubscription = { __typename?: 'Subscription' } & {
@@ -172,9 +196,41 @@ export type SignUpMutation = { __typename?: 'Mutation' } & {
   signUp?: Maybe<{ __typename?: 'AuthInfo' } & Pick<AuthInfo, 'token'>>;
 };
 
+export type MeQueryVariables = Exact<{ [key: string]: never }>;
+
+export type MeQuery = { __typename?: 'Query' } & {
+  me?: Maybe<{ __typename?: 'Player' } & Pick<Player, 'id' | 'name' | 'color'>>;
+};
+
+export type AvailableWorldsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type AvailableWorldsQuery = { __typename?: 'Query' } & {
+  worlds?: Maybe<
+    Array<
+      Maybe<
+        { __typename?: 'World' } & Pick<World, 'id' | 'name'> & {
+            creator?: Maybe<
+              { __typename?: 'PlayerInWorld' } & Pick<
+                PlayerInWorld,
+                'id' | 'name'
+              >
+            >;
+            players?: Maybe<
+              Array<
+                Maybe<
+                  { __typename?: 'PlayerInWorld' } & Pick<PlayerInWorld, 'id'>
+                >
+              >
+            >;
+          }
+      >
+    >
+  >;
+};
+
 export const ChatMessagesDocument = gql`
-  query ChatMessages {
-    world(id: "cknvk4vzp0000t106p579o0xm") {
+  query ChatMessages($worldId: ID!) {
+    world(id: $worldId) {
       messages {
         id
         component
@@ -193,9 +249,9 @@ export function useChatMessagesQuery(
   });
 }
 export const SendMessageDocument = gql`
-  mutation SendMessage($text: String, $component: String) {
+  mutation SendMessage($worldId: ID!, $text: String, $component: String) {
     sendMessage(
-      worldId: "cknvk4vzp0000t106p579o0xm"
+      worldId: $worldId
       input: { text: $text, component: $component }
     ) {
       id
@@ -211,8 +267,8 @@ export function useSendMessageMutation() {
   );
 }
 export const NewChatMessagesDocument = gql`
-  subscription NewChatMessages {
-    newMessages(worldId: "cknvk4vzp0000t106p579o0xm") {
+  subscription NewChatMessages($worldId: ID!) {
+    newMessages(worldId: $worldId) {
       id
       component
       text
@@ -258,4 +314,43 @@ export function useSignUpMutation() {
   return Urql.useMutation<SignUpMutation, SignUpMutationVariables>(
     SignUpDocument,
   );
+}
+export const MeDocument = gql`
+  query Me {
+    me {
+      id
+      name
+      color
+    }
+  }
+`;
+
+export function useMeQuery(
+  options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {},
+) {
+  return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
+}
+export const AvailableWorldsDocument = gql`
+  query AvailableWorlds {
+    worlds {
+      id
+      name
+      creator {
+        id
+        name
+      }
+      players {
+        id
+      }
+    }
+  }
+`;
+
+export function useAvailableWorldsQuery(
+  options: Omit<Urql.UseQueryArgs<AvailableWorldsQueryVariables>, 'query'> = {},
+) {
+  return Urql.useQuery<AvailableWorldsQuery>({
+    query: AvailableWorldsDocument,
+    ...options,
+  });
 }

@@ -4,10 +4,13 @@ import { Context } from '../../context';
 export const SubscriptionNewMessagesResolver: Resolvers<Context> = {
   Subscription: {
     newMessages: {
-      subscribe: (_, __, { pubsub }) =>
-        pubsub.asyncIterator('createMessage', (message) => ({
-          newMessages: [message],
-        })),
+      subscribe: (_, { worldId }, { pubsub }) =>
+        pubsub.asyncIterator('createMessage', {
+          filter: (message) => message.worldId === worldId,
+          map: (message) => ({
+            newMessages: [message],
+          }),
+        }),
     },
   },
 };

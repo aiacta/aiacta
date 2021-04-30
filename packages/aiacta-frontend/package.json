@@ -34,7 +34,7 @@
     "react-hook-form": "7.0.7",
     "react-icons": "4.2.0",
     "react-intl": "5.13.2",
-    "react-router-dom": "5.2.0",
+    "react-router-dom": "6.0.0-beta.0",
     "recoil": "0.2.0",
     "rsuite": "5.0.0-alpha.4",
     "typestyle": "2.1.0",

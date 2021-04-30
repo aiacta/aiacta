@@ -8,6 +8,10 @@ type AuthInfo {
   player: Player!
 }
 
+extend type Query {
+  me: Player
+}
+
 extend type Mutation {
   login(name: String!, password: String!): AuthInfo
   signUp(name: String!, password: String!): AuthInfo

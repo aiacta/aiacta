@@ -1,5 +1,6 @@
 import { Send } from '@rsuite/icons';
 import * as React from 'react';
+import { useParams } from 'react-router-dom';
 import { InputGroup, Panel } from 'rsuite';
 import {
   useChatMessagesQuery,
@@ -19,9 +20,11 @@ export function Chat() {
     },
   });
 
-  const [messages] = useChatMessagesQuery();
+  const { worldId } = useParams();
+
+  const [messages] = useChatMessagesQuery({ variables: { worldId } });
   const [mutation, sendMessage] = useSendMessageMutation();
-  useNewChatMessagesSubscription();
+  useNewChatMessagesSubscription({ variables: { worldId } });
 
   const editor = useTextEditorRef();
 
@@ -40,14 +43,14 @@ export function Chat() {
           ref={editor}
           readOnly={mutation.fetching}
           onPressEnter={(value) => {
-            sendMessage({ text: value }).then(() =>
+            sendMessage({ worldId, text: value }).then(() =>
               editor.current.resetState(),
             );
           }}
         />
         <Button
           onClick={() =>
-            sendMessage({ text: editor.current.getValue() }).then(() =>
+            sendMessage({ worldId, text: editor.current.getValue() }).then(() =>
               editor.current.resetState(),
             )
           }

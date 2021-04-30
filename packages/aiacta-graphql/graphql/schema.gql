@@ -3,6 +3,7 @@ type World {
   name: String!
   players: [PlayerInWorld]
   messages: [Message]
+  creator: PlayerInWorld
 }
 
 interface PlayerInfo {
@@ -36,13 +37,22 @@ input MessageInput {
   text: String
 }
 
+input WorldInput {
+  name: String
+  inviteOnly: Boolean
+  password: String
+}
+
 type Query {
   worlds: [World]
   world(id: ID!): World
+  invitesToWorlds: [World]
 }
 
 type Mutation {
   sendMessage(worldId: ID!, input: MessageInput!): Message
+  createWorld(input: WorldInput!): World
+  joinWorld(worldId: ID!, password: String, joinKey: String): World
 }
 
 type Subscription {

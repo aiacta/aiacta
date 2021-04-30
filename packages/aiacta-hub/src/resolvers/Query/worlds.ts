@@ -1,4 +1,5 @@
 import { Resolvers } from '@aiacta/graphql';
+import { Role } from '@aiacta/graphql/src/resolvers';
 import { Context } from '../../context';
 
 export const QueryWorldsResolver: Resolvers<Context> = {
@@ -8,14 +9,22 @@ export const QueryWorldsResolver: Resolvers<Context> = {
         ? prisma.world
             .findMany({
               include: {
-                messages: true,
+                // messages: true,
+                creator: true,
                 players: { include: { player: true } },
               },
-              where: { players: { some: { playerId } } },
+              where: {
+                OR: [
+                  { players: { some: { playerId } } },
+                  { playersInvited: { some: { id: playerId } } },
+                  { inviteOnly: false },
+                ],
+              },
             })
             .then((worlds) =>
               worlds.map((world) => ({
                 ...world,
+                creator: { ...world.creator, role: Role.Gamemaster },
                 players: world.players.map(({ player, role }) => ({
                   ...player,
                   role: role as any,

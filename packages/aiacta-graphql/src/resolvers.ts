@@ -31,11 +31,35 @@ export type AuthInfo = {
   player: Player;
 };
 
+export type Query = {
+  __typename?: 'Query';
+  invitesToWorlds?: Maybe<Array<Maybe<World>>>;
+  me?: Maybe<Player>;
+  world?: Maybe<World>;
+  worlds?: Maybe<Array<Maybe<World>>>;
+};
+
+export type QueryWorldArgs = {
+  id: Scalars['ID'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
+  createWorld?: Maybe<World>;
+  joinWorld?: Maybe<World>;
   login?: Maybe<AuthInfo>;
   sendMessage?: Maybe<Message>;
   signUp?: Maybe<AuthInfo>;
+};
+
+export type MutationCreateWorldArgs = {
+  input: WorldInput;
+};
+
+export type MutationJoinWorldArgs = {
+  worldId: Scalars['ID'];
+  password?: Maybe<Scalars['String']>;
+  joinKey?: Maybe<Scalars['String']>;
 };
 
 export type MutationLoginArgs = {
@@ -59,6 +83,7 @@ export type World = {
   name: Scalars['String'];
   players?: Maybe<Array<Maybe<PlayerInWorld>>>;
   messages?: Maybe<Array<Maybe<Message>>>;
+  creator?: Maybe<PlayerInWorld>;
 };
 
 export type PlayerInfo = {
@@ -95,14 +120,10 @@ export type MessageInput = {
   text?: Maybe<Scalars['String']>;
 };
 
-export type Query = {
-  __typename?: 'Query';
-  worlds?: Maybe<Array<Maybe<World>>>;
-  world?: Maybe<World>;
-};
-
-export type QueryWorldArgs = {
-  id: Scalars['ID'];
+export type WorldInput = {
+  name?: Maybe<Scalars['String']>;
+  inviteOnly?: Maybe<Scalars['Boolean']>;
+  password?: Maybe<Scalars['String']>;
 };
 
 export type Subscription = {
@@ -224,25 +245,27 @@ export type ResolversTypes = {
   Role: Role;
   AuthInfo: ResolverTypeWrapper<AuthInfo>;
   String: ResolverTypeWrapper<Scalars['String']>;
-  Mutation: ResolverTypeWrapper<{}>;
+  Query: ResolverTypeWrapper<{}>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
+  Mutation: ResolverTypeWrapper<{}>;
   World: ResolverTypeWrapper<World>;
   PlayerInfo: ResolversTypes['PlayerInWorld'] | ResolversTypes['Player'];
   PlayerInWorld: ResolverTypeWrapper<PlayerInWorld>;
   Player: ResolverTypeWrapper<Player>;
   Message: ResolverTypeWrapper<Message>;
   MessageInput: MessageInput;
-  Query: ResolverTypeWrapper<{}>;
-  Subscription: ResolverTypeWrapper<{}>;
+  WorldInput: WorldInput;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  Subscription: ResolverTypeWrapper<{}>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   AuthInfo: AuthInfo;
   String: Scalars['String'];
-  Mutation: {};
+  Query: {};
   ID: Scalars['ID'];
+  Mutation: {};
   World: World;
   PlayerInfo:
     | ResolversParentTypes['PlayerInWorld']
@@ -251,9 +274,9 @@ export type ResolversParentTypes = {
   Player: Player;
   Message: Message;
   MessageInput: MessageInput;
-  Query: {};
-  Subscription: {};
+  WorldInput: WorldInput;
   Boolean: Scalars['Boolean'];
+  Subscription: {};
 };
 
 export type AuthInfoResolvers<
@@ -265,10 +288,45 @@ export type AuthInfoResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type QueryResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
+> = {
+  invitesToWorlds?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['World']>>>,
+    ParentType,
+    ContextType
+  >;
+  me?: Resolver<Maybe<ResolversTypes['Player']>, ParentType, ContextType>;
+  world?: Resolver<
+    Maybe<ResolversTypes['World']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryWorldArgs, 'id'>
+  >;
+  worlds?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['World']>>>,
+    ParentType,
+    ContextType
+  >;
+};
+
 export type MutationResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
 > = {
+  createWorld?: Resolver<
+    Maybe<ResolversTypes['World']>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateWorldArgs, 'input'>
+  >;
+  joinWorld?: Resolver<
+    Maybe<ResolversTypes['World']>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationJoinWorldArgs, 'worldId'>
+  >;
   login?: Resolver<
     Maybe<ResolversTypes['AuthInfo']>,
     ParentType,
@@ -302,6 +360,11 @@ export type WorldResolvers<
   >;
   messages?: Resolver<
     Maybe<Array<Maybe<ResolversTypes['Message']>>>,
+    ParentType,
+    ContextType
+  >;
+  creator?: Resolver<
+    Maybe<ResolversTypes['PlayerInWorld']>,
     ParentType,
     ContextType
   >;
@@ -362,23 +425,6 @@ export type MessageResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type QueryResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
-> = {
-  worlds?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes['World']>>>,
-    ParentType,
-    ContextType
-  >;
-  world?: Resolver<
-    Maybe<ResolversTypes['World']>,
-    ParentType,
-    ContextType,
-    RequireFields<QueryWorldArgs, 'id'>
-  >;
-};
-
 export type SubscriptionResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']
@@ -394,13 +440,13 @@ export type SubscriptionResolvers<
 
 export type Resolvers<ContextType = any> = {
   AuthInfo?: AuthInfoResolvers<ContextType>;
+  Query?: QueryResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   World?: WorldResolvers<ContextType>;
   PlayerInfo?: PlayerInfoResolvers<ContextType>;
   PlayerInWorld?: PlayerInWorldResolvers<ContextType>;
   Player?: PlayerResolvers<ContextType>;
   Message?: MessageResolvers<ContextType>;
-  Query?: QueryResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
 };
 

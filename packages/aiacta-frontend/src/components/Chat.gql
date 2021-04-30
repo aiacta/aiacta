@@ -1,5 +1,5 @@
-query ChatMessages {
-  world(id: "cknvk4vzp0000t106p579o0xm") {
+query ChatMessages($worldId: ID!) {
+  world(id: $worldId) {
     messages {
       id
       component
@@ -8,9 +8,9 @@ query ChatMessages {
   }
 }
 
-mutation SendMessage($text: String, $component: String) {
+mutation SendMessage($worldId: ID!, $text: String, $component: String) {
   sendMessage(
-    worldId: "cknvk4vzp0000t106p579o0xm"
+    worldId: $worldId
     input: { text: $text, component: $component }
   ) {
     id
@@ -19,8 +19,8 @@ mutation SendMessage($text: String, $component: String) {
   }
 }
 
-subscription NewChatMessages {
-  newMessages(worldId: "cknvk4vzp0000t106p579o0xm") {
+subscription NewChatMessages($worldId: ID!) {
+  newMessages(worldId: $worldId) {
     id
     component
     text
