@@ -26,8 +26,12 @@ export function ApiProvider({ children }: { children: React.ReactNode }) {
         devtoolsExchange,
         dedupExchange,
         cacheExchange,
-        errorExchange,
+        errorExchange(() => {
+          localStorage.removeItem('aiacta:auth');
+          setAuthenticated(false);
+        }),
         authExchange(() => {
+          localStorage.removeItem('aiacta:auth');
           setAuthenticated(false);
         }),
         fetchExchange,

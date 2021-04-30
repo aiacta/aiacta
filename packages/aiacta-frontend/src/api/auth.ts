@@ -53,8 +53,6 @@ export const authExchange = (onLogout: () => void) =>
         return null;
       }
 
-      localStorage.clear();
-
       onLogout();
 
       return null;
