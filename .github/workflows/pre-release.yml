@@ -29,3 +29,35 @@ jobs:
           title: 'Development Build'
           files: |
             aiacta.zip
+      - uses: actions/upload-artifact@v2
+        with:
+          name: App
+          path: |
+            aiacta.zip
+            packages/aiacta-prisma/prisma/migrations/**/*
+            packages/aiacta-prisma/prisma/schema.prisma
+
+  deployment:
+    runs-on: 'ubuntu-latest'
+    needs: [pre-release]
+
+    steps:
+      - name: 'Install SSH Key'
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.PI_SSH_PRIVATE_KEY }}
+          known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
+      - run: ssh-keyscan -H ${{ secrets.PI_SSH_HOST }} >> ~/.ssh/known_hosts
+      - uses: actions/download-artifact@v2
+        with:
+          name: aiacta.zip
+      - run: unzip aiacta.zip -d ./dist
+      - name: 'Copy deployment'
+        run: rsync -avz ./dist/ ${{ secrets.PI_SSH_USER }}@${{ secrets.SSH_HOST }}:/home/pi/aiacta/
+      - name: 'Run migrations'
+        run: |
+          ssh -L 3333:${{ secrets.SSH_HOST }}:5432 ${{ secrets.PI_SSH_USER }}@${{ secrets.SSH_HOST }}
+          export DATABASE_URL=postgresql://aiacta@localhost:3333/aiacta
+          cd packages/aiacta-prisma && npx prisma migrate deploy
+      - name: 'Restart server'
+        run: ssh ${{ secrets.PI_SSH_USER }}@${{ secrets.SSH_HOST }} "sudo systemctl restart aiacta"

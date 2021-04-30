@@ -1,3 +1,4 @@
 prisma/*
 !prisma/schema.prisma
 !prisma/seed.ts
+!prisma/migrations
