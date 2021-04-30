@@ -33,6 +33,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   login?: Maybe<AuthInfo>;
   sendMessage?: Maybe<Message>;
+  signUp?: Maybe<AuthInfo>;
 };
 
 export type MutationLoginArgs = {
@@ -43,6 +44,11 @@ export type MutationLoginArgs = {
 export type MutationSendMessageArgs = {
   worldId: Scalars['ID'];
   input: MessageInput;
+};
+
+export type MutationSignUpArgs = {
+  name: Scalars['String'];
+  password: Scalars['String'];
 };
 
 export type World = {
@@ -157,6 +163,15 @@ export type LoginMutation = { __typename?: 'Mutation' } & {
   login?: Maybe<{ __typename?: 'AuthInfo' } & Pick<AuthInfo, 'token'>>;
 };
 
+export type SignUpMutationVariables = Exact<{
+  name: Scalars['String'];
+  password: Scalars['String'];
+}>;
+
+export type SignUpMutation = { __typename?: 'Mutation' } & {
+  signUp?: Maybe<{ __typename?: 'AuthInfo' } & Pick<AuthInfo, 'token'>>;
+};
+
 export const ChatMessagesDocument = gql`
   query ChatMessages {
     world(id: "cknvk4vzp0000t106p579o0xm") {
@@ -230,4 +245,17 @@ export const LoginDocument = gql`
 
 export function useLoginMutation() {
   return Urql.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
+}
+export const SignUpDocument = gql`
+  mutation SignUp($name: String!, $password: String!) {
+    signUp(name: $name, password: $password) {
+      token
+    }
+  }
+`;
+
+export function useSignUpMutation() {
+  return Urql.useMutation<SignUpMutation, SignUpMutationVariables>(
+    SignUpDocument,
+  );
 }

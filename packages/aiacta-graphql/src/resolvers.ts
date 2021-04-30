@@ -35,6 +35,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   login?: Maybe<AuthInfo>;
   sendMessage?: Maybe<Message>;
+  signUp?: Maybe<AuthInfo>;
 };
 
 export type MutationLoginArgs = {
@@ -45,6 +46,11 @@ export type MutationLoginArgs = {
 export type MutationSendMessageArgs = {
   worldId: Scalars['ID'];
   input: MessageInput;
+};
+
+export type MutationSignUpArgs = {
+  name: Scalars['String'];
+  password: Scalars['String'];
 };
 
 export type World = {
@@ -274,6 +280,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationSendMessageArgs, 'worldId' | 'input'>
+  >;
+  signUp?: Resolver<
+    Maybe<ResolversTypes['AuthInfo']>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationSignUpArgs, 'name' | 'password'>
   >;
 };
 

@@ -10,4 +10,5 @@ type AuthInfo {
 
 extend type Mutation {
   login(name: String!, password: String!): AuthInfo
+  signUp(name: String!, password: String!): AuthInfo
 }
