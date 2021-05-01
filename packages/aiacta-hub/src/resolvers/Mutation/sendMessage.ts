@@ -9,7 +9,7 @@ export const MutationSendMessageResolver: Resolvers<Context> = {
       { prisma, pubsub },
     ) => {
       const message = await prisma.chatMessage.create({
-        data: { worldId, component, text },
+        data: { world: { connect: { id: worldId } }, component, text },
       });
 
       pubsub.publish('createMessage', message);

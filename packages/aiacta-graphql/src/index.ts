@@ -68,3 +68,11 @@ export class ForbiddenError extends GraphQLError {
     });
   }
 }
+
+export class AuthError extends GraphQLError {
+  constructor(message: string) {
+    super(message, undefined, undefined, undefined, undefined, undefined, {
+      code: 'UNAUTHORIZED',
+    });
+  }
+}

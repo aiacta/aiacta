@@ -8,11 +8,13 @@ export const QueryWorldResolver: Resolvers<Context> = {
         .findUnique({
           where: { id },
           include: {
-            messages: true,
             players: { include: { player: true } },
           },
         })
         .then((world) => {
+          if (!world) {
+            return null;
+          }
           if (!world?.players.some((p) => p.playerId === playerId)) {
             throw new ForbiddenError('Cannot access world');
           }
@@ -20,7 +22,7 @@ export const QueryWorldResolver: Resolvers<Context> = {
             ...world,
             players: world.players.map(({ player, role }) => ({
               ...player,
-              role: role as any,
+              role,
             })),
           };
         }),

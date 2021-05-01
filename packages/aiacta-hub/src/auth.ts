@@ -1,3 +1,4 @@
+import { AuthError } from '@aiacta/graphql';
 import { IncomingMessage } from 'http';
 import { Http2ServerRequest } from 'http2';
 import { verify } from 'jsonwebtoken';
@@ -27,6 +28,6 @@ function getTokenPayload(token: string) {
   try {
     return verify(token, process.env.JWT_SECRET ?? 'aiacta') as any;
   } catch {
-    return { playerId: null };
+    throw new AuthError('Token not valid');
   }
 }

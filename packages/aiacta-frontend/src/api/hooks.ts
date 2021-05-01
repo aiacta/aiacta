@@ -82,6 +82,8 @@ export type World = {
   players?: Maybe<Array<Maybe<PlayerInWorld>>>;
   messages?: Maybe<Array<Maybe<Message>>>;
   creator?: Maybe<PlayerInWorld>;
+  isListed: Scalars['Boolean'];
+  isPasswordProtected: Scalars['Boolean'];
 };
 
 export type PlayerInfo = {
@@ -119,8 +121,8 @@ export type MessageInput = {
 };
 
 export type WorldInput = {
-  name?: Maybe<Scalars['String']>;
-  inviteOnly?: Maybe<Scalars['Boolean']>;
+  name: Scalars['String'];
+  inviteOnly: Scalars['Boolean'];
   password?: Maybe<Scalars['String']>;
 };
 
@@ -202,32 +204,69 @@ export type MeQuery = { __typename?: 'Query' } & {
   me?: Maybe<{ __typename?: 'Player' } & Pick<Player, 'id' | 'name' | 'color'>>;
 };
 
+export type ListInfoWorldFragment = { __typename?: 'World' } & Pick<
+  World,
+  'id' | 'name' | 'isListed' | 'isPasswordProtected'
+> & {
+    creator?: Maybe<
+      { __typename?: 'PlayerInWorld' } & Pick<PlayerInWorld, 'id' | 'name'>
+    >;
+    players?: Maybe<
+      Array<Maybe<{ __typename?: 'PlayerInWorld' } & Pick<PlayerInWorld, 'id'>>>
+    >;
+  };
+
 export type AvailableWorldsQueryVariables = Exact<{ [key: string]: never }>;
 
 export type AvailableWorldsQuery = { __typename?: 'Query' } & {
   worlds?: Maybe<
-    Array<
-      Maybe<
-        { __typename?: 'World' } & Pick<World, 'id' | 'name'> & {
-            creator?: Maybe<
-              { __typename?: 'PlayerInWorld' } & Pick<
-                PlayerInWorld,
-                'id' | 'name'
-              >
-            >;
-            players?: Maybe<
-              Array<
-                Maybe<
-                  { __typename?: 'PlayerInWorld' } & Pick<PlayerInWorld, 'id'>
-                >
-              >
-            >;
-          }
-      >
-    >
+    Array<Maybe<{ __typename?: 'World' } & ListInfoWorldFragment>>
   >;
 };
 
+export type CreateWorldMutationVariables = Exact<{
+  name: Scalars['String'];
+  password?: Maybe<Scalars['String']>;
+  inviteOnly: Scalars['Boolean'];
+}>;
+
+export type CreateWorldMutation = { __typename?: 'Mutation' } & {
+  createWorld?: Maybe<{ __typename?: 'World' } & ListInfoWorldFragment>;
+};
+
+export type JoinWorldMutationVariables = Exact<{
+  worldId: Scalars['ID'];
+  password?: Maybe<Scalars['String']>;
+  joinKey?: Maybe<Scalars['String']>;
+}>;
+
+export type JoinWorldMutation = { __typename?: 'Mutation' } & {
+  joinWorld?: Maybe<
+    { __typename?: 'World' } & Pick<World, 'id'> & {
+        players?: Maybe<
+          Array<
+            Maybe<{ __typename?: 'PlayerInWorld' } & Pick<PlayerInWorld, 'id'>>
+          >
+        >;
+      }
+  >;
+};
+
+export const ListInfoWorldFragmentDoc = gql`
+  fragment ListInfoWorld on World {
+    id
+    name
+    creator {
+      id
+      name
+    }
+    players {
+      id
+    }
+    isListed
+    isPasswordProtected
+  }
+`;
 export const ChatMessagesDocument = gql`
   query ChatMessages($worldId: ID!) {
     world(id: $worldId) {
@@ -333,17 +372,10 @@ export function useMeQuery(
 export const AvailableWorldsDocument = gql`
   query AvailableWorlds {
     worlds {
-      id
-      name
-      creator {
-        id
-        name
-      }
-      players {
-        id
-      }
+      ...ListInfoWorld
     }
   }
+  ${ListInfoWorldFragmentDoc}
 `;
 
 export function useAvailableWorldsQuery(
@@ -353,4 +385,40 @@ export function useAvailableWorldsQuery(
     query: AvailableWorldsDocument,
     ...options,
   });
+}
+export const CreateWorldDocument = gql`
+  mutation CreateWorld(
+    $name: String!
+    $password: String
+    $inviteOnly: Boolean!
+  ) {
+    createWorld(
+      input: { name: $name, password: $password, inviteOnly: $inviteOnly }
+    ) {
+      ...ListInfoWorld
+    }
+  }
+  ${ListInfoWorldFragmentDoc}
+`;
+
+export function useCreateWorldMutation() {
+  return Urql.useMutation<CreateWorldMutation, CreateWorldMutationVariables>(
+    CreateWorldDocument,
+  );
+}
+export const JoinWorldDocument = gql`
+  mutation JoinWorld($worldId: ID!, $password: String, $joinKey: String) {
+    joinWorld(worldId: $worldId, password: $password, joinKey: $joinKey) {
+      id
+      players {
+        id
+      }
+    }
+  }
+`;
+
+export function useJoinWorldMutation() {
+  return Urql.useMutation<JoinWorldMutation, JoinWorldMutationVariables>(
+    JoinWorldDocument,
+  );
 }

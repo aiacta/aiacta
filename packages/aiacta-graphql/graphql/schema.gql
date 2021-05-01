@@ -4,6 +4,8 @@ type World {
   players: [PlayerInWorld]
   messages: [Message]
   creator: PlayerInWorld
+  isListed: Boolean!
+  isPasswordProtected: Boolean!
 }
 
 interface PlayerInfo {
@@ -38,8 +40,8 @@ input MessageInput {
 }
 
 input WorldInput {
-  name: String
-  inviteOnly: Boolean
+  name: String!
+  inviteOnly: Boolean!
   password: String
 }
 

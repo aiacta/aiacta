@@ -79,6 +79,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@aiacta/graphql@workspace:packages/aiacta-graphql"
   dependencies:
+    "@aiacta/prisma": "workspace:*"
+    "@graphql-codegen/add": 2.0.2
     "@graphql-codegen/cli": 1.21.3
     "@graphql-codegen/typescript": 1.21.1
     "@graphql-codegen/typescript-resolvers": 1.19.0
@@ -1464,6 +1466,18 @@ __metadata:
     ts-jest:
       optional: true
   checksum: b795ebcd67dfd40953e1844a057815d6b22f781cead9a8c5ca21f6065a34b5a6be08df44cb969030d3cd37f03976881cde6c4ff3d4fa8eac1a92830f88c5e341
+  languageName: node
+  linkType: hard
+
+"@graphql-codegen/add@npm:2.0.2":
+  version: 2.0.2
+  resolution: "@graphql-codegen/add@npm:2.0.2"
+  dependencies:
+    "@graphql-codegen/plugin-helpers": ^1.18.2
+    tslib: ~2.0.1
+  peerDependencies:
+    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
+  checksum: 17314f9734023c638c3ba1b1fe282ad876d72e879011d1bb35107496b84fdf1339a9064a5fff97b2954c6a647872c977bd93810750bc57b6428ffd097722bdc3
   languageName: node
   linkType: hard
 

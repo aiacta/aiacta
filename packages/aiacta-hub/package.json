@@ -3,8 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "ts-node-dev --respawn ./src/index",
-    "build": "ts-node-dev ./bundle",
-    "serve": ""
+    "build": "ts-node-dev ./bundle"
   },
   "dependencies": {
     "@aiacta/graphql": "workspace:*",

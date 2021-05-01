@@ -9,7 +9,6 @@ export const QueryWorldsResolver: Resolvers<Context> = {
         ? prisma.world
             .findMany({
               include: {
-                // messages: true,
                 creator: true,
                 players: { include: { player: true } },
               },
@@ -24,10 +23,10 @@ export const QueryWorldsResolver: Resolvers<Context> = {
             .then((worlds) =>
               worlds.map((world) => ({
                 ...world,
-                creator: { ...world.creator, role: Role.Gamemaster },
+                creator: { ...world.creator, role: Role.GAMEMASTER },
                 players: world.players.map(({ player, role }) => ({
                   ...player,
-                  role: role as any,
+                  role,
                 })),
               })),
             )

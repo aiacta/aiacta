@@ -1,8 +1,17 @@
 schema: graphql/**/*.gql
 generates:
   src/resolvers.ts:
-    config:
-      noSchemaStitching: true
     plugins:
+      - add:
+          content: '/* eslint-disable */'
       - typescript
       - typescript-resolvers
+    config:
+      noSchemaStitching: true
+      enumValues:
+        Role: '@aiacta/prisma#Role'
+      defaultMapper: Partial<{T}>
+      mapperTypeSuffix: Model
+      mappers:
+        World: '@aiacta/prisma#World'
+      # Message: '@aiacta/prisma#ChatMessage'

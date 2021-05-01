@@ -162,6 +162,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/aiacta-graphql/",
           "packageDependencies": [
             ["@aiacta/graphql", "workspace:packages/aiacta-graphql"],
+            ["@aiacta/prisma", "workspace:packages/aiacta-prisma"],
+            ["@graphql-codegen/add", "virtual:ebac3eac64d4c35c144e3a79a05e5a633b9f536382a5d3df974a3855a7969a97b662030d0fd789ac3177fcdee721927ca643225443ca48d8d7d28c2ceeb46046#npm:2.0.2"],
             ["@graphql-codegen/cli", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:1.21.3"],
             ["@graphql-codegen/typescript", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:1.21.1"],
             ["@graphql-codegen/typescript-resolvers", "virtual:ebac3eac64d4c35c144e3a79a05e5a633b9f536382a5d3df974a3855a7969a97b662030d0fd789ac3177fcdee721927ca643225443ca48d8d7d28c2ceeb46046#npm:1.19.0"],
@@ -2110,6 +2112,30 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packagePeers": [
             "@types/ts-jest",
             "ts-jest"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@graphql-codegen/add", [
+        ["npm:2.0.2", {
+          "packageLocation": "./.yarn/cache/@graphql-codegen-add-npm-2.0.2-bd7268eff8-17314f9734.zip/node_modules/@graphql-codegen/add/",
+          "packageDependencies": [
+            ["@graphql-codegen/add", "npm:2.0.2"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:ebac3eac64d4c35c144e3a79a05e5a633b9f536382a5d3df974a3855a7969a97b662030d0fd789ac3177fcdee721927ca643225443ca48d8d7d28c2ceeb46046#npm:2.0.2", {
+          "packageLocation": "./.yarn/$$virtual/@graphql-codegen-add-virtual-d0c55b40fa/0/cache/@graphql-codegen-add-npm-2.0.2-bd7268eff8-17314f9734.zip/node_modules/@graphql-codegen/add/",
+          "packageDependencies": [
+            ["@graphql-codegen/add", "virtual:ebac3eac64d4c35c144e3a79a05e5a633b9f536382a5d3df974a3855a7969a97b662030d0fd789ac3177fcdee721927ca643225443ca48d8d7d28c2ceeb46046#npm:2.0.2"],
+            ["@graphql-codegen/plugin-helpers", "virtual:d17b2ac27c12df941083f57252952a0a909a487ae87e048d9ae134fbede0d03aee6879c58595c0e5331a5885a6326f6af44b20719052cd500d98a3bf65da7d63#npm:1.18.4"],
+            ["@types/graphql", null],
+            ["graphql", "npm:15.5.0"],
+            ["tslib", "npm:2.0.3"]
+          ],
+          "packagePeers": [
+            "@types/graphql",
+            "graphql"
           ],
           "linkType": "HARD",
         }]

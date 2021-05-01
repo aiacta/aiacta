@@ -1,4 +1,7 @@
+/* eslint-disable */
+import { Role } from '@aiacta/prisma';
 import { GraphQLResolveInfo } from 'graphql';
+import { World as WorldModel } from '@aiacta/prisma';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K];
@@ -7,6 +10,10 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
   { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
   { [SubKey in K]: Maybe<T[SubKey]> };
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+export type EnumResolverSignature<T, AllowedValues = any> = {
+  [key in keyof T]?: AllowedValues;
+};
 export type RequireFields<T, K extends keyof T> = {
   [X in Exclude<keyof T, K>]?: T[X];
 } &
@@ -20,10 +27,7 @@ export type Scalars = {
   Float: number;
 };
 
-export enum Role {
-  Gamemaster = 'GAMEMASTER',
-  User = 'USER',
-}
+export { Role };
 
 export type AuthInfo = {
   __typename?: 'AuthInfo';
@@ -84,6 +88,8 @@ export type World = {
   players?: Maybe<Array<Maybe<PlayerInWorld>>>;
   messages?: Maybe<Array<Maybe<Message>>>;
   creator?: Maybe<PlayerInWorld>;
+  isListed: Scalars['Boolean'];
+  isPasswordProtected: Scalars['Boolean'];
 };
 
 export type PlayerInfo = {
@@ -121,8 +127,8 @@ export type MessageInput = {
 };
 
 export type WorldInput = {
-  name?: Maybe<Scalars['String']>;
-  inviteOnly?: Maybe<Scalars['Boolean']>;
+  name: Scalars['String'];
+  inviteOnly: Scalars['Boolean'];
   password?: Maybe<Scalars['String']>;
 };
 
@@ -242,42 +248,61 @@ export type DirectiveResolverFn<
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  Role: Role;
-  AuthInfo: ResolverTypeWrapper<AuthInfo>;
-  String: ResolverTypeWrapper<Scalars['String']>;
+  Role: ResolverTypeWrapper<Partial<Role>>;
+  AuthInfo: ResolverTypeWrapper<
+    Partial<Omit<AuthInfo, 'player'> & { player: ResolversTypes['Player'] }>
+  >;
+  String: ResolverTypeWrapper<Partial<Scalars['String']>>;
   Query: ResolverTypeWrapper<{}>;
-  ID: ResolverTypeWrapper<Scalars['ID']>;
+  ID: ResolverTypeWrapper<Partial<Scalars['ID']>>;
   Mutation: ResolverTypeWrapper<{}>;
-  World: ResolverTypeWrapper<World>;
+  World: ResolverTypeWrapper<WorldModel>;
+  Boolean: ResolverTypeWrapper<Partial<Scalars['Boolean']>>;
   PlayerInfo: ResolversTypes['PlayerInWorld'] | ResolversTypes['Player'];
-  PlayerInWorld: ResolverTypeWrapper<PlayerInWorld>;
-  Player: ResolverTypeWrapper<Player>;
-  Message: ResolverTypeWrapper<Message>;
-  MessageInput: MessageInput;
-  WorldInput: WorldInput;
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  PlayerInWorld: ResolverTypeWrapper<Partial<PlayerInWorld>>;
+  Player: ResolverTypeWrapper<
+    Partial<
+      Omit<Player, 'worlds'> & {
+        worlds?: Maybe<Array<Maybe<ResolversTypes['World']>>>;
+      }
+    >
+  >;
+  Message: ResolverTypeWrapper<Partial<Message>>;
+  MessageInput: ResolverTypeWrapper<Partial<MessageInput>>;
+  WorldInput: ResolverTypeWrapper<Partial<WorldInput>>;
   Subscription: ResolverTypeWrapper<{}>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  AuthInfo: AuthInfo;
-  String: Scalars['String'];
+  AuthInfo: Partial<
+    Omit<AuthInfo, 'player'> & { player: ResolversParentTypes['Player'] }
+  >;
+  String: Partial<Scalars['String']>;
   Query: {};
-  ID: Scalars['ID'];
+  ID: Partial<Scalars['ID']>;
   Mutation: {};
-  World: World;
+  World: WorldModel;
+  Boolean: Partial<Scalars['Boolean']>;
   PlayerInfo:
     | ResolversParentTypes['PlayerInWorld']
     | ResolversParentTypes['Player'];
-  PlayerInWorld: PlayerInWorld;
-  Player: Player;
-  Message: Message;
-  MessageInput: MessageInput;
-  WorldInput: WorldInput;
-  Boolean: Scalars['Boolean'];
+  PlayerInWorld: Partial<PlayerInWorld>;
+  Player: Partial<
+    Omit<Player, 'worlds'> & {
+      worlds?: Maybe<Array<Maybe<ResolversParentTypes['World']>>>;
+    }
+  >;
+  Message: Partial<Message>;
+  MessageInput: Partial<MessageInput>;
+  WorldInput: Partial<WorldInput>;
   Subscription: {};
 };
+
+export type RoleResolvers = EnumResolverSignature<
+  { GAMEMASTER?: any; USER?: any },
+  ResolversTypes['Role']
+>;
 
 export type AuthInfoResolvers<
   ContextType = any,
@@ -368,6 +393,12 @@ export type WorldResolvers<
     ParentType,
     ContextType
   >;
+  isListed?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  isPasswordProtected?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -439,6 +470,7 @@ export type SubscriptionResolvers<
 };
 
 export type Resolvers<ContextType = any> = {
+  Role?: RoleResolvers;
   AuthInfo?: AuthInfoResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;

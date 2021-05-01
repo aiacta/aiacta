@@ -11,8 +11,8 @@ export const MutationLoginResolver: Resolvers<Context> = {
         throw new Error('Invalid player or password');
       }
 
-      const valid = await compare(password, player.password);
-      if (!valid) {
+      const passwordIsValid = await compare(password, player.password);
+      if (!passwordIsValid) {
         throw new Error('Invalid player or password');
       }
 

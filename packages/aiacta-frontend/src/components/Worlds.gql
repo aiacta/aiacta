@@ -1,11 +1,34 @@
-query AvailableWorlds {
-  worlds {
+fragment ListInfoWorld on World {
+  id
+  name
+  creator {
     id
     name
-    creator {
-      id
-      name
-    }
+  }
+  players {
+    id
+  }
+  isListed
+  isPasswordProtected
+}
+
+query AvailableWorlds {
+  worlds {
+    ...ListInfoWorld
+  }
+}
+
+mutation CreateWorld($name: String!, $password: String, $inviteOnly: Boolean!) {
+  createWorld(
+    input: { name: $name, password: $password, inviteOnly: $inviteOnly }
+  ) {
+    ...ListInfoWorld
+  }
+}
+
+mutation JoinWorld($worldId: ID!, $password: String, $joinKey: String) {
+  joinWorld(worldId: $worldId, password: $password, joinKey: $joinKey) {
+    id
     players {
       id
     }
