@@ -296,8 +296,8 @@ function CreateNewWorld({ className }: { className: string }) {
 
 function JoinButton({
   worldId,
-  passwordProtected,
-}: {
+}: // passwordProtected,
+{
   worldId: string;
   passwordProtected: boolean;
 }) {
