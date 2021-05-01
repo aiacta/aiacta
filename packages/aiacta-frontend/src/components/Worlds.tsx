@@ -5,11 +5,12 @@ import { FormattedMessage } from 'react-intl';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Button,
-  FlexboxGrid,
+  Col,
   Form,
   FormControl,
   FormControlLabel,
   FormGroup,
+  Grid,
   IconButton,
   List,
   Message,
@@ -19,6 +20,7 @@ import {
   Popover,
   Radio,
   RadioGroup,
+  Row,
   Whisper,
 } from 'rsuite';
 import { WhisperInstance } from 'rsuite/es/Whisper';
@@ -28,16 +30,15 @@ import {
   useJoinWorldMutation,
   useMeQuery,
 } from '../api';
-import { clsx, useStylesheet } from '../hooks';
+import { useStylesheet } from '../hooks';
 import { MotionButton } from './Motion';
 
 const ListItem = List.Item!;
-const FlexboxGridItem = FlexboxGrid.Item!;
 
 export function Worlds() {
   const classes = useStylesheet({
     container: {
-      maxWidth: 1000,
+      maxWidth: 'min(90vw, 1000px)',
       margin: 'min(10vh, 200px) auto',
     },
     centered: {
@@ -113,48 +114,48 @@ export function Worlds() {
               : Global;
             return (
               <ListItem key={world.id}>
-                <FlexboxGrid>
-                  <FlexboxGridItem colspan={2} className={classes.centered}>
-                    <Icon style={{ fontSize: '3em' }} />
-                  </FlexboxGridItem>
-                  <FlexboxGridItem
-                    colspan={9}
-                    className={clsx(classes.centered, classes.title)}
-                  >
-                    <div>{world.name}</div>
-                    <div className={classes.slimText}>
+                <Grid fluid>
+                  <Row>
+                    <Col xs={12} sm={4} md={3}>
+                      <Icon style={{ fontSize: '3em' }} />
+                    </Col>
+                    <Col xs={12} sm={12} md={10}>
+                      <div>{world.name}</div>
+                      <div className={classes.slimText}>
+                        <FormattedMessage
+                          defaultMessage="GM: {name}"
+                          values={{ name: world.creator?.name }}
+                        />
+                      </div>
+                    </Col>
+                    <Col xsHidden smHidden md={5}>
                       <FormattedMessage
-                        defaultMessage="GM: {name}"
-                        values={{ name: world.creator?.name }}
+                        defaultMessage="{count, plural, one {One player} other {{count} players}}"
+                        values={{ count: world.players?.length }}
                       />
-                    </div>
-                  </FlexboxGridItem>
-                  <FlexboxGridItem colspan={9} className={classes.centered}>
-                    <FormattedMessage
-                      defaultMessage="{count, plural, one {One player} other {{count} players}}"
-                      values={{ count: world.players?.length }}
-                    />
-                  </FlexboxGridItem>
-                  <FlexboxGridItem colspan={4} className={classes.centered}>
-                    {me.data?.me &&
-                    world.players?.some(
-                      (player) => player?.id === me.data?.me?.id,
-                    ) ? (
-                      <Button
-                        appearance="link"
-                        as={Link}
-                        to={`world/${world.id}`}
-                      >
-                        <FormattedMessage defaultMessage="Open world" />
-                      </Button>
-                    ) : (
-                      <JoinButton
-                        worldId={world.id}
-                        passwordProtected={world.isPasswordProtected}
-                      />
-                    )}
-                  </FlexboxGridItem>
-                </FlexboxGrid>
+                    </Col>
+                    <Col xs={24} sm={8} md={6}>
+                      {me.data?.me &&
+                      world.players?.some(
+                        (player) => player?.id === me.data?.me?.id,
+                      ) ? (
+                        <Button
+                          appearance="link"
+                          block
+                          as={Link}
+                          to={`world/${world.id}`}
+                        >
+                          <FormattedMessage defaultMessage="Open world" />
+                        </Button>
+                      ) : (
+                        <JoinButton
+                          worldId={world.id}
+                          passwordProtected={world.isPasswordProtected}
+                        />
+                      )}
+                    </Col>
+                  </Row>
+                </Grid>
               </ListItem>
             );
           })}
@@ -326,6 +327,7 @@ function JoinButton({
         animate={shake}
         loading={joiningWorld.fetching}
         appearance="link"
+        block
         onClick={() =>
           joinWorld({ worldId }).then(({ data, error }) => {
             if (data?.joinWorld?.id) {
