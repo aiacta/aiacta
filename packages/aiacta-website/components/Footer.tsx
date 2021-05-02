@@ -1,22 +1,16 @@
+import Link from 'next/link';
+
 export function Footer() {
   return (
     <footer className="bg-white ">
       <div className="container mx-auto mt-8 px-8">
         <div className="w-full flex flex-col md:flex-row py-6">
           <div className="flex-1 mb-6">
-            <a
-              className="text-orange-600 no-underline hover:no-underline font-bold text-2xl lg:text-4xl"
-              href="#"
-            >
-              <svg
-                className="h-6 w-6 inline-block"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-              >
-                <path d="M13 8V0L8.11 5.87 3 12h4v8L17 8h-4z" />
-              </svg>
-              Aiacta
-            </a>
+            <Link href="/">
+              <a className="text-orange-600 no-underline hover:no-underline font-bold text-2xl lg:text-4xl">
+                Aiacta
+              </a>
+            </Link>
           </div>
 
           <div className="flex-1">
@@ -25,28 +19,25 @@ export function Footer() {
             </p>
             <ul className="list-reset mb-6">
               <li className="mt-2 inline-block mr-2 md:block md:mr-0">
-                <a
-                  href="/faq"
-                  className="font-light no-underline hover:underline text-gray-800 hover:text-orange-500"
-                >
-                  FAQ
-                </a>
+                <Link href="/faq">
+                  <a className="font-light no-underline hover:underline text-gray-800 hover:text-orange-500">
+                    FAQ
+                  </a>
+                </Link>
               </li>
               <li className="mt-2 inline-block mr-2 md:block md:mr-0">
-                <a
-                  href="/help"
-                  className="font-light no-underline hover:underline text-gray-800 hover:text-orange-500"
-                >
-                  Help
-                </a>
+                <Link href="/help">
+                  <a className="font-light no-underline hover:underline text-gray-800 hover:text-orange-500">
+                    Help
+                  </a>
+                </Link>
               </li>
               <li className="mt-2 inline-block mr-2 md:block md:mr-0">
-                <a
-                  href="/support"
-                  className="font-light no-underline hover:underline text-gray-800 hover:text-orange-500"
-                >
-                  Support
-                </a>
+                <Link href="/support">
+                  <a className="font-light no-underline hover:underline text-gray-800 hover:text-orange-500">
+                    Support
+                  </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -56,20 +47,18 @@ export function Footer() {
             </p>
             <ul className="list-reset mb-6">
               <li className="mt-2 inline-block mr-2 md:block md:mr-0">
-                <a
-                  href="/tos"
-                  className="font-light no-underline hover:underline text-gray-800 hover:text-orange-500"
-                >
-                  Terms
-                </a>
+                <Link href="/tos">
+                  <a className="font-light no-underline hover:underline text-gray-800 hover:text-orange-500">
+                    Terms
+                  </a>
+                </Link>
               </li>
               <li className="mt-2 inline-block mr-2 md:block md:mr-0">
-                <a
-                  href="/privacy"
-                  className="font-light no-underline hover:underline text-gray-800 hover:text-orange-500"
-                >
-                  Privacy
-                </a>
+                <Link href="/privacy">
+                  <a className="font-light no-underline hover:underline text-gray-800 hover:text-orange-500">
+                    Privacy
+                  </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -79,20 +68,18 @@ export function Footer() {
             </p>
             <ul className="list-reset mb-6">
               <li className="mt-2 inline-block mr-2 md:block md:mr-0">
-                <a
-                  href="#"
-                  className="font-light no-underline hover:underline text-gray-800 hover:text-orange-500"
-                >
-                  Reddit
-                </a>
+                <Link href="https://www.reddit.com">
+                  <a className="font-light no-underline hover:underline text-gray-800 hover:text-orange-500">
+                    Reddit
+                  </a>
+                </Link>
               </li>
               <li className="mt-2 inline-block mr-2 md:block md:mr-0">
-                <a
-                  href="#"
-                  className="font-light no-underline hover:underline text-gray-800 hover:text-orange-500"
-                >
-                  Twitter
-                </a>
+                <Link href="https://www.twitter.com">
+                  <a className="font-light no-underline hover:underline text-gray-800 hover:text-orange-500">
+                    Twitter
+                  </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -102,20 +89,18 @@ export function Footer() {
             </p>
             <ul className="list-reset mb-6">
               <li className="mt-2 inline-block mr-2 md:block md:mr-0">
-                <a
-                  href="/about"
-                  className="font-light no-underline hover:underline text-gray-800 hover:text-orange-500"
-                >
-                  About Us
-                </a>
+                <Link href="/about">
+                  <a className="font-light no-underline hover:underline text-gray-800 hover:text-orange-500">
+                    About Us
+                  </a>
+                </Link>
               </li>
               <li className="mt-2 inline-block mr-2 md:block md:mr-0">
-                <a
-                  href="/contact"
-                  className="font-light no-underline hover:underline text-gray-800 hover:text-orange-500"
-                >
-                  Contact
-                </a>
+                <Link href="/contact">
+                  <a className="font-light no-underline hover:underline text-gray-800 hover:text-orange-500">
+                    Contact
+                  </a>
+                </Link>
               </li>
             </ul>
           </div>

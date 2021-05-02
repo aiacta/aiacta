@@ -1,21 +1,33 @@
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import * as React from 'react';
+
 export function Navigation() {
+  const [hasScrolled, setScrolled] = React.useState(false);
+  React.useLayoutEffect(() => {
+    window.addEventListener('scroll', () =>
+      setScrolled(window.pageYOffset > 0),
+    );
+  }, []);
+
+  const { pathname } = useRouter();
+
+  console.log(pathname);
+
   return (
-    <nav id="header" className="w-full z-30 top-0 text-white py-1 lg:py-6">
-      <div className="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 px-2 py-2 lg:py-6">
+    <nav
+      id="header"
+      className={`w-full z-30 top-0 bg-white py-1 ${
+        hasScrolled ? 'lg:my-6 lg:py-0' : 'lg:py-6 lg:my-0'
+      } transition-all sticky ${hasScrolled ? 'shadow-md' : ''}`}
+    >
+      <div className="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 px-2 lg:py-6">
         <div className="pl-4 flex items-center">
-          <a
-            className="text-white no-underline hover:no-underline font-bold text-2xl lg:text-4xl"
-            href="#"
-          >
-            <svg
-              className="h-6 w-6 inline-block fill-current text-yellow-700"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-            >
-              <path d="M13 8V0L8.11 5.87 3 12h4v8L17 8h-4z" />
-            </svg>
-            Aiacta
-          </a>
+          <Link href="/">
+            <a className="no-underline hover:no-underline font-bold text-2xl lg:text-4xl">
+              Aiacta
+            </a>
+          </Link>
         </div>
 
         <div className="block lg:hidden pr-4">
@@ -40,38 +52,55 @@ export function Navigation() {
         >
           <ul className="list-reset lg:flex justify-end flex-1 items-center">
             <li className="mr-3">
-              <a
-                className="inline-block py-2 px-4 text-black font-bold no-underline"
-                href="#"
-              >
-                Homepage
-              </a>
+              <Link href="/">
+                <a
+                  className={`inline-block py-2 px-4 text-black no-underline ${
+                    pathname === '/'
+                      ? 'font-bold'
+                      : 'hover:text-gray-800 hover:text-underline'
+                  }`}
+                >
+                  Homepage
+                </a>
+              </Link>
             </li>
             <li className="mr-3">
-              <a
-                className="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4"
-                href="#"
-              >
-                How to setup
-              </a>
+              <Link href="/how-to-setup">
+                <a
+                  className={`inline-block py-2 px-4 text-black no-underline ${
+                    pathname === '/how-to-setup'
+                      ? 'font-bold'
+                      : 'hover:text-gray-800 hover:text-underline'
+                  }`}
+                >
+                  How to setup
+                </a>
+              </Link>
             </li>
             <li className="mr-3">
-              <a
-                className="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4"
-                href="#"
-              >
-                Features
-              </a>
+              <Link href="/features">
+                <a
+                  className={`inline-block py-2 px-4 text-black no-underline ${
+                    pathname === '/features'
+                      ? 'font-bold'
+                      : 'hover:text-gray-800 hover:text-underline'
+                  }`}
+                >
+                  Features
+                </a>
+              </Link>
             </li>
           </ul>
-          <a href="https://play.aiacta.com">
-            <button
-              id="navAction"
-              className="bg-gradient-to-r from-red-200 to-yellow-400 mx-auto lg:mx-0 text-gray-800 font-extrabold rounded mt-4 lg:mt-0 py-4 px-8 shadow opacity-75"
-            >
-              Play now
-            </button>
-          </a>
+          <Link href="https://play.aiacta.com">
+            <a>
+              <button
+                id="navAction"
+                className="bg-gradient-to-r from-red-200 to-yellow-400 mx-auto lg:mx-0 text-gray-800 font-extrabold rounded mt-4 lg:mt-0 py-4 px-8 shadow opacity-75"
+              >
+                Play now
+              </button>
+            </a>
+          </Link>
         </div>
       </div>
     </nav>
