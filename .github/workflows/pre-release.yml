@@ -106,7 +106,7 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: Website
-          path: public
+          path: packages/aiacta-website/out
       - name: 'Run Lighthouse'
         id: LHCIAction
         uses: treosh/lighthouse-ci-action@v7
