@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@aiacta/frontend": "workspace:*",
-    "@aiacta/hub": "workspace:*"
+    "@aiacta/hub": "workspace:*",
+    "@aiacta/website": "workspace:*"
   }
 }
