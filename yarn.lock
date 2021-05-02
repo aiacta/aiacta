@@ -22,6 +22,7 @@ __metadata:
   dependencies:
     "@aiacta/frontend": "workspace:*"
     "@aiacta/hub": "workspace:*"
+    "@aiacta/website": "workspace:*"
   languageName: unknown
   linkType: soft
 
@@ -140,7 +141,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@aiacta/website@workspace:packages/aiacta-website":
+"@aiacta/website@workspace:*, @aiacta/website@workspace:packages/aiacta-website":
   version: 0.0.0-use.local
   resolution: "@aiacta/website@workspace:packages/aiacta-website"
   dependencies:

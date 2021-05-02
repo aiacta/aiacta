@@ -105,7 +105,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@aiacta/distribution", "workspace:packages/aiacta-distribution"],
             ["@aiacta/frontend", "workspace:packages/aiacta-frontend"],
-            ["@aiacta/hub", "workspace:packages/aiacta-hub"]
+            ["@aiacta/hub", "workspace:packages/aiacta-hub"],
+            ["@aiacta/website", "workspace:packages/aiacta-website"]
           ],
           "linkType": "SOFT",
         }]
