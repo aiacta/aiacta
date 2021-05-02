@@ -1,0 +1,3 @@
+ci:
+  collect:
+    staticDistDir: './packages/aiacta-website/out'

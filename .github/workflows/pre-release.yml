@@ -92,3 +92,22 @@ jobs:
           path: public
       - name: 'Copy deployment'
         run: rsync -avz --rsync-path="sudo rsync" ./public/ ${{ secrets.PI_SSH_USER }}@${{ secrets.PI_SSH_HOST }}:/var/www/aiacta.com/html/public/
+
+  lighthouse:
+    runs-on: 'ubuntu-latest'
+
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: Website
+          path: public
+      - name: 'Run Lighthouse'
+        id: LHCIAction
+        uses: treosh/lighthouse-ci-action@v7
+        with:
+          configPath: 'lighthouserc.json'
+          runs: 2
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Lighthouse
+          path: '${{steps.LHCIAction.outputs.resultsPath}}'
