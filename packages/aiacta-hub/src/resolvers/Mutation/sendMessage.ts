@@ -1,4 +1,4 @@
-import { Resolvers } from '@aiacta/graphql';
+import { ForbiddenError, Resolvers } from '@aiacta/graphql';
 import { Context } from '../../context';
 
 export const MutationSendMessageResolver: Resolvers<Context> = {
@@ -6,10 +6,22 @@ export const MutationSendMessageResolver: Resolvers<Context> = {
     sendMessage: async (
       _,
       { worldId, input: { component, text } },
-      { prisma, pubsub },
+      { playerId, prisma, pubsub },
     ) => {
+      if (!playerId) {
+        throw new ForbiddenError('Cannot write message');
+      }
+
       const message = await prisma.chatMessage.create({
-        data: { world: { connect: { id: worldId } }, component, text },
+        data: {
+          world: { connect: { id: worldId } },
+          author: { connect: { id: playerId } },
+          component,
+          text,
+        },
+        include: {
+          author: true,
+        },
       });
 
       pubsub.publish('createMessage', message);

@@ -16,6 +16,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  DateTime: any;
 };
 
 export enum Role {
@@ -111,6 +112,8 @@ export type Player = PlayerInfo & {
 export type Message = {
   __typename?: 'Message';
   id: Scalars['ID'];
+  author: PlayerInfo;
+  createdAt: Scalars['DateTime'];
   component?: Maybe<Scalars['String']>;
   text?: Maybe<Scalars['String']>;
 };
@@ -141,18 +144,28 @@ export type ChatMessagesQueryVariables = Exact<{
 
 export type ChatMessagesQuery = { __typename?: 'Query' } & {
   world?: Maybe<
-    { __typename?: 'World' } & {
-      messages?: Maybe<
-        Array<
-          Maybe<
-            { __typename?: 'Message' } & Pick<
-              Message,
-              'id' | 'component' | 'text'
+    { __typename?: 'World' } & Pick<World, 'id'> & {
+        messages?: Maybe<
+          Array<
+            Maybe<
+              { __typename?: 'Message' } & Pick<
+                Message,
+                'id' | 'component' | 'text' | 'createdAt'
+              > & {
+                  author:
+                    | ({ __typename?: 'PlayerInWorld' } & Pick<
+                        PlayerInWorld,
+                        'id' | 'name' | 'color'
+                      >)
+                    | ({ __typename?: 'Player' } & Pick<
+                        Player,
+                        'id' | 'name' | 'color'
+                      >);
+                }
             >
           >
-        >
-      >;
-    }
+        >;
+      }
   >;
 };
 
@@ -164,7 +177,17 @@ export type SendMessageMutationVariables = Exact<{
 
 export type SendMessageMutation = { __typename?: 'Mutation' } & {
   sendMessage?: Maybe<
-    { __typename?: 'Message' } & Pick<Message, 'id' | 'component' | 'text'>
+    { __typename?: 'Message' } & Pick<
+      Message,
+      'id' | 'component' | 'text' | 'createdAt'
+    > & {
+        author:
+          | ({ __typename?: 'PlayerInWorld' } & Pick<
+              PlayerInWorld,
+              'id' | 'name' | 'color'
+            >)
+          | ({ __typename?: 'Player' } & Pick<Player, 'id' | 'name' | 'color'>);
+      }
   >;
 };
 
@@ -175,7 +198,20 @@ export type NewChatMessagesSubscriptionVariables = Exact<{
 export type NewChatMessagesSubscription = { __typename?: 'Subscription' } & {
   newMessages: Array<
     Maybe<
-      { __typename?: 'Message' } & Pick<Message, 'id' | 'component' | 'text'>
+      { __typename?: 'Message' } & Pick<
+        Message,
+        'id' | 'component' | 'text' | 'createdAt'
+      > & {
+          author:
+            | ({ __typename?: 'PlayerInWorld' } & Pick<
+                PlayerInWorld,
+                'id' | 'name' | 'color'
+              >)
+            | ({ __typename?: 'Player' } & Pick<
+                Player,
+                'id' | 'name' | 'color'
+              >);
+        }
     >
   >;
 };
@@ -270,10 +306,17 @@ export const ListInfoWorldFragmentDoc = gql`
 export const ChatMessagesDocument = gql`
   query ChatMessages($worldId: ID!) {
     world(id: $worldId) {
+      id
       messages {
         id
         component
         text
+        author {
+          id
+          name
+          color
+        }
+        createdAt
       }
     }
   }
@@ -296,6 +339,12 @@ export const SendMessageDocument = gql`
       id
       component
       text
+      author {
+        id
+        name
+        color
+      }
+      createdAt
     }
   }
 `;
@@ -311,6 +360,12 @@ export const NewChatMessagesDocument = gql`
       id
       component
       text
+      author {
+        id
+        name
+        color
+      }
+      createdAt
     }
   }
 `;

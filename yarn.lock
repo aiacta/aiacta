@@ -89,8 +89,10 @@ __metadata:
     "@graphql-tools/merge": 6.2.13
     "@graphql-tools/schema": 7.1.3
     "@graphql-tools/utils": 7.7.3
+    "@types/graphql-iso-date": ^3
     "@types/node": 14.14.35
     graphql: 15.5.0
+    graphql-iso-date: 3.6.1
     graphql-ws: 4.4.2
     prettier: 2.2.1
   languageName: unknown
@@ -2671,6 +2673,15 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: acffaa4f4b11776f6894a906d3cd0498d45be2ad1315fe44c2ac8208339a2456967cd65835863bf40f8d522f6614f25e0f6a952375f03d428d5e35d5e7104068
+  languageName: node
+  linkType: hard
+
+"@types/graphql-iso-date@npm:^3":
+  version: 3.4.0
+  resolution: "@types/graphql-iso-date@npm:3.4.0"
+  dependencies:
+    graphql: ^15.1.0
+  checksum: eae94821787354e53f440c28565a221d2d78622c48996426d8761075c4d3f90e02c6c8b9f00139de22f9a551dc2cfb366c6c7c577035eb1dd5edf01530b7b4b5
   languageName: node
   linkType: hard
 
@@ -6056,6 +6067,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"graphql-iso-date@npm:3.6.1":
+  version: 3.6.1
+  resolution: "graphql-iso-date@npm:3.6.1"
+  peerDependencies:
+    graphql: ^0.5.0 || ^0.6.0 || ^0.7.0 || ^0.8.0-b || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0
+  checksum: d33245ccaba87665589bf2907159de9e024bfd516ccc905631b68010ff69afbcbd09103d38481569862e4c168f6db0f9df614968295ca41c996c7d7fd2679817
+  languageName: node
+  linkType: hard
+
 "graphql-request@npm:^3.3.0":
   version: 3.4.0
   resolution: "graphql-request@npm:3.4.0"
@@ -6113,7 +6133,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graphql@npm:15.5.0":
+"graphql@npm:15.5.0, graphql@npm:^15.1.0":
   version: 15.5.0
   resolution: "graphql@npm:15.5.0"
   checksum: 789cdcb069a3e00592e779002217a6bc5fd09efad63ee8c4190c4b3ea96c89010e74f085fb1cba876a0bb0e324e01df2eddb84d79dca90a28e582bc425fef9ef

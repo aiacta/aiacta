@@ -1,9 +1,16 @@
 query ChatMessages($worldId: ID!) {
   world(id: $worldId) {
+    id
     messages {
       id
       component
       text
+      author {
+        id
+        name
+        color
+      }
+      createdAt
     }
   }
 }
@@ -16,6 +23,12 @@ mutation SendMessage($worldId: ID!, $text: String, $component: String) {
     id
     component
     text
+    author {
+      id
+      name
+      color
+    }
+    createdAt
   }
 }
 
@@ -24,5 +37,11 @@ subscription NewChatMessages($worldId: ID!) {
     id
     component
     text
+    author {
+      id
+      name
+      color
+    }
+    createdAt
   }
 }

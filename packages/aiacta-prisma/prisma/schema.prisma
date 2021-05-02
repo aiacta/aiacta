@@ -17,6 +17,7 @@ model Player {
   worlds          PlayerInWorld[]
   worldsCreated   World[]         @relation("creator")
   worldsInvitedTo World[]
+  ChatMessage     ChatMessage[]
 }
 
 model World {
@@ -30,6 +31,7 @@ model World {
   joinKey        String?
   playersInvited Player[]
   password       String?
+  createdAt      DateTime        @default(now())
 }
 
 enum Role {
@@ -43,15 +45,19 @@ model PlayerInWorld {
   world    World  @relation(fields: [worldId], references: [id])
   worldId  String
 
-  role Role @default(USER)
+  role     Role     @default(USER)
+  joinedAt DateTime @default(now())
 
   @@id([playerId, worldId])
 }
 
 model ChatMessage {
-  id        String  @id @default(cuid())
-  world     World   @relation(fields: [worldId], references: [id])
+  id        String   @id @default(cuid())
+  world     World    @relation(fields: [worldId], references: [id])
   worldId   String
   component String?
   text      String?
+  author    Player   @relation(fields: [authorId], references: [id])
+  authorId  String
+  createdAt DateTime @default(now())
 }

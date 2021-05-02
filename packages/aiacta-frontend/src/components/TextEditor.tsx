@@ -10,6 +10,7 @@ import {
 } from 'draft-js';
 import * as React from 'react';
 import { Input } from 'rsuite';
+import { useStylesheet } from '../hooks';
 
 export const TextEditor = React.forwardRef(function TextEditor(
   {
@@ -124,6 +125,14 @@ const DraftEditor = React.forwardRef(function DraftEditor(
   { onSubmit, editorState, onChangeEditorState, ...props }: any,
   _ref,
 ) {
+  const classes = useStylesheet({
+    input: {
+      padding: '7px 11px',
+      width: '100%',
+      minWidth: 300,
+    },
+  });
+
   const keyBindingFn = React.useCallback(
     (evt: React.KeyboardEvent<unknown>) => {
       if (
@@ -171,7 +180,7 @@ const DraftEditor = React.forwardRef(function DraftEditor(
   }, [props.readOnly]);
 
   return (
-    <div style={{ padding: '7px 11px', width: 300 }}>
+    <div className={classes.input}>
       <Editor
         {...props}
         ref={ref}

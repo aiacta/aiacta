@@ -10,4 +10,14 @@ export const resolvers: Resolvers<Context>[] = [
   ...MutationResolvers,
   ...SubscriptionResolvers,
   ...WorldResolvers,
+  {
+    PlayerInfo: {
+      __resolveType: (d) => {
+        if ('role' in d) {
+          return 'PlayerInWorld';
+        }
+        return 'Player';
+      },
+    },
+  },
 ];

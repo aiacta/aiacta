@@ -1,6 +1,10 @@
 /* eslint-disable */
 import { Role } from '@aiacta/prisma';
-import { GraphQLResolveInfo } from 'graphql';
+import {
+  GraphQLResolveInfo,
+  GraphQLScalarType,
+  GraphQLScalarTypeConfig,
+} from 'graphql';
 import { World as WorldModel } from '@aiacta/prisma';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -25,6 +29,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  DateTime: any;
 };
 
 export { Role };
@@ -117,6 +122,8 @@ export type Player = PlayerInfo & {
 export type Message = {
   __typename?: 'Message';
   id: Scalars['ID'];
+  author: PlayerInfo;
+  createdAt: Scalars['DateTime'];
   component?: Maybe<Scalars['String']>;
   text?: Maybe<Scalars['String']>;
 };
@@ -256,6 +263,7 @@ export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>;
   ID: ResolverTypeWrapper<Partial<Scalars['ID']>>;
   Mutation: ResolverTypeWrapper<{}>;
+  DateTime: ResolverTypeWrapper<Partial<Scalars['DateTime']>>;
   World: ResolverTypeWrapper<WorldModel>;
   Boolean: ResolverTypeWrapper<Partial<Scalars['Boolean']>>;
   PlayerInfo: ResolversTypes['PlayerInWorld'] | ResolversTypes['Player'];
@@ -282,6 +290,7 @@ export type ResolversParentTypes = {
   Query: {};
   ID: Partial<Scalars['ID']>;
   Mutation: {};
+  DateTime: Partial<Scalars['DateTime']>;
   World: WorldModel;
   Boolean: Partial<Scalars['Boolean']>;
   PlayerInfo:
@@ -372,6 +381,11 @@ export type MutationResolvers<
   >;
 };
 
+export interface DateTimeScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
+  name: 'DateTime';
+}
+
 export type WorldResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['World'] = ResolversParentTypes['World']
@@ -447,6 +461,8 @@ export type MessageResolvers<
   ParentType extends ResolversParentTypes['Message'] = ResolversParentTypes['Message']
 > = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  author?: Resolver<ResolversTypes['PlayerInfo'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   component?: Resolver<
     Maybe<ResolversTypes['String']>,
     ParentType,
@@ -474,6 +490,7 @@ export type Resolvers<ContextType = any> = {
   AuthInfo?: AuthInfoResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
+  DateTime?: GraphQLScalarType;
   World?: WorldResolvers<ContextType>;
   PlayerInfo?: PlayerInfoResolvers<ContextType>;
   PlayerInWorld?: PlayerInWorldResolvers<ContextType>;

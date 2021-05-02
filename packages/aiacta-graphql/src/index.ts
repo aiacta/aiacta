@@ -2,13 +2,19 @@ import { GraphQLFileLoader } from '@graphql-tools/graphql-file-loader';
 import { loadTypedefsSync } from '@graphql-tools/load';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import { DocumentNode, execute, GraphQLError, parse } from 'graphql';
+import { GraphQLDateTime } from 'graphql-iso-date';
 import { makeServer } from 'graphql-ws';
 import { IncomingMessage } from 'http';
 import { Http2ServerRequest } from 'http2';
 import { resolve } from 'path';
 import { Resolvers } from './resolvers';
 
+export { GraphQLScalarType } from 'graphql';
 export { Resolvers };
+
+const defaultResolvers: Resolvers = {
+  DateTime: GraphQLDateTime,
+};
 
 export function buildExecutableSchema<TContext>({
   resolvers,
@@ -24,7 +30,10 @@ export function buildExecutableSchema<TContext>({
 
   const schema = makeExecutableSchema<TContext>({
     typeDefs: [...typeDefs.map((d) => d.document!).filter(Boolean)],
-    resolvers,
+    resolvers: [
+      defaultResolvers,
+      ...(Array.isArray(resolvers) ? resolvers : [resolvers]),
+    ],
   });
 
   return {

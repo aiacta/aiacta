@@ -1,3 +1,10 @@
+import * as React from 'react';
+import { Chat } from '../components';
+
 export function WorldPage() {
-  return null;
+  return (
+    <>
+      <Chat />
+    </>
+  );
 }

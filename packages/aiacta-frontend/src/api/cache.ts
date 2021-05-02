@@ -18,7 +18,12 @@ export const cacheExchange = urqlCacheExchange({
         cache.updateQuery(
           { query: ChatMessagesDocument, variables },
           (data) => {
-            data.world.messages.push(...(result.newMessages as any[]));
+            if (!data.world.messages) {
+              data.world.messages = [];
+            }
+            data.world.messages.unshift(
+              ...[...(result.newMessages as any[])].reverse(),
+            );
             return data;
           },
         );

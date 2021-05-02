@@ -172,8 +172,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@graphql-tools/merge", "virtual:ebac3eac64d4c35c144e3a79a05e5a633b9f536382a5d3df974a3855a7969a97b662030d0fd789ac3177fcdee721927ca643225443ca48d8d7d28c2ceeb46046#npm:6.2.13"],
             ["@graphql-tools/schema", "virtual:81ca4feca9f79e6affec59bede0777e46a42e26fc09c6b3f92cd3c099eb4222e9aa4a2f412dab6c66f34f24ba783725781f5dea70411e514108063a225987a84#npm:7.1.3"],
             ["@graphql-tools/utils", "virtual:ebac3eac64d4c35c144e3a79a05e5a633b9f536382a5d3df974a3855a7969a97b662030d0fd789ac3177fcdee721927ca643225443ca48d8d7d28c2ceeb46046#npm:7.7.3"],
+            ["@types/graphql-iso-date", "npm:3.4.0"],
             ["@types/node", "npm:14.14.35"],
             ["graphql", "npm:15.5.0"],
+            ["graphql-iso-date", "virtual:ebac3eac64d4c35c144e3a79a05e5a633b9f536382a5d3df974a3855a7969a97b662030d0fd789ac3177fcdee721927ca643225443ca48d8d7d28c2ceeb46046#npm:3.6.1"],
             ["graphql-ws", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:4.4.2"],
             ["prettier", "npm:2.2.1"]
           ],
@@ -3835,6 +3837,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@types/graceful-fs", "npm:4.1.4"],
             ["@types/node", "npm:14.14.22"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/graphql-iso-date", [
+        ["npm:3.4.0", {
+          "packageLocation": "./.yarn/cache/@types-graphql-iso-date-npm-3.4.0-b0a2a7f4fd-eae9482178.zip/node_modules/@types/graphql-iso-date/",
+          "packageDependencies": [
+            ["@types/graphql-iso-date", "npm:3.4.0"],
+            ["graphql", "npm:15.5.0"]
           ],
           "linkType": "HARD",
         }]
@@ -7892,6 +7904,28 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["minimatch", "npm:3.0.4"],
             ["string-env-interpolation", "npm:1.0.1"],
             ["tslib", "npm:2.1.0"]
+          ],
+          "packagePeers": [
+            "@types/graphql",
+            "graphql"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["graphql-iso-date", [
+        ["npm:3.6.1", {
+          "packageLocation": "./.yarn/cache/graphql-iso-date-npm-3.6.1-bbab129ea7-d33245ccab.zip/node_modules/graphql-iso-date/",
+          "packageDependencies": [
+            ["graphql-iso-date", "npm:3.6.1"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:ebac3eac64d4c35c144e3a79a05e5a633b9f536382a5d3df974a3855a7969a97b662030d0fd789ac3177fcdee721927ca643225443ca48d8d7d28c2ceeb46046#npm:3.6.1", {
+          "packageLocation": "./.yarn/$$virtual/graphql-iso-date-virtual-2e3e08320f/0/cache/graphql-iso-date-npm-3.6.1-bbab129ea7-d33245ccab.zip/node_modules/graphql-iso-date/",
+          "packageDependencies": [
+            ["graphql-iso-date", "virtual:ebac3eac64d4c35c144e3a79a05e5a633b9f536382a5d3df974a3855a7969a97b662030d0fd789ac3177fcdee721927ca643225443ca48d8d7d28c2ceeb46046#npm:3.6.1"],
+            ["@types/graphql", null],
+            ["graphql", "npm:15.5.0"]
           ],
           "packagePeers": [
             "@types/graphql",

@@ -1,3 +1,5 @@
+scalar DateTime
+
 type World {
   id: ID!
   name: String!
@@ -30,6 +32,8 @@ type Player implements PlayerInfo {
 
 type Message {
   id: ID!
+  author: PlayerInfo!
+  createdAt: DateTime!
   component: String
   text: String
 }
