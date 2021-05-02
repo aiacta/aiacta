@@ -91,4 +91,4 @@ jobs:
           name: Website
           path: public
       - name: 'Copy deployment'
-        run: rsync -avz ./public/ ${{ secrets.PI_SSH_USER }}@${{ secrets.PI_SSH_HOST }}:/var/www/aiacta.com/html/public/
+        run: rsync -avz --rsync-path="sudo rsync" ./public/ ${{ secrets.PI_SSH_USER }}@${{ secrets.PI_SSH_HOST }}:/var/www/aiacta.com/html/public/
