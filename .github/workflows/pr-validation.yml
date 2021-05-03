@@ -14,8 +14,38 @@ jobs:
         with:
           node-version: '14'
       - name: 'Validate'
-        run: yarn install --immutable --immutable-cache --check-cache
+        run: |
+          git diff --name-only `git rev-parse origin/main` HEAD | grep ^.yarn/cache \
+           && yarn install --immutable --immutable-cache --check-cache \
+           || yarn install --immutable --immutable-cache
       - name: 'Test'
         run: yarn test
       - name: 'Constraints'
         run: yarn constraints
+
+  lighthouse:
+    runs-on: 'ubuntu-latest'
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: 'Validate'
+        run: yarn install --immutable --immutable-cache
+      - name: 'Build'
+        run: yarn workspace @aiacta/website build
+      - name: 'Run Lighthouse'
+        id: LHCIAction
+        uses: treosh/lighthouse-ci-action@v7
+        with:
+          configPath: '.lighthouserc.yml'
+          runs: 2
+      - uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: pre-release.yml
+          branch: main
+          name: Lighthouse
+          path: .lighthouseci-base
+      - name: 'Compare results'
+        run: yarn run-script compareLighthouse

@@ -11,5 +11,6 @@ node_modules/
 .nyc_output/
 tsconfig.tsbuildinfo
 *DocumentNodes.d.ts
+.lighthouseci*
 
 .DS_Store
