@@ -23,7 +23,6 @@
     "typescript": "4.2.3"
   },
   "workspaces": [
-    "./packages/tooling/*",
     "./packages/*"
   ],
   "jest": {
@@ -31,6 +30,9 @@
       "^.+\\.(t|j)sx?$": [
         "@swc-node/jest"
       ]
-    }
+    },
+    "testPathIgnorePatterns": [
+      "<rootDir>/.*/cypress"
+    ]
   }
 }
