@@ -4,8 +4,10 @@
     "noEmit": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "lib": ["ES2020", "DOM"]
+    "lib": ["ES2020", "DOM"],
+    "types": ["cypress"],
+    "allowJs": true
   },
-  "include": ["./pages", "./components", "next-env.d.ts"],
+  "include": ["./pages", "./components", "next-env.d.ts", "cypress"],
   "exclude": ["node_modules"]
 }

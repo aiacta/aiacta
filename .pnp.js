@@ -80,6 +80,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@typescript-eslint/parser", "virtual:9b3f024da3d61c940b0dc7643504cce786076174e9baf4a8c86b00231fb8e2ca12d1dc30816d856764c1047012f9ac63eab01eaad31a9ce2482b9563f1e5ed79#npm:4.16.1"],
             ["chalk", "npm:4.1.0"],
             ["eslint", "npm:7.21.0"],
+            ["eslint-plugin-cypress", "virtual:9b3f024da3d61c940b0dc7643504cce786076174e9baf4a8c86b00231fb8e2ca12d1dc30816d856764c1047012f9ac63eab01eaad31a9ce2482b9563f1e5ed79#npm:2.11.2"],
             ["jest", "npm:26.6.3"],
             ["prettier", "npm:2.2.1"],
             ["ts-node", "virtual:9b3f024da3d61c940b0dc7643504cce786076174e9baf4a8c86b00231fb8e2ca12d1dc30816d856764c1047012f9ac63eab01eaad31a9ce2482b9563f1e5ed79#npm:9.1.1"],
@@ -4978,6 +4979,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@typescript-eslint/parser", "virtual:9b3f024da3d61c940b0dc7643504cce786076174e9baf4a8c86b00231fb8e2ca12d1dc30816d856764c1047012f9ac63eab01eaad31a9ce2482b9563f1e5ed79#npm:4.16.1"],
             ["chalk", "npm:4.1.0"],
             ["eslint", "npm:7.21.0"],
+            ["eslint-plugin-cypress", "virtual:9b3f024da3d61c940b0dc7643504cce786076174e9baf4a8c86b00231fb8e2ca12d1dc30816d856764c1047012f9ac63eab01eaad31a9ce2482b9563f1e5ed79#npm:2.11.2"],
             ["jest", "npm:26.6.3"],
             ["prettier", "npm:2.2.1"],
             ["ts-node", "virtual:9b3f024da3d61c940b0dc7643504cce786076174e9baf4a8c86b00231fb8e2ca12d1dc30816d856764c1047012f9ac63eab01eaad31a9ce2482b9563f1e5ed79#npm:9.1.1"],
@@ -8034,6 +8036,29 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["table", "npm:6.0.7"],
             ["text-table", "npm:0.2.0"],
             ["v8-compile-cache", "npm:2.2.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["eslint-plugin-cypress", [
+        ["npm:2.11.2", {
+          "packageLocation": "./.yarn/cache/eslint-plugin-cypress-npm-2.11.2-d1caa76747-e68b06a371.zip/node_modules/eslint-plugin-cypress/",
+          "packageDependencies": [
+            ["eslint-plugin-cypress", "npm:2.11.2"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:9b3f024da3d61c940b0dc7643504cce786076174e9baf4a8c86b00231fb8e2ca12d1dc30816d856764c1047012f9ac63eab01eaad31a9ce2482b9563f1e5ed79#npm:2.11.2", {
+          "packageLocation": "./.yarn/$$virtual/eslint-plugin-cypress-virtual-69d0bd7a9a/0/cache/eslint-plugin-cypress-npm-2.11.2-d1caa76747-e68b06a371.zip/node_modules/eslint-plugin-cypress/",
+          "packageDependencies": [
+            ["eslint-plugin-cypress", "virtual:9b3f024da3d61c940b0dc7643504cce786076174e9baf4a8c86b00231fb8e2ca12d1dc30816d856764c1047012f9ac63eab01eaad31a9ce2482b9563f1e5ed79#npm:2.11.2"],
+            ["@types/eslint", null],
+            ["eslint", "npm:7.21.0"],
+            ["globals", "npm:11.12.0"]
+          ],
+          "packagePeers": [
+            "@types/eslint",
+            "eslint"
           ],
           "linkType": "HARD",
         }]
