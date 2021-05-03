@@ -35,17 +35,17 @@ jobs:
           wait-on: 'http://localhost:4000'
           command: yarn workspace @aiacta/website test
 
-  # cypress-frontend:
-  #   runs-on: 'ubuntu-latest'
+  cypress-frontend:
+    runs-on: 'ubuntu-latest'
 
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - uses: cypress-io/github-action@v2
-  #       with:
-  #         install-command: yarn install --immutable --immutable-cache
-  #         start: yarn workspace @aiacta/frontend serve
-  #         wait-on: 'http://localhost:4000'
-  #         command: yarn workspace @aiacta/frontend test
+    steps:
+      - uses: actions/checkout@v2
+      - uses: cypress-io/github-action@v2
+        with:
+          install-command: yarn install --immutable --immutable-cache
+          start: yarn workspace @aiacta/frontend serve
+          wait-on: 'http://localhost:5000'
+          command: yarn workspace @aiacta/frontend test
 
   lighthouse:
     runs-on: 'ubuntu-latest'
