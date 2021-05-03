@@ -32,6 +32,7 @@ jobs:
         with:
           install-command: yarn install --immutable --immutable-cache
           start: yarn workspace @aiacta/website serve
+          wait-on: 'http://localhost:4000'
           command: yarn workspace @aiacta/website test
 
   # cypress-frontend:
@@ -43,6 +44,7 @@ jobs:
   #       with:
   #         install-command: yarn install --immutable --immutable-cache
   #         start: yarn workspace @aiacta/frontend serve
+  #         wait-on: 'http://localhost:4000'
   #         command: yarn workspace @aiacta/frontend test
 
   lighthouse:
