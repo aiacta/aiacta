@@ -23,6 +23,28 @@ jobs:
       - name: 'Constraints'
         run: yarn constraints
 
+  cypress-website:
+    runs-on: 'ubuntu-latest'
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: cypress-io/github-action@v2
+        with:
+          install-command: yarn install --immutable --immutable-cache
+          start: yarn workspace @aiacta/website serve
+          command: yarn workspace @aiacta/website test
+
+  # cypress-frontend:
+  #   runs-on: 'ubuntu-latest'
+
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: cypress-io/github-action@v2
+  #       with:
+  #         install-command: yarn install --immutable --immutable-cache
+  #         start: yarn workspace @aiacta/frontend serve
+  #         command: yarn workspace @aiacta/frontend test
+
   lighthouse:
     runs-on: 'ubuntu-latest'
 

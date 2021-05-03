@@ -1,12 +1,12 @@
 parser: '@typescript-eslint/parser'
 plugins:
   - '@typescript-eslint'
-  # - 'cypress'
+  - 'cypress'
 extends:
   - 'eslint:recommended'
   - 'plugin:@typescript-eslint/eslint-recommended'
   - 'plugin:@typescript-eslint/recommended'
-  # - 'plugin:cypress/recommended'
+  - 'plugin:cypress/recommended'
 rules:
   'no-empty': 0
   'react/react-in-jsx-scope': 0
@@ -20,4 +20,4 @@ rules:
   '@typescript-eslint/explicit-module-boundary-types': 0
 env:
   'node': true
-  # 'cypress/globals': true
+  'cypress/globals': true
