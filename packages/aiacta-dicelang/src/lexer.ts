@@ -122,6 +122,8 @@ enum RollModifier {
           value: ch,
         });
         continue;
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       case 'd':
         if (input.charAt(p + 1).match(/[0-9]/)) {
           const prev = tokens.slice(-1)[0];
@@ -144,7 +146,7 @@ enum RollModifier {
           });
           continue;
         }
-      // tslint:disable-next-line: no-switch-case-fall-through
+      // eslint-disable-next-line no-fallthrough
       default:
         {
           const pos = p;

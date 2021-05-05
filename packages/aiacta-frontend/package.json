@@ -5,22 +5,23 @@
     "dev": "vite",
     "build": "tsc && vite build && yarn i18n:extract && yarn i18n:compile",
     "serve": "vite build && vite preview",
-    "test": "cypress run",
+    "test": "yarn test:jest && yarn test:cypress",
+    "test:jest": "jest",
+    "test:cypress": "cypress run",
     "test:dev": "cypress open",
     "generate": "graphql-codegen && prettier --write src/api/hooks.ts",
     "i18n:extract": "formatjs extract 'src/**/*.ts*' --out-file lang/en.json --id-interpolation-pattern '[sha512:contenthash:base64:6]'",
     "i18n:compile": "formatjs compile lang/en.json --ast --out-file dist/lang/en.json"
   },
   "dependencies": {
-    "@babylonjs/core": "4.2.0",
-    "@babylonjs/gui": "4.2.0",
-    "@babylonjs/inspector": "4.2.0",
-    "@babylonjs/materials": "4.2.0",
+    "@react-three/cannon": "1.1.1",
+    "@react-three/drei": "4.3.3",
+    "@react-three/fiber": "6.0.19",
     "@rsuite/icons": "1.0.0",
     "@urql/devtools": "2.0.3",
     "@urql/exchange-auth": "0.1.2",
     "@urql/exchange-graphcache": "4.0.0",
-    "cannon": "0.6.2",
+    "cannon-es": "0.17.0",
     "csx": "10.0.2",
     "draft-js": "0.11.7",
     "framer-motion": "4.1.3",
@@ -30,7 +31,6 @@
     "history": "5.0.0",
     "msw": "0.27.0",
     "react": "17.0.1",
-    "react-babylonjs": "3.0.4",
     "react-dom": "17.0.1",
     "react-error-boundary": "3.1.0",
     "react-hook-form": "7.0.7",
@@ -38,7 +38,9 @@
     "react-intl": "5.13.2",
     "react-router-dom": "6.0.0-beta.0",
     "recoil": "0.2.0",
+    "remove": "^0.1.5",
     "rsuite": "5.0.0-alpha.4",
+    "three": "0.128.0",
     "typestyle": "2.1.0",
     "urql": "2.0.2"
   },
@@ -49,14 +51,29 @@
     "@graphql-codegen/typescript-operations": "^1.17.16",
     "@graphql-codegen/typescript-urql": "^2.0.6",
     "@graphql-codegen/urql-introspection": "1.2.0",
+    "@swc-node/jest": "1.2.1",
     "@types/draft-js": "^0",
+    "@types/jest": "26.0.20",
     "@types/node": "14.14.35",
     "@types/react": "17.0.2",
     "@types/react-dom": "17.0.1",
+    "@types/three": "^0",
     "@vitejs/plugin-react-refresh": "1.3.1",
     "cypress": "^7.2.0",
+    "jest": "26.6.3",
     "prettier": "2.2.1",
     "typescript": "4.2.3",
     "vite": "2.0.5"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.(t|j)sx?$": [
+        "@swc-node/jest"
+      ]
+    },
+    "transformIgnorePatterns": [],
+    "testPathIgnorePatterns": [
+      "<rootDir>/cypress"
+    ]
   }
 }

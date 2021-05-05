@@ -1,0 +1,27 @@
+# Type your query here then hit 'Ctrl+Enter' to execute it.
+mutation RollDice($worldId: ID!, $formula: String!) {
+  rollDice(worldId: $worldId, input: { formula: $formula }) {
+    id
+    dice {
+      id
+      type
+      value
+    }
+  }
+}
+
+subscription DiceRolls($worldId: ID!) {
+  diceRolls(worldId: $worldId) {
+    id
+    roller {
+      id
+      name
+      color
+    }
+    dice {
+      id
+      type
+      value
+    }
+  }
+}

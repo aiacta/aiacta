@@ -41,7 +41,7 @@ export class PubSub<T extends Record<string, any> = any> implements Engine<T> {
   #subscriptions = new Map<number, [string, (value: T) => void]>();
 }
 
-class PubSubAsyncIterator<T, TReturn = any, TNext = unknown>
+class PubSubAsyncIterator<T, TReturn = T, TNext = unknown>
   implements AsyncIterator<T, TReturn, TNext> {
   constructor(
     engine: Engine<any>,

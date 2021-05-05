@@ -56,9 +56,9 @@ type Query {
 }
 
 type Mutation {
-  sendMessage(worldId: ID!, input: MessageInput!): Message
   createWorld(input: WorldInput!): World
   joinWorld(worldId: ID!, password: String, joinKey: String): World
+  sendMessage(worldId: ID!, input: MessageInput!): Message
 }
 
 type Subscription {

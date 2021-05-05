@@ -17,6 +17,7 @@ export function Chat() {
   const classes = useStylesheet({
     container: {
       position: 'fixed',
+      left: 0,
       bottom: 0,
       maxWidth: 400,
     },

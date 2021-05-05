@@ -47,6 +47,7 @@ export type Mutation = {
   createWorld?: Maybe<World>;
   joinWorld?: Maybe<World>;
   login?: Maybe<AuthInfo>;
+  rollDice?: Maybe<DiceRoll>;
   sendMessage?: Maybe<Message>;
   signUp?: Maybe<AuthInfo>;
 };
@@ -66,6 +67,11 @@ export type MutationLoginArgs = {
   password: Scalars['String'];
 };
 
+export type MutationRollDiceArgs = {
+  worldId: Scalars['ID'];
+  input: DiceRollInput;
+};
+
 export type MutationSendMessageArgs = {
   worldId: Scalars['ID'];
   input: MessageInput;
@@ -74,6 +80,60 @@ export type MutationSendMessageArgs = {
 export type MutationSignUpArgs = {
   name: Scalars['String'];
   password: Scalars['String'];
+};
+
+export type DiceRoll = {
+  __typename?: 'DiceRoll';
+  id: Scalars['ID'];
+  roller: PlayerInWorld;
+  dice: Array<Die>;
+};
+
+export enum DieType {
+  D4 = 'D4',
+  D6 = 'D6',
+  D8 = 'D8',
+  D10 = 'D10',
+  D12 = 'D12',
+  D20 = 'D20',
+}
+
+export type Die = {
+  __typename?: 'Die';
+  id: Scalars['ID'];
+  type: DieType;
+  value: Scalars['Int'];
+};
+
+export enum DiceRollVisibility {
+  Everybody = 'EVERYBODY',
+  GmOnly = 'GM_ONLY',
+  MyselfOnly = 'MYSELF_ONLY',
+}
+
+export type DiceRollInput = {
+  formula: Scalars['String'];
+  context?: Maybe<DiceRollContext>;
+  visibility?: Maybe<DiceRollVisibility>;
+};
+
+export type DiceRollContext = {
+  id?: Maybe<Scalars['ID']>;
+  type?: Maybe<Scalars['String']>;
+};
+
+export type Subscription = {
+  __typename?: 'Subscription';
+  diceRolls: Array<Maybe<DiceRoll>>;
+  newMessages: Array<Maybe<Message>>;
+};
+
+export type SubscriptionDiceRollsArgs = {
+  worldId: Scalars['ID'];
+};
+
+export type SubscriptionNewMessagesArgs = {
+  worldId: Scalars['ID'];
 };
 
 export type World = {
@@ -127,15 +187,6 @@ export type WorldInput = {
   name: Scalars['String'];
   inviteOnly: Scalars['Boolean'];
   password?: Maybe<Scalars['String']>;
-};
-
-export type Subscription = {
-  __typename?: 'Subscription';
-  newMessages: Array<Maybe<Message>>;
-};
-
-export type SubscriptionNewMessagesArgs = {
-  worldId: Scalars['ID'];
 };
 
 export type ChatMessagesQueryVariables = Exact<{
@@ -211,6 +262,41 @@ export type NewChatMessagesSubscription = { __typename?: 'Subscription' } & {
                 Player,
                 'id' | 'name' | 'color'
               >);
+        }
+    >
+  >;
+};
+
+export type RollDiceMutationVariables = Exact<{
+  worldId: Scalars['ID'];
+  formula: Scalars['String'];
+}>;
+
+export type RollDiceMutation = { __typename?: 'Mutation' } & {
+  rollDice?: Maybe<
+    { __typename?: 'DiceRoll' } & Pick<DiceRoll, 'id'> & {
+        dice: Array<
+          { __typename?: 'Die' } & Pick<Die, 'id' | 'type' | 'value'>
+        >;
+      }
+  >;
+};
+
+export type DiceRollsSubscriptionVariables = Exact<{
+  worldId: Scalars['ID'];
+}>;
+
+export type DiceRollsSubscription = { __typename?: 'Subscription' } & {
+  diceRolls: Array<
+    Maybe<
+      { __typename?: 'DiceRoll' } & Pick<DiceRoll, 'id'> & {
+          roller: { __typename?: 'PlayerInWorld' } & Pick<
+            PlayerInWorld,
+            'id' | 'name' | 'color'
+          >;
+          dice: Array<
+            { __typename?: 'Die' } & Pick<Die, 'id' | 'type' | 'value'>
+          >;
         }
     >
   >;
@@ -384,6 +470,55 @@ export function useNewChatMessagesSubscription<
     TData,
     NewChatMessagesSubscriptionVariables
   >({ query: NewChatMessagesDocument, ...options }, handler);
+}
+export const RollDiceDocument = gql`
+  mutation RollDice($worldId: ID!, $formula: String!) {
+    rollDice(worldId: $worldId, input: { formula: $formula }) {
+      id
+      dice {
+        id
+        type
+        value
+      }
+    }
+  }
+`;
+
+export function useRollDiceMutation() {
+  return Urql.useMutation<RollDiceMutation, RollDiceMutationVariables>(
+    RollDiceDocument,
+  );
+}
+export const DiceRollsDocument = gql`
+  subscription DiceRolls($worldId: ID!) {
+    diceRolls(worldId: $worldId) {
+      id
+      roller {
+        id
+        name
+        color
+      }
+      dice {
+        id
+        type
+        value
+      }
+    }
+  }
+`;
+
+export function useDiceRollsSubscription<TData = DiceRollsSubscription>(
+  options: Omit<
+    Urql.UseSubscriptionArgs<DiceRollsSubscriptionVariables>,
+    'query'
+  > = {},
+  handler?: Urql.SubscriptionHandler<DiceRollsSubscription, TData>,
+) {
+  return Urql.useSubscription<
+    DiceRollsSubscription,
+    TData,
+    DiceRollsSubscriptionVariables
+  >({ query: DiceRollsDocument, ...options }, handler);
 }
 export const LoginDocument = gql`
   mutation Login($name: String!, $password: String!) {

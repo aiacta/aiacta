@@ -1,0 +1,45 @@
+type DiceRoll {
+  id: ID!
+  roller: PlayerInWorld!
+  dice: [Die!]!
+}
+
+enum DieType {
+  D4
+  D6
+  D8
+  D10
+  D12
+  D20
+}
+
+type Die {
+  id: ID!
+  type: DieType!
+  value: Int!
+}
+
+enum DiceRollVisibility {
+  EVERYBODY
+  GM_ONLY
+  MYSELF_ONLY
+}
+
+input DiceRollInput {
+  formula: String!
+  context: DiceRollContext
+  visibility: DiceRollVisibility
+}
+
+input DiceRollContext {
+  id: ID
+  type: String
+}
+
+extend type Mutation {
+  rollDice(worldId: ID!, input: DiceRollInput!): DiceRoll
+}
+
+extend type Subscription {
+  diceRolls(worldId: ID!): [DiceRoll]!
+}

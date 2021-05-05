@@ -1,3 +1,4 @@
+import { DiceRoll } from '@aiacta/graphql/src/resolvers';
 import { ChatMessage, PrismaClient } from '@aiacta/prisma';
 import { IncomingMessage } from 'http';
 import { Http2ServerRequest } from 'http2';
@@ -6,6 +7,7 @@ import { PubSub } from './pubsub';
 
 interface PubSubMessages {
   createMessage: ChatMessage;
+  rollDice: DiceRoll & { worldId: string };
 }
 
 const pubsub = new PubSub<PubSubMessages>();

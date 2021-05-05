@@ -4,7 +4,7 @@ import { parse, Statement } from './parser';
 
 export { Context, Methods, Resolution } from './executor';
 
-export default class Program {
+export class Program {
   private tokens: Token[];
   private statements: Statement[];
   public readonly errors: any[] = [];
@@ -47,14 +47,14 @@ export default class Program {
       execute(
         this.statements,
         {
-          async roll(faces) {
+          async roll(_faces) {
             return -1;
           },
           chatMessages: {},
           ...methods,
         },
         context,
-      ).then(r => (resolution = r));
+      ).then((r) => (resolution = r));
       if (!resolution) {
         throw new Error();
       }
@@ -64,3 +64,5 @@ export default class Program {
     }
   }
 }
+
+export default Program;

@@ -57,6 +57,7 @@ export type Mutation = {
   createWorld?: Maybe<World>;
   joinWorld?: Maybe<World>;
   login?: Maybe<AuthInfo>;
+  rollDice?: Maybe<DiceRoll>;
   sendMessage?: Maybe<Message>;
   signUp?: Maybe<AuthInfo>;
 };
@@ -76,6 +77,11 @@ export type MutationLoginArgs = {
   password: Scalars['String'];
 };
 
+export type MutationRollDiceArgs = {
+  worldId: Scalars['ID'];
+  input: DiceRollInput;
+};
+
 export type MutationSendMessageArgs = {
   worldId: Scalars['ID'];
   input: MessageInput;
@@ -84,6 +90,60 @@ export type MutationSendMessageArgs = {
 export type MutationSignUpArgs = {
   name: Scalars['String'];
   password: Scalars['String'];
+};
+
+export type DiceRoll = {
+  __typename?: 'DiceRoll';
+  id: Scalars['ID'];
+  roller: PlayerInWorld;
+  dice: Array<Die>;
+};
+
+export enum DieType {
+  D4 = 'D4',
+  D6 = 'D6',
+  D8 = 'D8',
+  D10 = 'D10',
+  D12 = 'D12',
+  D20 = 'D20',
+}
+
+export type Die = {
+  __typename?: 'Die';
+  id: Scalars['ID'];
+  type: DieType;
+  value: Scalars['Int'];
+};
+
+export enum DiceRollVisibility {
+  Everybody = 'EVERYBODY',
+  GmOnly = 'GM_ONLY',
+  MyselfOnly = 'MYSELF_ONLY',
+}
+
+export type DiceRollInput = {
+  formula: Scalars['String'];
+  context?: Maybe<DiceRollContext>;
+  visibility?: Maybe<DiceRollVisibility>;
+};
+
+export type DiceRollContext = {
+  id?: Maybe<Scalars['ID']>;
+  type?: Maybe<Scalars['String']>;
+};
+
+export type Subscription = {
+  __typename?: 'Subscription';
+  diceRolls: Array<Maybe<DiceRoll>>;
+  newMessages: Array<Maybe<Message>>;
+};
+
+export type SubscriptionDiceRollsArgs = {
+  worldId: Scalars['ID'];
+};
+
+export type SubscriptionNewMessagesArgs = {
+  worldId: Scalars['ID'];
 };
 
 export type World = {
@@ -137,15 +197,6 @@ export type WorldInput = {
   name: Scalars['String'];
   inviteOnly: Scalars['Boolean'];
   password?: Maybe<Scalars['String']>;
-};
-
-export type Subscription = {
-  __typename?: 'Subscription';
-  newMessages: Array<Maybe<Message>>;
-};
-
-export type SubscriptionNewMessagesArgs = {
-  worldId: Scalars['ID'];
 };
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -263,6 +314,14 @@ export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>;
   ID: ResolverTypeWrapper<Partial<Scalars['ID']>>;
   Mutation: ResolverTypeWrapper<{}>;
+  DiceRoll: ResolverTypeWrapper<Partial<DiceRoll>>;
+  DieType: ResolverTypeWrapper<Partial<DieType>>;
+  Die: ResolverTypeWrapper<Partial<Die>>;
+  Int: ResolverTypeWrapper<Partial<Scalars['Int']>>;
+  DiceRollVisibility: ResolverTypeWrapper<Partial<DiceRollVisibility>>;
+  DiceRollInput: ResolverTypeWrapper<Partial<DiceRollInput>>;
+  DiceRollContext: ResolverTypeWrapper<Partial<DiceRollContext>>;
+  Subscription: ResolverTypeWrapper<{}>;
   DateTime: ResolverTypeWrapper<Partial<Scalars['DateTime']>>;
   World: ResolverTypeWrapper<WorldModel>;
   Boolean: ResolverTypeWrapper<Partial<Scalars['Boolean']>>;
@@ -278,7 +337,6 @@ export type ResolversTypes = {
   Message: ResolverTypeWrapper<Partial<Message>>;
   MessageInput: ResolverTypeWrapper<Partial<MessageInput>>;
   WorldInput: ResolverTypeWrapper<Partial<WorldInput>>;
-  Subscription: ResolverTypeWrapper<{}>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -290,6 +348,12 @@ export type ResolversParentTypes = {
   Query: {};
   ID: Partial<Scalars['ID']>;
   Mutation: {};
+  DiceRoll: Partial<DiceRoll>;
+  Die: Partial<Die>;
+  Int: Partial<Scalars['Int']>;
+  DiceRollInput: Partial<DiceRollInput>;
+  DiceRollContext: Partial<DiceRollContext>;
+  Subscription: {};
   DateTime: Partial<Scalars['DateTime']>;
   World: WorldModel;
   Boolean: Partial<Scalars['Boolean']>;
@@ -305,7 +369,6 @@ export type ResolversParentTypes = {
   Message: Partial<Message>;
   MessageInput: Partial<MessageInput>;
   WorldInput: Partial<WorldInput>;
-  Subscription: {};
 };
 
 export type RoleResolvers = EnumResolverSignature<
@@ -367,6 +430,12 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationLoginArgs, 'name' | 'password'>
   >;
+  rollDice?: Resolver<
+    Maybe<ResolversTypes['DiceRoll']>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationRollDiceArgs, 'worldId' | 'input'>
+  >;
   sendMessage?: Resolver<
     Maybe<ResolversTypes['Message']>,
     ParentType,
@@ -378,6 +447,46 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationSignUpArgs, 'name' | 'password'>
+  >;
+};
+
+export type DiceRollResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['DiceRoll'] = ResolversParentTypes['DiceRoll']
+> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  roller?: Resolver<ResolversTypes['PlayerInWorld'], ParentType, ContextType>;
+  dice?: Resolver<Array<ResolversTypes['Die']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type DieResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Die'] = ResolversParentTypes['Die']
+> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['DieType'], ParentType, ContextType>;
+  value?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type SubscriptionResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']
+> = {
+  diceRolls?: SubscriptionResolver<
+    Array<Maybe<ResolversTypes['DiceRoll']>>,
+    'diceRolls',
+    ParentType,
+    ContextType,
+    RequireFields<SubscriptionDiceRollsArgs, 'worldId'>
+  >;
+  newMessages?: SubscriptionResolver<
+    Array<Maybe<ResolversTypes['Message']>>,
+    'newMessages',
+    ParentType,
+    ContextType,
+    RequireFields<SubscriptionNewMessagesArgs, 'worldId'>
   >;
 };
 
@@ -472,31 +581,20 @@ export type MessageResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type SubscriptionResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']
-> = {
-  newMessages?: SubscriptionResolver<
-    Array<Maybe<ResolversTypes['Message']>>,
-    'newMessages',
-    ParentType,
-    ContextType,
-    RequireFields<SubscriptionNewMessagesArgs, 'worldId'>
-  >;
-};
-
 export type Resolvers<ContextType = any> = {
   Role?: RoleResolvers;
   AuthInfo?: AuthInfoResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
+  DiceRoll?: DiceRollResolvers<ContextType>;
+  Die?: DieResolvers<ContextType>;
+  Subscription?: SubscriptionResolvers<ContextType>;
   DateTime?: GraphQLScalarType;
   World?: WorldResolvers<ContextType>;
   PlayerInfo?: PlayerInfoResolvers<ContextType>;
   PlayerInWorld?: PlayerInWorldResolvers<ContextType>;
   Player?: PlayerResolvers<ContextType>;
   Message?: MessageResolvers<ContextType>;
-  Subscription?: SubscriptionResolvers<ContextType>;
 };
 
 /**
