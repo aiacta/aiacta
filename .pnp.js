@@ -16805,6 +16805,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/troika-three-text-npm-0.38.1-87abd707b8-be828f3888.zip/node_modules/troika-three-text/",
           "packageDependencies": [
             ["troika-three-text", "npm:0.38.1"],
+            ["three", "npm:0.128.0"],
             ["troika-three-utils", "virtual:87abd707b8347588644e0c3909c0f2b48205b329f3c3881599e05111059c1e5f5404e3526ddcc581e1392e17d7206cc9760c4be8677d2727f1830c6c255d2084#npm:0.38.1"],
             ["troika-worker-utils", "npm:0.38.1"]
           ],
@@ -16824,7 +16825,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["troika-three-utils", "virtual:87abd707b8347588644e0c3909c0f2b48205b329f3c3881599e05111059c1e5f5404e3526ddcc581e1392e17d7206cc9760c4be8677d2727f1830c6c255d2084#npm:0.38.1"],
             ["@types/three", null],
-            ["three", null]
+            ["three", "npm:0.128.0"]
           ],
           "packagePeers": [
             "@types/three",

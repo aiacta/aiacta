@@ -13361,7 +13361,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"three@npm:0.128.0":
+"three@npm:*, three@npm:0.128.0":
   version: 0.128.0
   resolution: "three@npm:0.128.0"
   checksum: a15d9cef8fc203e537d4f031d6c70cb2a93a3969524a052b533ebd6d556255fd0e0a3c161772847ee7985522fe866f60cb8beb8fe7962d960a1d45276208560d
