@@ -31,6 +31,7 @@
         "@swc-node/jest"
       ]
     },
+    "transformIgnorePatterns": [],
     "testPathIgnorePatterns": [
       "<rootDir>/.*/cypress"
     ]
