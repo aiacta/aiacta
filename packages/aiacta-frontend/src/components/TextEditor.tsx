@@ -1,5 +1,4 @@
 import {
-  ContentState,
   convertFromRaw,
   convertToRaw,
   DraftHandleValue,
@@ -7,6 +6,7 @@ import {
   EditorState,
   getDefaultKeyBinding,
   KeyBindingUtil,
+  Modifier,
 } from 'draft-js';
 import * as React from 'react';
 import { Input } from 'rsuite';
@@ -59,13 +59,21 @@ export const TextEditor = React.forwardRef(function TextEditor(
         getValue: () =>
           JSON.stringify(convertToRaw(stateRef.current.getCurrentContent())),
         resetState: () =>
-          setState(
-            EditorState.push(
-              stateRef.current,
-              ContentState.createFromText(''),
-              'remove-range',
-            ),
-          ),
+          setState((pref) => {
+            const blocks = pref.getCurrentContent().getBlockMap().toList();
+            const updatedSelection = pref.getSelection().merge({
+              anchorKey: blocks.first().get('key'),
+              anchorOffset: 0,
+              focusKey: blocks.last().get('key'),
+              focusOffset: blocks.last().getLength(),
+            });
+            const newContentState = Modifier.removeRange(
+              pref.getCurrentContent(),
+              updatedSelection,
+              'forward',
+            );
+            return EditorState.push(pref, newContentState, 'remove-range');
+          }),
       } as TextEditorInterface),
   );
 
