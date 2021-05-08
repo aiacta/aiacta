@@ -11,11 +11,23 @@ import type { Geometry } from 'three/examples/jsm/deprecated/Geometry';
 import { ConvexHull } from 'three/examples/jsm/math/ConvexHull';
 import { Face } from './geometry';
 
+const useHull = false;
+
 const _v1 = new Vector3();
 const _v2 = new Vector3();
 const _q1 = new Quaternion();
 
-export function createShape(position: Vector3[], faces: Face[]) {
+export function createShape(
+  objectOrGeometry: Object3D | BufferGeometry,
+  vertices: Vector3[],
+  faces: Face[],
+) {
+  return useHull
+    ? createConvexPolyhedron(objectOrGeometry)
+    : createBasicShape(vertices, faces);
+}
+
+function createBasicShape(position: Vector3[], faces: Face[]) {
   const vertices: Vec3[] = [];
 
   const shape = new ConvexPolyhedron({
@@ -46,7 +58,9 @@ export function createConvexPolyhedron(
       ? objectOrGeometry
       : getGeometry(objectOrGeometry);
 
-  if (!geometry) return null;
+  if (!geometry) {
+    throw new Error('No geometry found');
+  }
 
   // Perturb.
   // const eps = 1e-4;

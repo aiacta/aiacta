@@ -8,8 +8,6 @@ const t = (1 + Math.sqrt(5)) / 2;
 
 export const dice = {
   d4: {
-    tab: -0.1,
-    af: (Math.PI * 7) / 6,
     chamfer: 0.96,
     vertices: [
       new Vector3(1, 1, 1).normalize(),
@@ -37,8 +35,6 @@ export const dice = {
     faceOffset: -40,
   },
   d6: {
-    tab: 0.1,
-    af: Math.PI / 4,
     chamfer: 0.8,
     vertices: [
       new Vector3(-1, -1, -1).normalize(),
@@ -69,8 +65,6 @@ export const dice = {
     faceOffset: 0,
   },
   d8: {
-    tab: 0,
-    af: -Math.PI / 4 / 2,
     chamfer: 0.965,
     vertices: [
       new Vector3(1, 0, 0).normalize(),
@@ -112,8 +106,6 @@ export const dice = {
     faceOffset: 0,
   },
   d10: {
-    tab: 0,
-    af: (Math.PI * 6) / 5,
     chamfer: 0.945,
     vertices: [
       ...Array.from({ length: 10 }, (_, i) =>
@@ -162,8 +154,6 @@ export const dice = {
     faceOffset: 0,
   },
   d12: {
-    tab: 0.2,
-    af: -Math.PI / 4 / 2,
     chamfer: 0.968,
     vertices: [
       new Vector3(0, q, p).normalize(),
@@ -251,8 +241,6 @@ export const dice = {
     faceOffset: 0,
   },
   d20: {
-    tab: -0.2,
-    af: -Math.PI / 4 / 2,
     chamfer: 0.955,
     vertices: [
       new Vector3(-1, t, 0).normalize(),

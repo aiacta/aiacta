@@ -14,6 +14,7 @@
     "i18n:compile": "formatjs compile lang/en.json --ast --out-file dist/lang/en.json"
   },
   "dependencies": {
+    "@babel/runtime": "7.14.0",
     "@react-three/cannon": "1.1.1",
     "@react-three/drei": "4.3.3",
     "@react-three/fiber": "6.0.19",
@@ -39,7 +40,7 @@
     "react-router-dom": "6.0.0-beta.0",
     "recoil": "0.2.0",
     "remove": "^0.1.5",
-    "rsuite": "5.0.0-alpha.4",
+    "rsuite": "5.0.0-alpha.6",
     "three": "0.128.0",
     "typestyle": "2.1.0",
     "urql": "2.0.2"

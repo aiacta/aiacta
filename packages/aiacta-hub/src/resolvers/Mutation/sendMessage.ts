@@ -27,8 +27,6 @@ export const MutationSendMessageResolver: Resolvers<Context> = {
           .../^\/(?<command>r(?:oll)?) (?<args>.*)/.exec(blockText),
         };
 
-        console.log(blockText, command, args);
-
         switch (command) {
           case 'r':
           case 'roll':

@@ -11,8 +11,6 @@ import { useStylesheet } from '../hooks';
 import { SynchronizedFormattedRelativeTime } from './SynchronizedFormattedRelativeTime';
 import { TextDisplay, TextEditor, useTextEditorRef } from './TextEditor';
 
-const Button = InputGroup.Button!;
-
 export function Chat() {
   const classes = useStylesheet({
     container: {
@@ -86,7 +84,7 @@ export function Chat() {
             );
           }}
         />
-        <Button
+        <InputGroup.Button
           onClick={() =>
             sendMessage({ worldId, text: editor.current.getValue() }).then(() =>
               editor.current.resetState(),
@@ -95,7 +93,7 @@ export function Chat() {
           loading={mutation.fetching}
         >
           <Send />
-        </Button>
+        </InputGroup.Button>
       </InputGroup>
     </Panel>
   );

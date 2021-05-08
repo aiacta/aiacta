@@ -55,7 +55,11 @@ export function Physics({
             precalculationDice.current!.forEach((die) => {
               const { body, targetValue } = die;
               if (results.has(die)) {
-                console.log('die landed on', results.get(die)!.value);
+                console.log(
+                  `die landed on ${
+                    results.get(die)!.value
+                  }, need to be ${targetValue}`,
+                );
                 const rotationQuaternion = calculateQuaternionForResult(
                   body,
                   results.get(die)!.value,

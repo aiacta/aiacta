@@ -92,13 +92,6 @@ export function calculateQuaternionForResult(
       targetNormal,
     );
 
-    // const deg = new Vec3();
-    // rotation.toEuler(deg);
-    // console.log(
-    //   `rotation need from ${currentValue} to ${targetValue}`,
-    //   deg.vmul(new Vec3(180 / Math.PI, 180 / Math.PI, 180 / Math.PI)),
-    // );
-
     return body.quaternion.clone().mult(rotation.inverse());
   }
   return null;

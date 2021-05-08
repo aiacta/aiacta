@@ -33,8 +33,6 @@ import {
 import { useStylesheet } from '../hooks';
 import { MotionButton } from './Motion';
 
-const ListItem = List.Item!;
-
 export function Worlds() {
   const classes = useStylesheet({
     container: {
@@ -113,7 +111,7 @@ export function Worlds() {
               ? Shield
               : Global;
             return (
-              <ListItem key={world.id}>
+              <List.Item key={world.id}>
                 <Grid fluid>
                   <Row>
                     <Col xs={12} sm={4} md={3}>
@@ -156,7 +154,7 @@ export function Worlds() {
                     </Col>
                   </Row>
                 </Grid>
-              </ListItem>
+              </List.Item>
             );
           })}
         </List>

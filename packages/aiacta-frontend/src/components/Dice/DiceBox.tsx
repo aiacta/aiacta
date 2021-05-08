@@ -1,15 +1,6 @@
 import { useAspect } from '@react-three/drei';
 import * as React from 'react';
-import { D10, D12, D20, D4, D6, D8 } from './';
-
-const dieMap = {
-  D4: D4,
-  D6: D6,
-  D8: D8,
-  D10: D10,
-  D12: D12,
-  D20: D20,
-};
+import { Die } from './Die';
 
 type Roll = {
   id: string;
@@ -62,18 +53,18 @@ export function DiceBox({ rolls }: { rolls?: (Roll | null)[] }) {
             ]) as [number, number, number];
 
         return (
-          <>
+          <React.Fragment key={roll.id}>
             {roll.dice.map((die, idx) => {
-              const Die = dieMap[die.type as keyof typeof dieMap];
               return (
                 <Die
-                  key={roll.id + idx}
-                  targetValue={die.value as any}
+                  key={idx}
+                  type={die.type.toLowerCase() as any}
+                  targetValue={die.value}
                   position={position}
                 />
               );
             })}
-          </>
+          </React.Fragment>
         );
       })}
     </>

@@ -1,31 +1,15 @@
-import { AnimateSharedLayout, motion } from 'framer-motion';
+import { AnimateSharedLayout } from 'framer-motion';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useSetRecoilState } from 'recoil';
-import {
-  Button,
-  Form,
-  FormControl,
-  FormControlLabel,
-  FormGroup,
-  Panel,
-} from 'rsuite';
+import { Form, FormControl, FormControlLabel } from 'rsuite';
 import {
   isAuthenticatedAtom,
   useLoginMutation,
   useSignUpMutation,
 } from '../api';
 import { useStylesheet } from '../hooks';
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-const MotionButton = motion(Button);
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-const MotionPanel = motion(Panel);
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-const MotionFormGroup = motion(FormGroup);
+import { MotionButton, MotionFormGroup, MotionPanel } from './Motion';
 
 export function Login() {
   const classes = useStylesheet({
