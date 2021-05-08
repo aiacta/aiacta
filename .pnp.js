@@ -15444,7 +15444,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         ["npm:2.0.0-alpha.3", {
           "packageLocation": "./.yarn/cache/schema-typed-npm-2.0.0-alpha.3-c1fb4b5853-d4f21ac6c9.zip/node_modules/schema-typed/",
           "packageDependencies": [
-            ["schema-typed", "npm:2.0.0-alpha.3"]
+            ["schema-typed", "npm:2.0.0-alpha.3"],
+            ["@babel/runtime", "npm:7.13.9"]
           ],
           "linkType": "HARD",
         }]
