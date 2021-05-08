@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { Canvas, Chat } from '../components';
+import { Chat, DiceBox } from '../components';
 
 export function WorldPage() {
   return (
     <>
       <Chat />
-      <Canvas />
+      <DiceBox />
     </>
   );
 }

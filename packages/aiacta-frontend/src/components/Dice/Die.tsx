@@ -1,8 +1,8 @@
 import { useFrame, useLoader } from '@react-three/fiber';
 import * as React from 'react';
 import { ShaderMaterial, TextureLoader, Vector3, Vector4 } from 'three';
-import { useDie } from '../Physics';
 import { createDie } from './factory';
+import { useDie } from './Physics';
 import fragmentShader from './shader/dissolve_frag.glsl?raw';
 import vertexShader from './shader/dissolve_vert.glsl?raw';
 
@@ -48,8 +48,6 @@ export function Die({
 
   const materialRef = React.useRef<ShaderMaterial>();
   const calledDissolve = React.useRef(false);
-
-  console.log(dissolve);
 
   useFrame(() => {
     if (materialRef.current && dissolve) {

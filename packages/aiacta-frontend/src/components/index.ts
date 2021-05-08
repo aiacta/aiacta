@@ -1,5 +1,5 @@
-export * from './Canvas';
 export * from './Chat';
+export * from './Dice';
 export * from './Login';
 export * from './SynchronizedFormattedRelativeTime';
 export * from './TextEditor';

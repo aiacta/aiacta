@@ -1,6 +1,10 @@
 import { useAspect } from '@react-three/drei';
+import { Canvas as ThreeCanvas } from '@react-three/fiber';
 import * as React from 'react';
+import { useParams } from 'react-router-dom';
+import { useDiceRollsSubscription } from '../../api';
 import { Die } from './Die';
+import { Physics } from './Physics';
 
 type Roll = {
   id: string;
@@ -10,7 +14,44 @@ type Roll = {
   dissolved?: number;
 };
 
-export function DiceBox({ rolls }: { rolls?: (Roll | null)[] }) {
+export function DiceBox() {
+  const { worldId } = useParams();
+
+  const [rolls] = useDiceRollsSubscription({ variables: { worldId } });
+
+  return (
+    <ThreeCanvas
+      style={{
+        position: 'absolute',
+        width: '100vw',
+        height: '100vh',
+        left: 0,
+        top: 0,
+        pointerEvents: 'none',
+      }}
+      camera={{
+        position: [0, 0, 80],
+        fov: 20,
+      }}
+    >
+      <ambientLight />
+      <spotLight
+        intensity={0.6}
+        position={[0, 0, 60]}
+        angle={2}
+        penumbra={1}
+        castShadow
+      />
+      <Physics>
+        <React.Suspense fallback={null}>
+          <Rolls rolls={rolls.data?.diceRolls} />
+        </React.Suspense>
+      </Physics>
+    </ThreeCanvas>
+  );
+}
+
+function Rolls({ rolls }: { rolls?: (Roll | null)[] }) {
   const aspect = useAspect(
     100,
     (100 * window.innerHeight) / window.innerWidth,
