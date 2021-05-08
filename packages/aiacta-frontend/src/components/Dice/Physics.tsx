@@ -1,6 +1,7 @@
 import { useAspect } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import { Body, Shape, World } from 'cannon-es';
+import { ContactEquation } from 'equations/ContactEquation';
 import * as React from 'react';
 import { Object3D } from 'three';
 import {
@@ -9,7 +10,12 @@ import {
 } from './diceCalculation';
 import { createWorld, DieMaterial } from './world';
 
-type CalculationOptions = { body: Body; type: string; targetValue: number };
+type CalculationOptions = {
+  body: Body;
+  type: string;
+  targetValue: number;
+  onCalculated: () => void;
+};
 
 const context = React.createContext({
   world: new World(),
@@ -34,13 +40,7 @@ export function Physics({
     createWorld(aspect[0], aspect[1], gravity),
   );
 
-  const precalculationDice = React.useRef<
-    {
-      body: Body;
-      type: string;
-      targetValue: number;
-    }[]
-  >();
+  const precalculationDice = React.useRef<CalculationOptions[]>();
   const api = React.useMemo(
     () => ({
       world,
@@ -69,6 +69,7 @@ export function Physics({
                   body.quaternion = rotationQuaternion;
                 }
               }
+              die.onCalculated();
             });
             precalculationDice.current = undefined;
           });
@@ -98,6 +99,7 @@ export function useDie<PossibleValues extends number = number>({
   angularVelocity = [0, 0, 0],
   shape,
   type,
+  onCollision,
 }: {
   targetValue?: PossibleValues;
   position?: [number, number, number];
@@ -107,6 +109,11 @@ export function useDie<PossibleValues extends number = number>({
   angularVelocity?: [number, number, number];
   shape: Shape;
   type: string;
+  onCollision: (info: {
+    body: Body;
+    target: Body;
+    contact: ContactEquation;
+  }) => void;
 }) {
   const { world, precalculateDie } = React.useContext(context);
   const ref = React.useRef<Object3D>();
@@ -150,6 +157,15 @@ export function useDie<PossibleValues extends number = number>({
         body,
         type,
         targetValue,
+        onCalculated: () => {
+          body.addEventListener('collide', (event: any) => {
+            onCollision(event);
+          });
+        },
+      });
+    } else {
+      body.addEventListener('collide', (event: any) => {
+        onCollision(event);
       });
     }
 

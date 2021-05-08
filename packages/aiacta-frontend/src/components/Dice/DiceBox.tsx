@@ -2,6 +2,7 @@ import { useAspect } from '@react-three/drei';
 import { Canvas as ThreeCanvas } from '@react-three/fiber';
 import * as React from 'react';
 import { useParams } from 'react-router-dom';
+import { AudioListener } from 'three';
 import { useDiceRollsSubscription } from '../../api';
 import { Die } from './Die';
 import { Physics } from './Physics';
@@ -13,6 +14,10 @@ type Roll = {
   dissolve?: boolean;
   dissolved?: number;
 };
+
+export const DiceBoxContext = React.createContext({
+  audioListener: new AudioListener(),
+});
 
 export function DiceBox() {
   const { worldId } = useParams();

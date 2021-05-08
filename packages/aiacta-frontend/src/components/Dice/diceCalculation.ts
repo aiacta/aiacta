@@ -14,9 +14,9 @@ export function calculateResults(
   let iteration = 0;
   do {
     world.step(1 / 60);
-  } while (world.hasActiveBodies && ++iteration < 1000);
+  } while (world.hasActiveBodies && ++iteration < 10000);
 
-  if (iteration >= 1000) {
+  if (iteration >= 10000) {
     console.log('Could not settle dice');
   }
 

@@ -1,6 +1,16 @@
 import { useFrame, useLoader } from '@react-three/fiber';
 import * as React from 'react';
-import { ShaderMaterial, TextureLoader, Vector3, Vector4 } from 'three';
+import {
+  AudioLoader,
+  PositionalAudio,
+  ShaderMaterial,
+  TextureLoader,
+  Vector3,
+  Vector4,
+} from 'three';
+import paper from './crumpled_paper.jpeg';
+import { DiceBoxContext } from './DiceBox';
+import dieSound from './die.wav?url';
 import { createDie } from './factory';
 import { useDie } from './Physics';
 import fragmentShader from './shader/dissolve_frag.glsl?raw';
@@ -22,13 +32,29 @@ export function Die({
   velocity?: [number, number, number];
   angularVelocity?: [number, number, number];
 }) {
-  const [ref] = useDie({ ...props, shape: dice[type].shape, type });
+  const { audioListener } = React.useContext(DiceBoxContext);
+  const audioRef = React.useRef<PositionalAudio>();
+  const sound = useLoader(AudioLoader, dieSound);
+  React.useEffect(() => {
+    audioRef.current?.setRefDistance(40);
+  }, []);
+
+  const [ref] = useDie({
+    ...props,
+    shape: dice[type].shape,
+    type,
+    onCollision: (info) => {
+      if (!audioRef.current?.isPlaying && info.contact.restitution === 0.3) {
+        audioRef.current?.setVolume(
+          Math.min(1, info.target.velocity.length() / 50),
+        );
+        audioRef.current?.play();
+      }
+    },
+  });
 
   const textureMap = useLoader(TextureLoader, dice[type].textureDataUrl);
-  const noiseMap = useLoader(
-    TextureLoader,
-    'https://s3-us-west-1.amazonaws.com/shader-frog/crumpled_paper.jpg',
-  );
+  const noiseMap = useLoader(TextureLoader, paper);
 
   const uniforms = React.useMemo(
     () => ({
@@ -79,6 +105,13 @@ export function Die({
         fragmentShader={fragmentShader}
         vertexShader={vertexShader}
         uniforms={uniforms}
+      />
+      <positionalAudio
+        ref={audioRef}
+        buffer={sound}
+        args={[audioListener]}
+        autoplay={false}
+        loop={false}
       />
     </mesh>
   );
