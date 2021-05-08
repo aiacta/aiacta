@@ -6,6 +6,8 @@ type Roll = {
   id: string;
   roller: { color: string };
   dice: { type: string; value: number }[];
+  dissolve?: boolean;
+  dissolved: number;
 };
 
 export function DiceBox({ rolls }: { rolls?: (Roll | null)[] }) {
@@ -28,7 +30,19 @@ export function DiceBox({ rolls }: { rolls?: (Roll | null)[] }) {
       const nextMap = new Map(map);
       rolls?.forEach((roll) => {
         if (roll) {
-          nextMap.set(roll?.id, roll);
+          const id = roll.id;
+          nextMap.set(id, roll);
+          setTimeout(() => {
+            setCurrentRolls((map) => {
+              const nextMap = new Map(map);
+              const roll = nextMap.get(id);
+              if (roll) {
+                roll.dissolve = true;
+                roll.dissolved = 0;
+              }
+              return nextMap;
+            });
+          }, 10000);
         }
       });
       return nextMap;
@@ -61,6 +75,21 @@ export function DiceBox({ rolls }: { rolls?: (Roll | null)[] }) {
                   type={die.type.toLowerCase() as any}
                   targetValue={die.value}
                   position={position}
+                  dissolve={roll.dissolve}
+                  onDissolved={() => {
+                    setCurrentRolls((map) => {
+                      const actualRoll = map.get(roll!.id);
+                      if (actualRoll) {
+                        ++actualRoll.dissolved;
+                        if (actualRoll.dissolved >= actualRoll.dice.length) {
+                          const nextMap = new Map(map);
+                          nextMap.delete(actualRoll.id);
+                          return nextMap;
+                        }
+                      }
+                      return map;
+                    });
+                  }}
                 />
               );
             })}
