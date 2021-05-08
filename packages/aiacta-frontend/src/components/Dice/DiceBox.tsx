@@ -7,7 +7,7 @@ type Roll = {
   roller: { color: string };
   dice: { type: string; value: number }[];
   dissolve?: boolean;
-  dissolved: number;
+  dissolved?: number;
 };
 
 export function DiceBox({ rolls }: { rolls?: (Roll | null)[] }) {
@@ -79,7 +79,10 @@ export function DiceBox({ rolls }: { rolls?: (Roll | null)[] }) {
                   onDissolved={() => {
                     setCurrentRolls((map) => {
                       const actualRoll = map.get(roll!.id);
-                      if (actualRoll) {
+                      if (
+                        actualRoll &&
+                        typeof actualRoll.dissolved === 'number'
+                      ) {
                         ++actualRoll.dissolved;
                         if (actualRoll.dissolved >= actualRoll.dice.length) {
                           const nextMap = new Map(map);
