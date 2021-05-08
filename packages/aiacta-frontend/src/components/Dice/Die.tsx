@@ -3,6 +3,8 @@ import * as React from 'react';
 import { ShaderMaterial, TextureLoader, Vector3, Vector4 } from 'three';
 import { useDie } from '../Physics';
 import { createDie } from './factory';
+import fragmentShader from './shader/dissolve_frag.glsl?raw';
+import vertexShader from './shader/dissolve_vert.glsl?raw';
 
 export function Die({
   type,
@@ -92,86 +94,3 @@ const dice = {
   d12: createDie('d12'),
   d20: createDie('d20'),
 };
-
-const fragmentShader = `
-    varying vec3 Normal;
-    varying vec3 Position;
-
-    varying vec3 vPosition;
-    varying vec3 vNormal;
-    varying vec2 vUv;
-
-    uniform vec3 Ka;
-    uniform vec3 Kd;
-    uniform vec3 Ks;
-    uniform vec4 LightPosition;
-    uniform vec3 LightIntensity;
-    uniform float Shininess;
-
-    uniform sampler2D image;
-    uniform float dissolve;
-    uniform sampler2D noise;
-
-    vec3 phong() {
-      vec3 n = normalize(Normal);
-      vec3 s = normalize(vec3(LightPosition) - Position);
-      vec3 v = normalize(vec3(-Position));
-      vec3 r = reflect(-s, n);
-
-      vec3 ambient = Ka;
-      vec3 diffuse = Kd * max(dot(s, n), 0.0);
-      vec3 specular = Ks * pow(max(dot(r, v), 0.0), Shininess);
-
-      return LightIntensity * (ambient + diffuse + specular);
-    }
-
-    void main() {
-      vec3 col = texture2D(image, vUv).xyz;
-      vec3 noi = texture2D(noise, vUv).xyz;
-
-      float alpha = 1.;
-    
-      if(noi.x > abs(sin(dissolve/3.)))
-      {
-          alpha = .0;
-      }
-      
-      if(noi.x > abs(sin(dissolve/3.))-.07)
-      {
-          col = vec3(1.,0.,0.);
-      }
-
-      gl_FragColor = vec4(col*phong(), alpha);
-  }`;
-
-const vertexShader = `
-    varying vec3 Normal;
-    varying vec3 Position;
-
-    varying vec3 vPosition;
-    varying vec3 vNormal;
-    varying vec2 vUv;
-
-    uniform float dissolve;
-    uniform sampler2D noise;
-
-    void main() {
-
-      vNormal = normal;
-      vUv = uv;
-      vPosition = position;
-
-      Normal = normalize(normalMatrix * normal);
-      Position = vec3(modelViewMatrix * vec4(position, 1.0));
-
-      vec3 col = texture2D(noise, uv).xyz;
-      vec3 nor = vec3(.0,.0,.0);
-      if(col.x > abs(sin(dissolve/3.))-.03)
-      {
-          nor = normal * 0.2 * sin(dissolve) * cos(dissolve) * tan(dissolve);
-      }
-      vec3 dsa = vec3(position + nor);
-
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(dsa, 1.0);
-    }
-  `;
