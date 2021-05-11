@@ -1,8 +1,7 @@
-import Program from '@aiacta/dicelang';
 import { ForbiddenError, Resolvers } from '@aiacta/graphql';
-import { DieType } from '@aiacta/graphql/src/resolvers';
 import { v4 as uuid } from 'uuid';
 import { Context } from '../../context';
+import { rollDice } from '../../functions';
 
 export const MutationSendMessageResolver: Resolvers<Context> = {
   Mutation: {
@@ -42,25 +41,7 @@ export const MutationSendMessageResolver: Resolvers<Context> = {
 
               const context = {}; // get from input def
 
-              const rolledDice: {
-                id: string;
-                type: DieType;
-                value: number;
-              }[] = [];
-              const result = await new Program(args).run(
-                {
-                  async roll(faces) {
-                    const value = Math.round(Math.random() * (faces - 1)) + 1;
-                    rolledDice.push({
-                      id: uuid(),
-                      type: ('D' + faces) as DieType,
-                      value,
-                    });
-                    return value;
-                  },
-                },
-                context,
-              );
+              const { result, rolledDice } = await rollDice(args, context);
 
               const diceRoll = {
                 worldId,
@@ -70,7 +51,20 @@ export const MutationSendMessageResolver: Resolvers<Context> = {
                 message: result.toChatMessage(),
               };
 
+              const message = await prisma.chatMessage.create({
+                data: {
+                  world: { connect: { id: worldId } },
+                  author: { connect: { id: playerId } },
+                  component: 'DiceRoll',
+                  text: result.toChatMessage(),
+                },
+                include: {
+                  author: true,
+                },
+              });
+
               pubsub.publish('rollDice', diceRoll);
+              pubsub.publish('createMessage', message);
             }
             return null;
         }

@@ -15,6 +15,7 @@ uniform float Shininess;
 uniform sampler2D image;
 uniform float dissolve;
 uniform sampler2D noise;
+uniform float uvOffset;
 
 vec3 phong() {
   vec3 n = normalize(Normal);
@@ -23,14 +24,14 @@ vec3 phong() {
   vec3 r = reflect(-s, n);
 
   vec3 ambient = Ka;
-  vec3 diffuse = Kd * max(dot(s, n), 0.0);
-  vec3 specular = Ks * pow(max(dot(r, v), 0.0), Shininess);
+  vec3 diffuse = Kd * max(dot(s, n), 0.);
+  vec3 specular = Ks * pow(max(dot(r, v), 0.), Shininess);
 
   return LightIntensity * (ambient + diffuse + specular);
 }
 
 void main() {
-  vec3 col = texture2D(image, vUv).xyz;
+  vec3 col = texture2D(image, vec2(mod(vUv.x + uvOffset, 1.), vUv.y)).xyz;
   vec3 noi = texture2D(noise, vUv).xyz;
 
   float alpha = 1.;

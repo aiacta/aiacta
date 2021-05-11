@@ -1,8 +1,7 @@
-import { Program } from '@aiacta/dicelang';
 import { ForbiddenError, Resolvers } from '@aiacta/graphql';
-import { DieType } from '@aiacta/graphql/src/resolvers';
 import { v4 as uuid } from 'uuid';
 import { Context } from '../../context';
+import { rollDice } from '../../functions';
 
 export const MutationRollDiceResolver: Resolvers<Context> = {
   Mutation: {
@@ -22,21 +21,7 @@ export const MutationRollDiceResolver: Resolvers<Context> = {
 
       const context = {}; // get from input def
 
-      const rolledDice: { id: string; type: DieType; value: number }[] = [];
-      const result = await new Program(input.formula).run(
-        {
-          async roll(faces) {
-            const value = Math.round(Math.random() * (faces - 1)) + 1;
-            rolledDice.push({
-              id: uuid(),
-              type: ('D' + faces) as DieType,
-              value,
-            });
-            return value;
-          },
-        },
-        context,
-      );
+      const { result, rolledDice } = await rollDice(input.formula, context);
 
       const diceRoll = {
         worldId,

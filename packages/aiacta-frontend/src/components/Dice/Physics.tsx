@@ -14,7 +14,7 @@ type CalculationOptions = {
   body: Body;
   type: string;
   targetValue: number;
-  onCalculated: () => void;
+  onCalculated: (landedOn: number) => void;
 };
 
 const context = React.createContext({
@@ -65,11 +65,13 @@ export function Physics({
                   results.get(die)!.value,
                   targetValue,
                 );
-                if (rotationQuaternion) {
-                  body.quaternion = rotationQuaternion;
-                }
+                // if (rotationQuaternion) {
+                //   body.quaternion = rotationQuaternion;
+                // }
               }
-              die.onCalculated();
+              if (results.get(die)) {
+                die.onCalculated(results.get(die)!.value);
+              }
             });
             precalculationDice.current = undefined;
           });
@@ -119,6 +121,11 @@ export function useDie<PossibleValues extends number = number>({
   const ref = React.useRef<Object3D>();
   const bodyRef = React.useRef<Body>();
 
+  const [{ fromValue, toValue }, setFromTo] = React.useState({
+    fromValue: -1,
+    toValue: targetValue,
+  });
+
   React.useLayoutEffect(() => {
     if (!ref.current) {
       ref.current = new Object3D();
@@ -157,10 +164,11 @@ export function useDie<PossibleValues extends number = number>({
         body,
         type,
         targetValue,
-        onCalculated: () => {
+        onCalculated: (landedOn) => {
           body.addEventListener('collide', (event: any) => {
             onCollision(event);
           });
+          setFromTo({ fromValue: landedOn, toValue: targetValue });
         },
       });
     } else {
@@ -182,5 +190,5 @@ export function useDie<PossibleValues extends number = number>({
     }
   });
 
-  return [ref];
+  return [ref, fromValue, toValue] as const;
 }

@@ -131,7 +131,13 @@ export function Chat() {
                   </Whisper>
                 </div>
                 <div className={classes.body}>
-                  {msg.text && <TextDisplay value={msg.text} />}
+                  {msg.component ? (
+                    <>
+                      {msg.component}: {msg.text}
+                    </>
+                  ) : (
+                    msg.text && <TextDisplay value={msg.text} />
+                  )}
                 </div>
               </div>
             ),

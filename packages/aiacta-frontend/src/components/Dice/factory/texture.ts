@@ -1,99 +1,121 @@
-import { BufferAttribute, Vector2 } from 'three';
+import { BufferAttribute, Vector2, Vector3 } from 'three';
+import { dice, DieType } from './dieValues';
+
+const textureWidth = 256;
+const textureHeight = 256;
 
 const debug = false;
 
-export function createTextureDataURL({
-  uvAttribute,
-  faceValues,
-  faceHeight = 1,
-  faceOffset = 0,
-  index = new BufferAttribute(
-    new Uint16Array(new Array(uvAttribute.count).fill(null).map((_, i) => i)),
-    1,
-    false,
-  ),
-  d4,
-}: {
-  uvAttribute: BufferAttribute;
-  faceValues: { [key: number]: number };
-  faceHeight?: number;
-  faceOffset?: number;
-  index?: BufferAttribute;
-  d4?: boolean;
-}) {
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
+const textureBgStyle = 'rgb( 255, 63, 63 )';
 
-  const width = 1024;
-  const height = 1024;
+export function createTextures(
+  die: DieType,
+  vertices: Vector3[],
+  faceGroups: { value: number; indices: number[][] }[],
+) {
+  const dataUrls: string[] = [];
 
-  canvas.width = width;
-  canvas.height = width;
+  const { uvTemplate } = dice[die];
 
-  if (!ctx) {
-    return '';
-  }
+  const distinct6and9 =
+    Math.max(...Object.values(faceGroups.map((g) => g.value))) >= 9;
 
-  ctx.textAlign = 'center';
+  const uvs = faceGroups.flatMap(({ indices, value }, groupIdx) => {
+    const uvVertices = indices.flat().flatMap((_, vertexIdx) => {
+      const vertices: Vector2[] = [];
+      const template = uvTemplate[groupIdx % uvTemplate.length].slice(
+        vertexIdx * 2,
+        vertexIdx * 2 + 2,
+      );
+      for (let i = 0; i < template.length; i += 2) {
+        vertices.push(new Vector2(template[i], template[i + 1]));
+      }
+      return vertices;
+    });
 
-  ctx.fillStyle = 'rgb( 255, 0, 0 )';
-  ctx.fillRect(0, 0, width, height);
+    const canvas = document.createElement('canvas');
+    canvas.width = textureWidth;
+    canvas.height = textureHeight;
+    const ctx = canvas.getContext('2d')!;
 
-  const faces = Object.keys(faceValues).map((i) => [
-    new Vector2().fromBufferAttribute(uvAttribute, index.getX(+i * 3)),
-    new Vector2().fromBufferAttribute(uvAttribute, index.getX(+i * 3 + 1)),
-    new Vector2().fromBufferAttribute(uvAttribute, index.getX(+i * 3 + 2)),
-  ]);
+    ctx.font = '15px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = debug ? 'white' : textureBgStyle;
+    ctx.fillRect(0, 0, textureWidth, textureHeight);
 
-  const faceGroups = Object.entries(faceValues).reduce((acc, [i, value]) => {
-    if (!acc[value]) {
-      acc[value] = [];
-    }
-    acc[value].push(faces[+i]);
-    return acc;
-  }, {} as { [value: number]: Vector2[][] });
-
-  const abc = 'abc';
-  const a = new Vector2();
-  const b = new Vector2();
-
-  if (debug) {
-    const uvs = [new Vector2(), new Vector2(), new Vector2()];
-
-    const face: number[] = [];
-
-    for (let i = 0, il = index.count; i < il; i += 3) {
-      face[0] = index.getX(i);
-      face[1] = index.getX(i + 1);
-      face[2] = index.getX(i + 2);
-
-      uvs[0].fromBufferAttribute(uvAttribute, face[0]);
-      uvs[1].fromBufferAttribute(uvAttribute, face[1]);
-      uvs[2].fromBufferAttribute(uvAttribute, face[2]);
-
-      processFace(ctx, face, uvs, i / 3);
-    }
-  }
-
-  const distinct6and9 = Math.max(...Object.values(faceValues)) >= 9;
-
-  Object.entries(faceGroups).forEach(([value, faces]) => {
     const center = new Vector2();
-    faces.forEach((uvs) => {
-      ctx.fillStyle = 'rgb( 255, 63, 63 )';
-      ctx.beginPath();
-      uvs.forEach((uv) => {
-        center.add(uv);
-        ctx.lineTo(uv.x * width, (1 - uv.y) * height);
-      });
-      ctx.closePath();
-      if (!debug) {
+
+    ctx.fillStyle = textureBgStyle;
+    ctx.beginPath();
+    uvVertices.forEach((uv) => {
+      center.add(uv);
+      ctx.lineTo(uv.x * textureWidth, (1 - uv.y) * textureHeight);
+    });
+    ctx.closePath();
+    ctx.fill();
+
+    center.divideScalar(uvVertices.length);
+
+    const debugDrawCalls: (() => void)[] = [];
+
+    if (debug) {
+      // paint every three vertice-groups
+      const debugColors = [
+        'midnightblue',
+        'darkgreen',
+        'red',
+        'gold',
+        'lime',
+        'aqua',
+        'fuchsia',
+        'lightpink',
+      ];
+
+      for (let i = 0; i < uvVertices.length; i += 3) {
+        ctx.beginPath();
+        ctx.fillStyle = debugColors[Math.floor(i / 3) % debugColors.length];
+        const center = new Vector2()
+          .add(uvVertices[i])
+          .add(uvVertices[i + 1])
+          .add(uvVertices[i + 2])
+          .divideScalar(3);
+        debugAddVertex(i, uvVertices[i], center);
+        debugAddVertex(i + 1, uvVertices[i + 1], center);
+        debugAddVertex(i + 2, uvVertices[i + 2], center);
+        ctx.closePath();
         ctx.fill();
       }
-    });
-    center.divideScalar(faces.flat().length);
+      ctx.lineWidth = 2;
+      ctx.font = '15px Arial';
+      ctx.strokeStyle = 'white';
+      debugDrawCalls.forEach((cb) => cb());
+    }
+
+    function debugAddVertex(num: number, vertex: Vector2, center: Vector2) {
+      ctx.lineTo(vertex.x * textureWidth, (1 - vertex.y) * textureHeight);
+      const fillStyle = ctx.fillStyle;
+      debugDrawCalls.push(() => {
+        ctx.fillStyle = fillStyle;
+        const cv = vertex
+          .clone()
+          .add(center.clone().sub(vertex).multiplyScalar(0.2));
+        ctx.strokeText(
+          num.toString(),
+          cv.x * textureWidth,
+          (1 - cv.y) * textureHeight,
+        );
+        ctx.fillText(
+          num.toString(),
+          cv.x * textureWidth,
+          (1 - cv.y) * textureHeight,
+        );
+      });
+    }
+
+    const { faceHeight, faceOffset } = dice[die];
 
     ctx.save();
+
     ctx.font = `${60 * faceHeight}px Arial`;
     const {
       actualBoundingBoxAscent,
@@ -102,127 +124,72 @@ export function createTextureDataURL({
     const textHeight = actualBoundingBoxAscent + actualBoundingBoxDescent;
     ctx.fillStyle = 'rgb( 63, 255, 63 )';
     ctx.translate(
-      center.x * width,
-      (1 - center.y) * height + textHeight / 2 + (d4 ? 0 : faceOffset),
+      center.x * textureWidth,
+      (1 - center.y) * textureHeight +
+        textHeight / 2 +
+        (die === 'd4' ? 0 : faceOffset),
     );
-    if (d4) {
+    if (die === 'd4') {
       ctx.translate(0, -textHeight / 2);
       const { dir, offset } = {
-        1: { dir: 1, offset: 2.0944 * 1 },
-        2: { dir: -1, offset: 2.0944 * 2 },
-        3: { dir: 1, offset: 2.0944 * 2 },
-        4: { dir: -1, offset: 2.0944 * 0 },
+        1: { dir: -1, offset: 2.0944 * 0 },
+        2: { dir: 1, offset: 2.0944 * 2 },
+        3: { dir: -1, offset: 2.0944 * 2 },
+        4: { dir: 1, offset: 2.0944 * 1 },
       }[+value as 1 | 2 | 3 | 4];
 
       ctx.save();
-      ctx.rotate(dir * 2.0944 + offset);
-      ctx.translate(0, -70 + faceOffset);
-      ctx.rotate(Math.PI);
-      ctx.scale(1, -1);
+      ctx.rotate(2.0944 * 0.5 + dir * 2.0944 + offset);
+      ctx.translate(0, -10 + faceOffset);
       ctx.fillText(`${((+value + 0) % 4) + 1}`, 0, 0);
       ctx.restore();
 
       ctx.save();
-      ctx.rotate(dir * 2.0944 * 2 + offset);
-      ctx.translate(0, -70 + faceOffset);
-      ctx.rotate(Math.PI);
-      ctx.scale(1, -1);
+      ctx.rotate(2.0944 * 0.5 + dir * 2.0944 * 2 + offset);
+      ctx.translate(0, -10 + faceOffset);
       ctx.fillText(`${((+value + 1) % 4) + 1}`, 0, 0);
       ctx.restore();
 
-      ctx.rotate(dir * 2.0944 * 3 + offset);
-      ctx.translate(0, -70 + faceOffset);
-      ctx.rotate(Math.PI);
-      ctx.scale(1, -1);
+      ctx.rotate(2.0944 * 0.5 + dir * 2.0944 * 3 + offset);
+      ctx.translate(0, -10 + faceOffset);
       ctx.fillText(`${((+value + 2) % 4) + 1}`, 0, 0);
     } else {
-      ctx.rotate(Math.PI);
-      ctx.translate(0, textHeight);
-      ctx.scale(-1, 1);
-      ctx.fillText(`${value}`, 0, 0);
-      if ((distinct6and9 && +value === 6) || +value === 9) {
+      ctx.fillText(`${value}`, center.x, center.y);
+      if (distinct6and9 && (value === 6 || value === 9)) {
         ctx.translate(20 * faceHeight, 0);
         ctx.fillText('.', 0, 0);
       }
     }
 
     ctx.restore();
+
+    dataUrls.push(canvas.toDataURL());
+
+    return uvVertices;
   });
 
-  const dataUrl = canvas.toDataURL('image/png');
-
   if (debug) {
-    const id = `debug${JSON.stringify(faceValues)}`;
-    let img = document.getElementById(id) as HTMLImageElement | null;
-    if (!img) {
-      img = document.createElement('img');
-      img.id = id;
-      document.body.appendChild(img);
+    for (const [idx, dataUrl] of dataUrls.entries()) {
+      const id = `debug${die}_${idx}`;
+      let img = document.getElementById(id) as HTMLImageElement | null;
+      if (!img) {
+        img = document.createElement('img');
+        img.id = id;
+        document.body.appendChild(img);
+      }
+      img.src = dataUrl;
     }
-    img.src = dataUrl;
   }
 
-  return dataUrl;
+  // fill uvs with empty slots for extra vertices
+  uvs.length = vertices.length * 2;
 
-  function processFace(
-    ctx: CanvasRenderingContext2D,
-    face: number[],
-    uvs: Vector2[],
-    index: number,
-  ) {
-    // draw contour of face
-
-    ctx.beginPath();
-
-    a.set(0, 0);
-
-    for (let j = 0, jl = uvs.length; j < jl; j++) {
-      const uv = uvs[j];
-
-      a.x += uv.x;
-      a.y += uv.y;
-
-      if (j === 0) {
-        ctx.moveTo(uv.x * (width - 2) + 0.5, (1 - uv.y) * (height - 2) + 0.5);
-      } else {
-        ctx.lineTo(uv.x * (width - 2) + 0.5, (1 - uv.y) * (height - 2) + 0.5);
-      }
-    }
-
-    ctx.closePath();
-    ctx.stroke();
-    ctx.fillStyle = 'rgb( 0, 100, 0 )';
-    ctx.fill();
-
-    // calculate center of face
-
-    a.divideScalar(uvs.length);
-
-    // label the face number
-
-    ctx.font = '40px Arial';
-    ctx.fillStyle = 'rgb( 222, 63, 63 )';
-    ctx.fillText(`${index}`, a.x * width, (1 - a.y) * height);
-
-    //
-
-    ctx.font = '12px Arial';
-    ctx.fillStyle = 'rgb( 191, 191, 191 )';
-
-    // label uv edge orders
-
-    for (let j = 0, jl = uvs.length; j < jl; j++) {
-      const uv = uvs[j];
-      b.addVectors(a, uv).divideScalar(2);
-
-      const vnum = face[j];
-      ctx.fillText(abc[j] + vnum, b.x * width, (1 - b.y) * height);
-
-      if (b.x > 0.95) {
-        // wrap x
-
-        ctx.fillText(abc[j] + vnum, (b.x % 1) * width, (1 - b.y) * height);
-      }
-    }
-  }
+  return {
+    uv: new BufferAttribute(
+      new Float32Array(uvs.flatMap((uvs) => uvs.toArray())),
+      2,
+      false,
+    ),
+    textureDataUrls: dataUrls,
+  };
 }

@@ -39,7 +39,7 @@ export function Die({
     audioRef.current?.setRefDistance(40);
   }, []);
 
-  const [ref] = useDie({
+  const [ref, fromValue, toValue] = useDie({
     ...props,
     shape: dice[type].shape,
     type,
@@ -53,7 +53,10 @@ export function Die({
     },
   });
 
-  const textureMap = useLoader(TextureLoader, dice[type].textureDataUrl);
+  const textureMaps = useLoader(
+    TextureLoader,
+    (dice[type] as any).textureDataUrls as string[],
+  );
   const noiseMap = useLoader(TextureLoader, paper);
 
   const uniforms = React.useMemo(
@@ -65,9 +68,10 @@ export function Die({
       LightIntensity: { value: new Vector4(0.5, 0.5, 0.5, 1.0) },
       LightPosition: { value: new Vector4(0.0, 200.0, 500.0, 1.0) },
       Shininess: { value: 200.0 },
-      image: { value: textureMap },
+      image: { value: textureMaps[0] },
       noise: { value: noiseMap },
       dissolve: { value: (Math.PI * 3) / 2 },
+      uvOffset: { value: 0 },
     }),
     [],
   );
@@ -91,21 +95,38 @@ export function Die({
     }
   });
 
+  const geometry = React.useMemo(() => {
+    const geom = dice[type].geometry.clone();
+    const maxValue = +type.slice(1);
+    if (toValue) {
+      geom.groups.forEach((group, idx) => {
+        if (
+          typeof group.materialIndex === 'number' &&
+          group.materialIndex > 0
+        ) {
+          group.materialIndex =
+            ((idx + (toValue - fromValue) + maxValue) % maxValue) + 1;
+        }
+      });
+    }
+    return geom;
+  }, [fromValue, toValue]);
+
   return (
-    <mesh
-      ref={ref}
-      name={type}
-      castShadow
-      receiveShadow
-      geometry={dice[type].geometry}
-    >
-      <shaderMaterial
-        ref={materialRef}
-        attach="material"
-        fragmentShader={fragmentShader}
-        vertexShader={vertexShader}
-        uniforms={uniforms}
-      />
+    <mesh ref={ref} name={type} geometry={geometry} castShadow receiveShadow>
+      {false && (
+        <shaderMaterial
+          ref={materialRef}
+          attachArray="material"
+          fragmentShader={fragmentShader}
+          vertexShader={vertexShader}
+          uniforms={uniforms}
+        />
+      )}
+      <meshPhongMaterial color="rgb( 255, 63, 63 )" attachArray="material" />
+      {textureMaps.map((map) => (
+        <meshPhongMaterial key={map.uuid} map={map} attachArray="material" />
+      ))}
       <positionalAudio
         ref={audioRef}
         buffer={sound}
