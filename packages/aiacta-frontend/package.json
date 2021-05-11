@@ -5,7 +5,7 @@
     "dev": "vite",
     "build": "tsc && vite build && yarn i18n:extract && yarn i18n:compile",
     "serve": "vite build && vite preview",
-    "test": "yarn test:jest && yarn test:cypress",
+    "test": "yarn test:cypress",
     "test:jest": "jest",
     "test:cypress": "cypress run",
     "test:dev": "cypress open",
