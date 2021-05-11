@@ -31,7 +31,7 @@ function reactIntl() {
     transform(src) {
       const matches = [
         ...src.matchAll(
-          /(React.createElement\(FormattedMessage,\s*{\s*)(defaultMessage:\s*(["'`])((?:.|\s)+?)\3,?)/gm,
+          /((?:React.createElement\(FormattedMessage,\s*{\s*)|(?:formatMessage\(\s*{\s*))(defaultMessage:\s*(["'`])((?:.|\s)+?)\3,?)/gm,
         ),
       ];
       if (matches.length > 0) {
