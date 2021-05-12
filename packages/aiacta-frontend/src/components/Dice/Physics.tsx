@@ -4,10 +4,7 @@ import { Body, Shape, World } from 'cannon-es';
 import { ContactEquation } from 'equations/ContactEquation';
 import * as React from 'react';
 import { Object3D } from 'three';
-import {
-  calculateQuaternionForResult,
-  calculateResults,
-} from './diceCalculation';
+import { calculateResults } from './diceCalculation';
 import { createWorld, DieMaterial } from './world';
 
 type CalculationOptions = {
@@ -53,23 +50,13 @@ export function Physics({
               precalculationDice.current!,
             );
             precalculationDice.current!.forEach((die) => {
-              const { body, targetValue } = die;
+              const { targetValue } = die;
               if (results.has(die)) {
                 console.log(
                   `die landed on ${
                     results.get(die)!.value
                   }, need to be ${targetValue}`,
                 );
-                const rotationQuaternion = calculateQuaternionForResult(
-                  body,
-                  results.get(die)!.value,
-                  targetValue,
-                );
-                // if (rotationQuaternion) {
-                //   body.quaternion = rotationQuaternion;
-                // }
-              }
-              if (results.get(die)) {
                 die.onCalculated(results.get(die)!.value);
               }
             });

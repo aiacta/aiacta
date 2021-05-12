@@ -57,14 +57,19 @@ export function calculateFaceValue(body: Body, upside: -1 | 1) {
   })[];
   const upVec = new Vec3(0, 0, upside);
   let closestFace = -1;
+  let closestD = -1;
   for (const [idx, faceNormal] of shape.faceNormals.entries()) {
     const worldNormal = body.quaternion.vmult(faceNormal);
-    if (worldNormal.dot(upVec) >= 1 - 1e-3) {
+    const d = worldNormal.dot(upVec);
+    if (d > closestD) {
       closestFace = idx;
-      break;
+      closestD = d;
     }
   }
   if (closestFace >= 0) {
+    if (closestD < 1 - 1e-3) {
+      console.warn('No face straight up landed, using closest face');
+    }
     return faces[closestFace].faceValue;
   } else {
     return null;
