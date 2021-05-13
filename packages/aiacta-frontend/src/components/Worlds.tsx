@@ -213,17 +213,12 @@ function CreateNewWorld({ className }: { className: string }) {
           }
           disabled={creatingWorld.fetching}
         >
-          {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-          {/* @ts-ignore */}
           <Modal.Header>
-            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-            {/* @ts-ignore */}
             <Modal.Title>
               <FormattedMessage defaultMessage="New world" />
             </Modal.Title>
           </Modal.Header>
-          {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-          {/* @ts-ignore */}
+
           <Modal.Body>
             <FormGroup controlId="name">
               <FormControlLabel>
@@ -269,8 +264,6 @@ function CreateNewWorld({ className }: { className: string }) {
               </FormGroup>
             )}
           </Modal.Body>
-          {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-          {/* @ts-ignore */}
           <Modal.Footer>
             <Button
               onClick={() => setOpen(false)}
