@@ -5,7 +5,7 @@ import { JssProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import { ApiProvider } from './api';
-import { StyleProvider, useColorScheme } from './hooks';
+import { useColorScheme } from './hooks';
 
 export function Provider({ children }: { children: React.ReactNode }) {
   const messages = useMessages();
@@ -14,13 +14,11 @@ export function Provider({ children }: { children: React.ReactNode }) {
     <RecoilRoot>
       <JssProvider>
         <ThemeProvider>
-          <StyleProvider>
-            <IntlProvider locale="en" messages={messages}>
-              <ApiProvider>
-                <BrowserRouter>{children}</BrowserRouter>
-              </ApiProvider>
-            </IntlProvider>
-          </StyleProvider>
+          <IntlProvider locale="en" messages={messages}>
+            <ApiProvider>
+              <BrowserRouter>{children}</BrowserRouter>
+            </ApiProvider>
+          </IntlProvider>
         </ThemeProvider>
       </JssProvider>
     </RecoilRoot>

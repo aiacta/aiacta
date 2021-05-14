@@ -1,6 +1,6 @@
 import { devtoolsExchange } from '@urql/devtools';
 import * as React from 'react';
-import { atom, useRecoilState } from 'recoil';
+import { atom, useRecoilValue } from 'recoil';
 import { createClient, dedupExchange, fetchExchange, Provider } from 'urql';
 import { useAuthExchange } from './auth';
 import { useCacheExchange } from './cache';
@@ -15,9 +15,7 @@ export const isAuthenticatedAtom = atom({
 });
 
 export function ApiProvider({ children }: { children: React.ReactNode }) {
-  const [isAuthenticated, setAuthenticated] = useRecoilState(
-    isAuthenticatedAtom,
-  );
+  const isAuthenticated = useRecoilValue(isAuthenticatedAtom);
 
   const cacheExchange = useCacheExchange();
   const errorExchange = useErrorExchange();
