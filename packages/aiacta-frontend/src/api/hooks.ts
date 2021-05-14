@@ -348,6 +348,14 @@ export type AvailableWorldsQuery = { __typename?: 'Query' } & {
   >;
 };
 
+export type WorldToJoinQueryVariables = Exact<{
+  worldId: Scalars['ID'];
+}>;
+
+export type WorldToJoinQuery = { __typename?: 'Query' } & {
+  world?: Maybe<{ __typename?: 'World' } & Pick<World, 'isPasswordProtected'>>;
+};
+
 export type CreateWorldMutationVariables = Exact<{
   name: Scalars['String'];
   password?: Maybe<Scalars['String']>;
@@ -575,6 +583,22 @@ export function useAvailableWorldsQuery(
 ) {
   return Urql.useQuery<AvailableWorldsQuery>({
     query: AvailableWorldsDocument,
+    ...options,
+  });
+}
+export const WorldToJoinDocument = gql`
+  query WorldToJoin($worldId: ID!) {
+    world(id: $worldId) {
+      isPasswordProtected
+    }
+  }
+`;
+
+export function useWorldToJoinQuery(
+  options: Omit<Urql.UseQueryArgs<WorldToJoinQueryVariables>, 'query'> = {},
+) {
+  return Urql.useQuery<WorldToJoinQuery>({
+    query: WorldToJoinDocument,
     ...options,
   });
 }

@@ -18,6 +18,12 @@ query AvailableWorlds {
   }
 }
 
+query WorldToJoin($worldId: ID!) {
+  world(id: $worldId) {
+    isPasswordProtected
+  }
+}
+
 mutation CreateWorld($name: String!, $password: String, $inviteOnly: Boolean!) {
   createWorld(
     input: { name: $name, password: $password, inviteOnly: $inviteOnly }

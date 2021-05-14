@@ -58,7 +58,8 @@ export function App() {
     <>
       <Routes>
         <Route path="/" element={<WorldsPage />} />
-        <Route path="/worlds*" element={<WorldsPage />} />
+        <Route path="/worlds/join/:worldId" element={<WorldsPage />} />
+        <Route path="/worlds/new" element={<WorldsPage />} />
         <Route path="/world/:worldId" element={<WorldPage />} />
       </Routes>
     </>

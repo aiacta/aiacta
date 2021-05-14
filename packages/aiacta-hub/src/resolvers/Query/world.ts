@@ -1,9 +1,9 @@
-import { ForbiddenError, Resolvers } from '@aiacta/graphql';
+import { Resolvers } from '@aiacta/graphql';
 import { Context } from '../../context';
 
 export const QueryWorldResolver: Resolvers<Context> = {
   Query: {
-    world: (_, { id }, { prisma, playerId }) =>
+    world: (_, { id }, { prisma }) =>
       prisma.world
         .findUnique({
           where: { id },
@@ -14,9 +14,6 @@ export const QueryWorldResolver: Resolvers<Context> = {
         .then((world) => {
           if (!world) {
             return null;
-          }
-          if (!world?.players.some((p) => p.playerId === playerId)) {
-            throw new ForbiddenError('Cannot access world');
           }
           return {
             ...world,

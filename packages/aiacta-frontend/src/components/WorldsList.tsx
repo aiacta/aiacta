@@ -7,11 +7,13 @@ import {
   Text,
 } from '@mantine/core';
 import * as React from 'react';
+import { BiLock } from 'react-icons/bi';
 import { GiWorld } from 'react-icons/gi';
 import { FormattedMessage } from 'react-intl';
 import { createUseStyles } from 'react-jss';
 import { Link, useMatch, useNavigate } from 'react-router-dom';
 import { useAvailableWorldsQuery, useMeQuery } from '../api';
+import { JoinWorldForm } from './JoinWorldForm';
 import { NewWorldForm } from './NewWorldForm';
 
 const useStyles = createUseStyles({
@@ -46,9 +48,8 @@ export function WorldsList() {
   const [me] = useMeQuery();
 
   const createWorld = useMatch('/worlds/new');
+  const joinWorld = useMatch('/worlds/join/:worldId');
   const navigate = useNavigate();
-
-  console.log(createWorld);
 
   return (
     <>
@@ -82,12 +83,17 @@ export function WorldsList() {
                   <Button
                     variant="link"
                     component={Link}
-                    to={`world/${world.id}`}
+                    to={`/world/${world.id}`}
                   >
                     <FormattedMessage defaultMessage="Open world" />
                   </Button>
                 ) : (
-                  <Button variant="link">
+                  <Button
+                    variant="link"
+                    component={Link}
+                    to={`/worlds/join/${world.id}`}
+                  >
+                    {world.isPasswordProtected && <BiLock />}
                     <FormattedMessage defaultMessage="Join world" />
                   </Button>
                 )}
@@ -99,7 +105,7 @@ export function WorldsList() {
               size="xl"
               variant="outline"
               component={Link}
-              to="worlds/new"
+              to="/worlds/new"
             >
               <FormattedMessage defaultMessage="Create a new world" />
             </Button>
@@ -107,6 +113,7 @@ export function WorldsList() {
         </Paper>
       </Container>
       <NewWorldForm opened={!!createWorld} onClose={() => navigate('/')} />
+      <JoinWorldForm opened={!!joinWorld} onClose={() => navigate('/')} />
     </>
   );
 }
