@@ -80,6 +80,7 @@ export type MutationSendMessageArgs = {
 export type MutationSignUpArgs = {
   name: Scalars['String'];
   password: Scalars['String'];
+  color?: Maybe<Scalars['String']>;
 };
 
 export type DiceRoll = {
@@ -314,6 +315,7 @@ export type LoginMutation = { __typename?: 'Mutation' } & {
 export type SignUpMutationVariables = Exact<{
   name: Scalars['String'];
   password: Scalars['String'];
+  color?: Maybe<Scalars['String']>;
 }>;
 
 export type SignUpMutation = { __typename?: 'Mutation' } & {
@@ -532,8 +534,8 @@ export function useLoginMutation() {
   return Urql.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
 }
 export const SignUpDocument = gql`
-  mutation SignUp($name: String!, $password: String!) {
-    signUp(name: $name, password: $password) {
+  mutation SignUp($name: String!, $password: String!, $color: String) {
+    signUp(name: $name, password: $password, color: $color) {
       token
     }
   }

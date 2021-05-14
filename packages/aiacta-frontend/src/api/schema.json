@@ -264,6 +264,13 @@
                     "name": "Any"
                   }
                 }
+              },
+              {
+                "name": "color",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
               }
             ]
           }

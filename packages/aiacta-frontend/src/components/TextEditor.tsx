@@ -1,3 +1,4 @@
+import { Input } from '@mantine/core';
 import {
   convertFromRaw,
   convertToRaw,
@@ -9,8 +10,7 @@ import {
   Modifier,
 } from 'draft-js';
 import * as React from 'react';
-import { Input } from 'rsuite';
-import { useStylesheet } from '../hooks';
+import { createUseStyles } from 'react-jss';
 
 export const TextEditor = React.forwardRef(function TextEditor(
   {
@@ -79,12 +79,13 @@ export const TextEditor = React.forwardRef(function TextEditor(
 
   return (
     <Input
-      as={DraftEditor}
+      component={DraftEditor}
+      style={{ flex: 1 }}
+      {...props}
       editorState={state}
       onChangeEditorState={onChangeEditorState}
-      onSubmit={onSubmit as any}
-      {...props}
-    />
+      onSubmit={onSubmit}
+    ></Input>
   );
 });
 
@@ -129,17 +130,22 @@ export function TextDisplay({ value }: { value: string }) {
   );
 }
 
-const DraftEditor = React.forwardRef(function DraftEditor(
-  { onSubmit, editorState, onChangeEditorState, ...props }: any,
-  _ref,
-) {
-  const classes = useStylesheet({
-    input: {
-      padding: '7px 11px',
-      width: '100%',
-      minWidth: 300,
-    },
-  });
+const useStyles = createUseStyles({
+  input: {
+    padding: '7px 11px',
+    width: '100%',
+    boxSizing: 'border-box',
+  },
+});
+
+function DraftEditor({
+  onSubmit,
+  editorState,
+  onChangeEditorState,
+  className,
+  ...props
+}: any) {
+  const classes = useStyles();
 
   const keyBindingFn = React.useCallback(
     (evt: React.KeyboardEvent<unknown>) => {
@@ -188,7 +194,7 @@ const DraftEditor = React.forwardRef(function DraftEditor(
   }, [props.readOnly]);
 
   return (
-    <div className={classes.input}>
+    <div className={`${classes.input} ${className}`}>
       <Editor
         {...props}
         ref={ref}
@@ -201,4 +207,4 @@ const DraftEditor = React.forwardRef(function DraftEditor(
       />
     </div>
   );
-});
+}

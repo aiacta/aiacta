@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Login } from '../components';
+import { LoginForm } from '../components';
 
 export function LoginPage() {
-  return <Login />;
+  return <LoginForm />;
 }

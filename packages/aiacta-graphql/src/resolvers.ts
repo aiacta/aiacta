@@ -90,6 +90,7 @@ export type MutationSendMessageArgs = {
 export type MutationSignUpArgs = {
   name: Scalars['String'];
   password: Scalars['String'];
+  color?: Maybe<Scalars['String']>;
 };
 
 export type DiceRoll = {

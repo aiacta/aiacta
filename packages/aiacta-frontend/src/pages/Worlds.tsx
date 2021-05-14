@@ -1,6 +1,10 @@
 import * as React from 'react';
-import { Worlds } from '../components';
+import { WorldsList } from '../components';
 
 export function WorldsPage() {
-  return <Worlds />;
+  return (
+    <>
+      <WorldsList />
+    </>
+  );
 }

@@ -1,57 +1,65 @@
-import { Send, Time } from '@rsuite/icons';
+import {
+  Button,
+  Container,
+  ElementsGroup,
+  Paper,
+  Text,
+  Tooltip,
+} from '@mantine/core';
 import * as React from 'react';
+import { MdAccessTime } from 'react-icons/md';
+import { RiSendPlaneFill } from 'react-icons/ri';
+import { createUseStyles } from 'react-jss';
 import { useParams } from 'react-router-dom';
-import { InputGroup, Panel, Tooltip, Whisper } from 'rsuite';
 import {
   useChatMessagesQuery,
   useNewChatMessagesSubscription,
   useSendMessageMutation,
 } from '../api';
-import { useStylesheet } from '../hooks';
 import { SynchronizedFormattedRelativeTime } from './SynchronizedFormattedRelativeTime';
 import { TextDisplay, TextEditor, useTextEditorRef } from './TextEditor';
 
+const useStyles = createUseStyles({
+  container: {
+    position: 'fixed',
+    left: 0,
+    bottom: 0,
+    width: '100%',
+  },
+  messages: {
+    flex: '1 1 auto',
+    display: 'flex',
+    flexDirection: 'column-reverse',
+    overflowY: 'auto',
+    maxHeight: '50vh',
+    paddingRight: 5,
+    '&::-webkit-scrollbar': {
+      width: 5,
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: 'rgba(73,125,189, 0.2)',
+    },
+  },
+  message: {
+    display: 'grid',
+    gridTemplateAreas: `"from time" "body body"`,
+    gridTemplateColumns: '1fr auto',
+    marginBottom: 10,
+  },
+  from: {
+    gridArea: 'from',
+  },
+  time: {
+    gridArea: 'time',
+    color: '#97969B',
+  },
+  body: {
+    gridArea: 'body',
+  },
+});
+
 export function Chat() {
-  const classes = useStylesheet({
-    container: {
-      position: 'fixed',
-      left: 0,
-      bottom: 0,
-      maxWidth: 400,
-    },
-    messages: {
-      flex: '1 1 auto',
-      display: 'flex',
-      flexDirection: 'column-reverse',
-      overflowY: 'auto',
-      maxHeight: '50vh',
-      paddingRight: 5,
-      $nest: {
-        '&::-webkit-scrollbar': {
-          width: 5,
-        },
-        '&::-webkit-scrollbar-thumb': {
-          backgroundColor: 'rgba(73,125,189, 0.2)',
-        },
-      },
-    },
-    message: {
-      display: 'grid',
-      gridTemplateAreas: `"from time" "body body"`,
-      gridTemplateColumns: '1fr auto',
-      marginBottom: 10,
-    },
-    from: {
-      gridArea: 'from',
-    },
-    time: {
-      gridArea: 'time',
-      color: '#97969B',
-    },
-    body: {
-      gridArea: 'body',
-    },
-  });
+  const classes = useStyles();
 
   const { worldId } = useParams();
 
@@ -62,64 +70,70 @@ export function Chat() {
   const editor = useTextEditorRef();
 
   return (
-    <Panel bordered className={classes.container}>
-      <div className={classes.messages}>
-        {[...(messages.data?.world?.messages ?? [])].map(
-          (msg) =>
-            msg && (
-              <div key={msg.id} className={classes.message}>
-                <div className={classes.from}>
-                  <em>{msg.author.name}</em>
-                </div>
-                <div className={classes.time}>
-                  <Whisper
-                    trigger="hover"
-                    speaker={
-                      <Tooltip>
+    <Container className={classes.container} padding={0} size={320}>
+      <Paper padding="xs">
+        <div className={classes.messages}>
+          {[...(messages.data?.world?.messages ?? [])].map(
+            (msg) =>
+              msg && (
+                <div key={msg.id} className={classes.message}>
+                  <Text className={classes.from} size="xs">
+                    <em>{msg.author.name}</em>
+                  </Text>
+                  <div className={classes.time}>
+                    <Tooltip
+                      label={
                         <SynchronizedFormattedRelativeTime
                           value={msg.createdAt}
                         />
-                      </Tooltip>
-                    }
-                  >
-                    <Time />
-                  </Whisper>
+                      }
+                      withArrow
+                      position="left"
+                    >
+                      <MdAccessTime />
+                    </Tooltip>
+                  </div>
+                  <div className={classes.body}>
+                    {msg.component ? (
+                      <>
+                        {msg.component}: {msg.text}
+                      </>
+                    ) : (
+                      msg.text && (
+                        <Text size="sm">
+                          <TextDisplay value={msg.text} />
+                        </Text>
+                      )
+                    )}
+                  </div>
                 </div>
-                <div className={classes.body}>
-                  {msg.component ? (
-                    <>
-                      {msg.component}: {msg.text}
-                    </>
-                  ) : (
-                    msg.text && <TextDisplay value={msg.text} />
-                  )}
-                </div>
-              </div>
-            ),
-        )}
-      </div>
-      <InputGroup>
-        <TextEditor
-          ref={editor}
-          readOnly={mutation.fetching}
-          onPressEnter={(value) => {
-            sendMessage({ worldId, text: value }).then(() =>
-              editor.current.resetState(),
-            );
-          }}
-        />
-        <InputGroup.Button
-          onClick={() =>
-            sendMessage({
-              worldId,
-              text: editor.current.getValue(),
-            }).then(() => editor.current.resetState())
-          }
-          loading={mutation.fetching}
-        >
-          <Send />
-        </InputGroup.Button>
-      </InputGroup>
-    </Panel>
+              ),
+          )}
+        </div>
+        <ElementsGroup spacing={0} position="left">
+          <TextEditor
+            ref={editor}
+            readOnly={mutation.fetching}
+            onPressEnter={(value) => {
+              sendMessage({ worldId, text: value }).then(() =>
+                editor.current.resetState(),
+              );
+            }}
+          />
+          <Button
+            style={{ marginLeft: 'auto', height: 'auto', alignSelf: 'stretch' }}
+            size="lg"
+            onClick={() =>
+              sendMessage({
+                worldId,
+                text: editor.current.getValue(),
+              }).then(() => editor.current.resetState())
+            }
+          >
+            <RiSendPlaneFill />
+          </Button>
+        </ElementsGroup>
+      </Paper>
+    </Container>
   );
 }

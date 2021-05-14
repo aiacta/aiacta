@@ -2,9 +2,9 @@ import { devtoolsExchange } from '@urql/devtools';
 import * as React from 'react';
 import { atom, useRecoilState } from 'recoil';
 import { createClient, dedupExchange, fetchExchange, Provider } from 'urql';
-import { authExchange } from './auth';
-import { cacheExchange } from './cache';
-import { errorExchange } from './error';
+import { useAuthExchange } from './auth';
+import { useCacheExchange } from './cache';
+import { useErrorExchange } from './error';
 import { subscriptionExchange } from './subscription';
 
 export * from './hooks';
@@ -19,6 +19,10 @@ export function ApiProvider({ children }: { children: React.ReactNode }) {
     isAuthenticatedAtom,
   );
 
+  const cacheExchange = useCacheExchange();
+  const errorExchange = useErrorExchange();
+  const authExchange = useAuthExchange();
+
   const client = React.useMemo(() => {
     return createClient({
       url: '/api',
@@ -26,14 +30,8 @@ export function ApiProvider({ children }: { children: React.ReactNode }) {
         devtoolsExchange,
         dedupExchange,
         cacheExchange,
-        errorExchange(() => {
-          localStorage.removeItem('aiacta:auth');
-          setAuthenticated(false);
-        }),
-        authExchange(() => {
-          localStorage.removeItem('aiacta:auth');
-          setAuthenticated(false);
-        }),
+        errorExchange,
+        authExchange,
         fetchExchange,
         subscriptionExchange,
       ],

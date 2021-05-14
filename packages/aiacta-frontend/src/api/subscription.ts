@@ -3,7 +3,9 @@ import { subscriptionExchange as urqlSubscriptionExchange } from 'urql';
 export * from './hooks';
 
 const wsClient = createWSClient({
-  url: import.meta.env.PROD ? `wss://${location.host}` : 'ws://localhost:8080',
+  url: import.meta.env.PROD
+    ? `wss://${location.host}`
+    : `ws://${location.hostname}:8080`,
 });
 
 export const subscriptionExchange = urqlSubscriptionExchange({
