@@ -13,6 +13,7 @@ import { FormattedMessage } from 'react-intl';
 import { createUseStyles } from 'react-jss';
 import { Link, useMatch, useNavigate } from 'react-router-dom';
 import { useAvailableWorldsQuery, useMeQuery } from '../api';
+import { isTruthy } from '../util';
 import { JoinWorldForm } from './JoinWorldForm';
 import { NewWorldForm } from './NewWorldForm';
 
@@ -116,8 +117,4 @@ export function WorldsList() {
       <JoinWorldForm opened={!!joinWorld} onClose={() => navigate('/')} />
     </>
   );
-}
-
-function isTruthy<T>(d: T | null | undefined | ''): d is T {
-  return !!d;
 }
