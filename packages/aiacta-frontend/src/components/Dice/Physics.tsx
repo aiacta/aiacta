@@ -3,7 +3,7 @@ import { useFrame } from '@react-three/fiber';
 import { Body, Shape, World } from 'cannon-es';
 import { ContactEquation } from 'equations/ContactEquation';
 import * as React from 'react';
-import { Object3D } from 'three';
+import { Mesh } from 'three';
 import { calculateResults } from './diceCalculation';
 import { createWorld, DieMaterial } from './world';
 
@@ -105,7 +105,7 @@ export function useDie<PossibleValues extends number = number>({
   }) => void;
 }) {
   const { world, precalculateDie } = React.useContext(context);
-  const ref = React.useRef<Object3D>();
+  const ref = React.useRef<Mesh>();
   const bodyRef = React.useRef<Body>();
 
   const [{ fromValue, toValue }, setFromTo] = React.useState({
@@ -115,7 +115,7 @@ export function useDie<PossibleValues extends number = number>({
 
   React.useLayoutEffect(() => {
     if (!ref.current) {
-      ref.current = new Object3D();
+      ref.current = new Mesh();
     }
 
     const body = new Body({ mass: 1 });
