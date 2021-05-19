@@ -1,11 +1,4 @@
-import {
-  Button,
-  Container,
-  ElementsGroup,
-  Paper,
-  Text,
-  Tooltip,
-} from '@mantine/core';
+import { Button, Container, Group, Paper, Text, Tooltip } from '@mantine/core';
 import { AnimatePresence, motion } from 'framer-motion';
 import * as React from 'react';
 import { MdAccessTime } from 'react-icons/md';
@@ -136,7 +129,7 @@ function MessageInput() {
   const editor = useTextEditorRef();
 
   return (
-    <ElementsGroup spacing={0} position="left">
+    <Group spacing={0} position="left">
       <TextEditor
         ref={editor}
         readOnly={mutation.fetching}
@@ -158,6 +151,6 @@ function MessageInput() {
       >
         <RiSendPlaneFill />
       </Button>
-    </ElementsGroup>
+    </Group>
   );
 }
