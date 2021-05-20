@@ -9,7 +9,6 @@ vec4 LightPosition = vec4(0., 200., 500., 1.);
 vec3 LightIntensity = vec3(0.5, 0.5, 0.5);
 float Shininess = 200.;
 
-uniform sampler2D image;
 uniform sampler2D noise;
 uniform float dissolve;
 
@@ -27,7 +26,7 @@ vec3 phong() {
 }
 
 void main() {
-  vec3 col = texture2D(image, vUv).xyz;
+  vec3 col = vec3(1., 0., 0.);
 
   vec3 noi = texture2D(noise, vUv).xyz;
 

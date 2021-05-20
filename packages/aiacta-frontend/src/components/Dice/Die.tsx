@@ -1,20 +1,15 @@
 import { useFrame, useLoader } from '@react-three/fiber';
 import * as React from 'react';
-import {
-  AudioLoader,
-  PositionalAudio,
-  ShaderMaterial,
-  TextureLoader,
-  Vector3,
-  Vector4,
-} from 'three';
+import { AudioLoader, PositionalAudio, TextureLoader } from 'three';
 import paper from './crumpled_paper.jpeg';
 import { DiceBoxContext } from './DiceBox';
 import dieSound from './die.wav?url';
 import { createDie } from './factory';
 import { useDie } from './Physics';
 import fragmentShader from './shader/dissolve_frag.glsl?raw';
+import fragmentNoImageShader from './shader/dissolve_fragNoImage.glsl?raw';
 import vertexShader from './shader/dissolve_vert.glsl?raw';
+import vertexNoImageShader from './shader/dissolve_vertNoImage.glsl?raw';
 
 export function Die({
   type,
@@ -61,34 +56,16 @@ export function Die({
 
   const uniforms = React.useMemo(
     () => ({
-      // phong material uniforms
-      Ka: { value: new Vector3(1, 1, 1) },
-      Kd: { value: new Vector3(1, 1, 1) },
-      Ks: { value: new Vector3(1, 1, 1) },
-      LightIntensity: { value: new Vector4(0.5, 0.5, 0.5, 1.0) },
-      LightPosition: { value: new Vector4(0.0, 200.0, 500.0, 1.0) },
-      Shininess: { value: 200.0 },
-      image: { value: textureMaps[0] },
       noise: { value: noiseMap },
-      dissolve: { value: (Math.PI * 3) / 2 },
-      uvOffset: { value: 0 },
+      dissolve: { value: 0 },
     }),
     [],
   );
-
-  const materialRef = React.useRef<ShaderMaterial>();
   const calledDissolve = React.useRef(false);
-
   useFrame(() => {
-    if (materialRef.current && dissolve) {
-      materialRef.current.uniforms.dissolve.value = Math.min(
-        materialRef.current.uniforms.dissolve.value + 0.075,
-        Math.PI * 3,
-      );
-      if (
-        !calledDissolve.current &&
-        materialRef.current.uniforms.dissolve.value >= Math.PI * 3
-      ) {
+    if (ref.current && dissolve) {
+      uniforms.dissolve.value = Math.min(uniforms.dissolve.value + 0.01, 1);
+      if (!calledDissolve.current && uniforms.dissolve.value >= 1) {
         onDissolved?.();
         calledDissolve.current = true;
       }
@@ -114,18 +91,24 @@ export function Die({
 
   return (
     <mesh ref={ref} name={type} geometry={geometry} castShadow receiveShadow>
-      {false && (
+      <shaderMaterial
+        attachArray="material"
+        fragmentShader={fragmentNoImageShader}
+        vertexShader={vertexNoImageShader}
+        uniforms={uniforms}
+      />
+      {/* <meshPhongMaterial color="hotpink" attachArray="material" /> */}
+      {textureMaps.map((texture) => (
         <shaderMaterial
-          ref={materialRef}
+          key={texture.uuid}
           attachArray="material"
           fragmentShader={fragmentShader}
           vertexShader={vertexShader}
-          uniforms={uniforms}
+          uniforms={{
+            image: { value: texture },
+            ...uniforms,
+          }}
         />
-      )}
-      <meshPhongMaterial color="rgb( 255, 63, 63 )" attachArray="material" />
-      {textureMaps.map((map) => (
-        <meshPhongMaterial key={map.uuid} map={map} attachArray="material" />
       ))}
       <positionalAudio
         ref={audioRef}

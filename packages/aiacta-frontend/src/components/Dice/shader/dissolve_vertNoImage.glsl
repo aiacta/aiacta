@@ -8,9 +8,9 @@ uniform float dissolve;
 void main() {
   Normal = normalize(normalMatrix * normal);
   Position = vec3(modelViewMatrix * vec4(position, 1.0));
-  vUv = uv;
+  vUv = vec2(mod(position.x, 1.), mod(position.x, 1.));
 
-  vec3 col = texture2D(noise, uv).xyz;
+  vec3 col = texture2D(noise, vUv).xyz;
   vec3 nor = vec3(.0, .0, .0);
   if(col.x < dissolve - .03) {
     nor = normal * 0.2 * sin(dissolve) * cos(dissolve) * tan(dissolve);
