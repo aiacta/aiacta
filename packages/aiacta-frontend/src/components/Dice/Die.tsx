@@ -88,6 +88,11 @@ export function Die({
     }
     return geom;
   }, [fromValue, toValue]);
+  React.useEffect(() => {
+    return () => {
+      geometry.dispose();
+    };
+  }, [geometry]);
 
   return (
     <mesh ref={ref} name={type} geometry={geometry} castShadow receiveShadow>
