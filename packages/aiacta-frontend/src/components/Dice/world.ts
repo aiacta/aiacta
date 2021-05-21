@@ -13,7 +13,9 @@ export const BarrierMaterial = new Material();
 
 export function createWorld(width: number, height: number, gravity = -100) {
   const world = new World({ allowSleep: true });
+
   world.gravity.set(0, 0, gravity);
+
   world.addContactMaterial(
     new ContactMaterial(FloorMaterial, DieMaterial, {
       friction: 0.3,

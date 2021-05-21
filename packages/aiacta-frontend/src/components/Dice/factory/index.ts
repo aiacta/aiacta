@@ -8,6 +8,10 @@ export function createDie(die: DieType) {
 
   const shape = createShape(geometry, vertices, faces)!;
 
+  if (typeof document === 'undefined') {
+    return { geometry, shape, textureDataUrls: [] };
+  }
+
   const { uv, textureDataUrls } = createTextures(die, vertices, faceGroups);
 
   geometry.setAttribute('uv', uv);
