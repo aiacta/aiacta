@@ -7,7 +7,7 @@ import { Mesh, Vector3 } from 'three';
 import { useDiceRollsSubscription } from '../../api';
 import { isTruthy } from '../../util';
 import { Die } from './Die';
-import PhysicsWorker from './physics?worker';
+import PhysicsWorker from './physics.tsx?worker';
 
 const maxConcurrentRolls = 10;
 const maxConcurrentDice = 100;
