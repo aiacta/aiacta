@@ -133,7 +133,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@react-three/cannon", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:1.1.1"],
             ["@react-three/drei", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:4.3.3"],
             ["@react-three/fiber", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:6.0.19"],
-            ["@rsuite/icons", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:1.0.0"],
             ["@swc-node/jest", "npm:1.2.1"],
             ["@types/draft-js", "npm:0.11.1"],
             ["@types/jest", "npm:26.0.20"],
@@ -4003,48 +4002,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             "react-dom",
             "react",
             "three"
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
-      ["@rsuite/icon-font", [
-        ["npm:4.0.0", {
-          "packageLocation": "./.yarn/cache/@rsuite-icon-font-npm-4.0.0-3727858cae-0780a0c2de.zip/node_modules/@rsuite/icon-font/",
-          "packageDependencies": [
-            ["@rsuite/icon-font", "npm:4.0.0"],
-            ["react", "npm:17.0.2"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
-      ["@rsuite/icons", [
-        ["npm:1.0.0", {
-          "packageLocation": "./.yarn/cache/@rsuite-icons-npm-1.0.0-6f1391cfaf-0fc9e5ab36.zip/node_modules/@rsuite/icons/",
-          "packageDependencies": [
-            ["@rsuite/icons", "npm:1.0.0"]
-          ],
-          "linkType": "SOFT",
-        }],
-        ["virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:1.0.0", {
-          "packageLocation": "./.yarn/$$virtual/@rsuite-icons-virtual-76c18375f9/0/cache/@rsuite-icons-npm-1.0.0-6f1391cfaf-0fc9e5ab36.zip/node_modules/@rsuite/icons/",
-          "packageDependencies": [
-            ["@rsuite/icons", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:1.0.0"],
-            ["@babel/runtime", "npm:7.13.9"],
-            ["@rsuite/icon-font", "npm:4.0.0"],
-            ["@types/react", "npm:17.0.2"],
-            ["@types/react-dom", "npm:17.0.1"],
-            ["classnames", "npm:2.2.6"],
-            ["insert-css", "npm:2.0.0"],
-            ["lodash", "npm:4.17.20"],
-            ["prop-types", "npm:15.7.2"],
-            ["react", "npm:17.0.1"],
-            ["react-dom", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:17.0.1"]
-          ],
-          "packagePeers": [
-            "@types/react-dom",
-            "@types/react",
-            "react-dom",
-            "react"
           ],
           "linkType": "HARD",
         }]
@@ -10252,15 +10209,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
-      ["insert-css", [
-        ["npm:2.0.0", {
-          "packageLocation": "./.yarn/cache/insert-css-npm-2.0.0-d1330c86df-5774edbc9c.zip/node_modules/insert-css/",
-          "packageDependencies": [
-            ["insert-css", "npm:2.0.0"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
       ["intl-messageformat", [
         ["npm:9.5.2", {
           "packageLocation": "./.yarn/cache/intl-messageformat-npm-9.5.2-46672c30e7-4574a35b9e.zip/node_modules/intl-messageformat/",
@@ -14522,15 +14470,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/react-npm-17.0.1-98658812fc-a76d86ec97.zip/node_modules/react/",
           "packageDependencies": [
             ["react", "npm:17.0.1"],
-            ["loose-envify", "npm:1.4.0"],
-            ["object-assign", "npm:4.1.1"]
-          ],
-          "linkType": "HARD",
-        }],
-        ["npm:17.0.2", {
-          "packageLocation": "./.yarn/cache/react-npm-17.0.2-99ba37d931-7d0dfebafe.zip/node_modules/react/",
-          "packageDependencies": [
-            ["react", "npm:17.0.2"],
             ["loose-envify", "npm:1.4.0"],
             ["object-assign", "npm:4.1.1"]
           ],

@@ -43,7 +43,6 @@ __metadata:
     "@react-three/cannon": 1.1.1
     "@react-three/drei": 4.3.3
     "@react-three/fiber": 6.0.19
-    "@rsuite/icons": 1.0.0
     "@swc-node/jest": 1.2.1
     "@types/draft-js": ^0
     "@types/jest": 26.0.20
@@ -1085,15 +1084,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:*, @babel/runtime@npm:^7.8.7":
-  version: 7.13.9
-  resolution: "@babel/runtime@npm:7.13.9"
-  dependencies:
-    regenerator-runtime: ^0.13.4
-  checksum: e6f79d20e10c2921520c499f3cf295a9ee5c137e73f77f77eedde9f9073bc3541c1fc7fa6c97b0613f4140303ac00d08506e9f090068d219c58781d2b62c662d
-  languageName: node
-  linkType: hard
-
 "@babel/runtime@npm:7.12.5, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.7.6":
   version: 7.12.5
   resolution: "@babel/runtime@npm:7.12.5"
@@ -1118,6 +1108,15 @@ __metadata:
   dependencies:
     regenerator-runtime: ^0.13.4
   checksum: 22014226b96a8c8e8d4e8bcdb011f317d1b32881aef424a669dc6ceaee14993d3609172967853cbf9c25c724c25145d45885b6c9df56ba241c12820776607f1f
+  languageName: node
+  linkType: hard
+
+"@babel/runtime@npm:^7.8.7":
+  version: 7.13.9
+  resolution: "@babel/runtime@npm:7.13.9"
+  dependencies:
+    regenerator-runtime: ^0.13.4
+  checksum: e6f79d20e10c2921520c499f3cf295a9ee5c137e73f77f77eedde9f9073bc3541c1fc7fa6c97b0613f4140303ac00d08506e9f090068d219c58781d2b62c662d
   languageName: node
   linkType: hard
 
@@ -2693,28 +2692,6 @@ __metadata:
     react-dom:
       optional: true
   checksum: 36808e45ac9614f8db9b95225ed865d3332e4b1c8a78cd3e5b9a99e875268e3d04b7b476f5ab4c31fc159d86a0a09a33a90522ebc10c276f10ff03f9b9154455
-  languageName: node
-  linkType: hard
-
-"@rsuite/icon-font@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "@rsuite/icon-font@npm:4.0.0"
-  checksum: 0780a0c2de63af55fd5c02fe3db3e89a1345ac469d8db37a214f46b54466d2e3fa6c0e236a414854840926c2fa566e7e63f5c47cbf5c6856b9a0dccb681e1bc5
-  languageName: node
-  linkType: hard
-
-"@rsuite/icons@npm:1.0.0":
-  version: 1.0.0
-  resolution: "@rsuite/icons@npm:1.0.0"
-  dependencies:
-    "@rsuite/icon-font": ^4.0.0
-    classnames: ^2.2.5
-    insert-css: ^2.0.0
-    lodash: ^4.17.20
-  peerDependencies:
-    react: ">=16.8.0"
-    react-dom: ">=16.8.0"
-  checksum: 0fc9e5ab36e7b96d3e831b6b68891e1a091d26c7f780d81d979c7cc3765cc48f52d60531ec9bde4277a1a541a2f145b96c720722ddd1f9472d576bf3a916423f
   languageName: node
   linkType: hard
 
@@ -4948,7 +4925,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"classnames@npm:2.2.6, classnames@npm:^2.2.5":
+"classnames@npm:2.2.6":
   version: 2.2.6
   resolution: "classnames@npm:2.2.6"
   checksum: 490eaeca5931846737ffd33e472a701d268d5b8bc5717dd4cf108a127b06e86e05350e06799abbbe763a0e4c945b4217f6700b7ae00ddc703505682c370e5cf2
@@ -7906,13 +7883,6 @@ __metadata:
     strip-ansi: ^6.0.0
     through: ^2.3.6
   checksum: fa0cbd9594a04e04c5c10a806e9a86b23986acdc7d07c75afdbc03412ff03b1d201efa83d9d64929afe99a901a093bfc9ae7ab13560f8e557cb98eddbe5bf37d
-  languageName: node
-  linkType: hard
-
-"insert-css@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "insert-css@npm:2.0.0"
-  checksum: 5774edbc9c5982b4dc32e4781f34e5ced08be65ef4c9b494d43508a5b0c872202cd73ccf2af541efef4ed07f08b85802c255f619545f5a24e5fc25a45df27bd2
   languageName: node
   linkType: hard
 
@@ -11481,7 +11451,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:*, prop-types@npm:15.7.2, prop-types@npm:^15.5.8, prop-types@npm:^15.6.0, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2":
+"prop-types@npm:15.7.2, prop-types@npm:^15.5.8, prop-types@npm:^15.6.0, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2":
   version: 15.7.2
   resolution: "prop-types@npm:15.7.2"
   dependencies:
@@ -11872,16 +11842,6 @@ __metadata:
     react: ">=16.13"
     react-dom: ">=16.13"
   checksum: 5328749ed9700b43aff6f61ba9925c220efff3477dac55605a9e411ac28832ab4ff142675ff084712f48f9a2baed3f829974785e7dac47636f6fd1d14e339113
-  languageName: node
-  linkType: hard
-
-"react@npm:*":
-  version: 17.0.2
-  resolution: "react@npm:17.0.2"
-  dependencies:
-    loose-envify: ^1.1.0
-    object-assign: ^4.1.1
-  checksum: 7d0dfebafe1d297503157abb2e9acdb49852185deb8700c16f4a6faad87642f84903ab18cfc16f40b9a0dfe97540f99834982ee953e6d48b39c41608dc3e4b29
   languageName: node
   linkType: hard
 
