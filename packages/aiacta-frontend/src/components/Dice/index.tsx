@@ -11,6 +11,7 @@ import PhysicsWorker from './physics?worker';
 
 const maxConcurrentRolls = 10;
 const maxConcurrentDice = 100;
+const debug = false;
 
 export const Physics = (() => {
   const Physics = new PhysicsWorker();
@@ -94,7 +95,6 @@ export const Physics = (() => {
             rolledValue: die.rolledValue,
             iteration,
           });
-          console.log(`${die.id} rolled ${die.rolledValue}`);
         });
         break;
       }
@@ -205,6 +205,7 @@ export function DiceBox() {
         {rolls.map((roll) => (
           <Roll key={roll.id} roll={roll} onRemove={() => removeRoll(roll)} />
         ))}
+        {debug && <DebugRolls />}
       </React.Suspense>
     </ThreeCanvas>
   );
@@ -320,11 +321,72 @@ function Roll({
             ++dissolved.current >= roll.dice.length && onRemove();
             Physics.removeDie(die);
           }}
-          targetValue={die.rolledValue}
+          targetValue={die.targetValue}
           rolledValue={die.rolledValue}
           iteration={die.iteration}
         />
       ))}
     </React.Fragment>
+  );
+}
+
+function DebugRolls() {
+  const [rolls, setRolls] = React.useState([] as any[]);
+
+  React.useEffect(() => {
+    const demoDice = [
+      {
+        id: 'test-d4.0' + Math.random(),
+        position: [0, 0, 10],
+        velocity: [0, 0, 0],
+        angularVelocity: [10, 10, 0],
+        quaternion: [1, 0, 0, 0],
+        type: 'd4',
+      },
+      {
+        id: 'test-d4.1' + Math.random(),
+        position: [0, 0, 10],
+        velocity: [0, 0, 0],
+        angularVelocity: [10, 10, 0],
+        quaternion: [1, 0, 0, 0],
+        type: 'd4',
+      },
+      {
+        id: 'test-d4.2' + Math.random(),
+        position: [0, 0, 10],
+        velocity: [0, 0, 0],
+        angularVelocity: [10, 10, 0],
+        quaternion: [1, 0, 0, 0],
+        type: 'd4',
+      },
+    ] as any[];
+
+    Physics.addDice(demoDice).then((result) => {
+      setRolls([
+        {
+          id: 'test' + Math.random(),
+          dice: demoDice.map((die, idx) => ({
+            ...die,
+            targetValue: 1,
+            rolledValue: result[idx].rolledValue,
+            iteration: 10000,
+          })),
+        },
+      ]);
+    });
+  }, []);
+
+  return (
+    <>
+      {rolls.map((roll) => (
+        <Roll
+          key={roll.id}
+          roll={roll}
+          onRemove={() => {
+            //
+          }}
+        />
+      ))}
+    </>
   );
 }

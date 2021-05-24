@@ -69,15 +69,16 @@ export function Die({
 
   const geometry = React.useMemo(() => {
     const geom = dice[type].geometry.clone();
-    if (rolledValue !== targetValue && targetValue) {
+    if (targetValue) {
       const maxValue = +type.slice(1);
       const distance = targetValue - rolledValue;
-      geom.groups.forEach((group, idx) => {
+      geom.groups.forEach((group) => {
         if (
           typeof group.materialIndex === 'number' &&
           group.materialIndex > 0
         ) {
-          group.materialIndex = ((idx + distance + maxValue) % maxValue) + 1;
+          group.materialIndex =
+            ((group.materialIndex - 1 + distance + maxValue) % maxValue) + 1;
         }
       });
     }
