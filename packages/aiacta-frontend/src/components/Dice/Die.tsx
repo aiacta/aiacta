@@ -70,7 +70,7 @@ export function Die({
   const geometry = React.useMemo(() => {
     const geom = dice[type].geometry.clone();
     const maxValue = +type.slice(1);
-    if (targetValue) {
+    if (rolledValue !== targetValue) {
       geom.groups.forEach((group, idx) => {
         if (
           typeof group.materialIndex === 'number' &&

@@ -320,7 +320,7 @@ function Roll({
             ++dissolved.current >= roll.dice.length && onRemove();
             Physics.removeDie(die);
           }}
-          targetValue={die.targetValue}
+          targetValue={die.rolledValue}
           rolledValue={die.rolledValue}
           iteration={die.iteration}
         />

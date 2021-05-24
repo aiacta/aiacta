@@ -18,20 +18,20 @@ export function createWorld(width: number, height: number, gravity = -100) {
 
   world.addContactMaterial(
     new ContactMaterial(FloorMaterial, DieMaterial, {
-      friction: 0.3,
-      restitution: 0.3,
-    }),
-  );
-  world.addContactMaterial(
-    new ContactMaterial(BarrierMaterial, DieMaterial, {
-      friction: 0.1,
+      friction: 0.01,
       restitution: 0.5,
     }),
   );
   world.addContactMaterial(
+    new ContactMaterial(BarrierMaterial, DieMaterial, {
+      friction: 0,
+      restitution: 1,
+    }),
+  );
+  world.addContactMaterial(
     new ContactMaterial(DieMaterial, DieMaterial, {
-      friction: 0.4,
-      restitution: 0.4,
+      friction: 0,
+      restitution: 0.5,
     }),
   );
 
