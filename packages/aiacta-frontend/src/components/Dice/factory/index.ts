@@ -6,7 +6,7 @@ import { createTextures } from './texture';
 export function createDie(die: DieType) {
   const { geometry, vertices, faces, faceGroups } = createGeometry(die);
 
-  const shape = createShape(geometry, vertices, faces)!;
+  const shape = createShape(geometry, vertices, faces);
 
   if (typeof document === 'undefined') {
     return { geometry, shape, textureDataUrls: [] };
