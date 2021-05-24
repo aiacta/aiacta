@@ -136,25 +136,29 @@ export function createTextures(
           2: { dir: 1, offset: 2.0944 * 2 },
           3: { dir: -1, offset: 2.0944 * 2 },
           4: { dir: 1, offset: 2.0944 * 1 },
-        }[+value as 1 | 2 | 3 | 4];
+        }[value as 1 | 2 | 3 | 4];
 
         ctx.save();
         ctx.rotate(2.0944 * 0.5 + dir * 2.0944 + offset);
         ctx.translate(0, -10 + faceOffset);
-        ctx.fillText(`${((+value + 0) % 4) + 1}`, 0, 0);
+        ctx.fillText(`${((value + 0) % 4) + 1}`, 0, 0);
         ctx.restore();
 
         ctx.save();
         ctx.rotate(2.0944 * 0.5 + dir * 2.0944 * 2 + offset);
         ctx.translate(0, -10 + faceOffset);
-        ctx.fillText(`${((+value + 1) % 4) + 1}`, 0, 0);
+        ctx.fillText(`${((value + 1) % 4) + 1}`, 0, 0);
         ctx.restore();
 
         ctx.rotate(2.0944 * 0.5 + dir * 2.0944 * 3 + offset);
         ctx.translate(0, -10 + faceOffset);
-        ctx.fillText(`${((+value + 2) % 4) + 1}`, 0, 0);
+        ctx.fillText(`${((value + 2) % 4) + 1}`, 0, 0);
       } else {
-        ctx.fillText(`${value}`, center.x, center.y);
+        ctx.fillText(
+          die === 'd10' && value === 10 ? `0` : `${value}`,
+          center.x,
+          center.y,
+        );
         if (distinct6and9 && (value === 6 || value === 9)) {
           ctx.translate(20 * faceHeight, 0);
           ctx.fillText('.', 0, 0);
