@@ -130,12 +130,17 @@ self.addEventListener('message', (msg) => {
 function calculateResults(dice: { id: string; body: Body; type: string }[]) {
   calculatingNewDice = true;
 
-  const vectorsPreCalculation = world.bodies.map((body) => ({
-    position: body.position.clone(),
-    quaternion: body.quaternion.clone(),
-    velocity: body.velocity.clone(),
-    angularVelocity: body.angularVelocity.clone(),
-  }));
+  const vectorsPreCalculation = new Map(
+    world.bodies.map((body) => [
+      body,
+      {
+        position: body.position.clone(),
+        quaternion: body.quaternion.clone(),
+        velocity: body.velocity.clone(),
+        angularVelocity: body.angularVelocity.clone(),
+      },
+    ]),
+  );
 
   let iteration = 0;
   do {
@@ -155,12 +160,12 @@ function calculateResults(dice: { id: string; body: Body; type: string }[]) {
     return { ...die, rolledValue: value };
   });
 
-  vectorsPreCalculation.forEach((vectors, idx) => {
-    world.bodies[idx].position.copy(vectors.position);
-    world.bodies[idx].quaternion.copy(vectors.quaternion);
-    world.bodies[idx].velocity.copy(vectors.velocity);
-    world.bodies[idx].angularVelocity.copy(vectors.angularVelocity);
-    world.bodies[idx].wakeUp();
+  world.bodies.forEach((body) => {
+    body.position = vectorsPreCalculation.get(body)!.position;
+    body.quaternion = vectorsPreCalculation.get(body)!.quaternion;
+    body.velocity = vectorsPreCalculation.get(body)!.velocity;
+    body.angularVelocity = vectorsPreCalculation.get(body)!.angularVelocity;
+    body.wakeUp();
   });
 
   calculatingNewDice = false;
