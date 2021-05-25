@@ -10,7 +10,7 @@ import {
   useNewChatMessagesSubscription,
   useSendMessageMutation,
 } from '../api';
-import { isTruthy } from '../util';
+import { isTruthy, zIndices } from '../util';
 import { SynchronizedFormattedRelativeTime } from './SynchronizedFormattedRelativeTime';
 import { TextDisplay, TextEditor, useTextEditorRef } from './TextEditor';
 
@@ -20,6 +20,7 @@ const useStyles = createUseStyles({
     left: 0,
     bottom: 0,
     width: '100%',
+    zIndex: zIndices.Chat,
   },
   messages: {
     flex: '1 1 auto',

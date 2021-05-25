@@ -1,11 +1,11 @@
 import { useQueue } from '@mantine/hooks';
-import { useAspect } from '@react-three/drei';
+import { Plane, useAspect } from '@react-three/drei';
 import { Canvas as ThreeCanvas } from '@react-three/fiber';
 import * as React from 'react';
 import { useParams } from 'react-router-dom';
 import { Mesh, Vector3 } from 'three';
 import { useDiceRollsSubscription } from '../../api';
-import { isTruthy } from '../../util';
+import { isTruthy, zIndices } from '../../util';
 import { Die } from './Die';
 import PhysicsWorker from './physics?worker';
 
@@ -195,14 +195,31 @@ export function DiceBox() {
         left: 0,
         top: 0,
         pointerEvents: 'none',
+        zIndex: zIndices.Dice,
       }}
       camera={{
         position: [0, 0, 80],
         fov: 20,
       }}
+      shadows
     >
+      <ambientLight intensity={0.5} />
+      <directionalLight
+        intensity={0.5}
+        position={[6, 6, 10]}
+        castShadow
+        shadow-mapSize-width={1024}
+        shadow-mapSize-height={1024}
+        shadow-camera-top={-100}
+        shadow-camera-bottom={100}
+        shadow-camera-left={-100}
+        shadow-camera-right={100}
+      />
       <SetupPhysics />
       <Rolls rolls={rolls.data?.diceRolls.filter(isTruthy)} />
+      <Plane receiveShadow args={[100, 100]}>
+        <shadowMaterial attach="material" />
+      </Plane>
     </ThreeCanvas>
   );
 }
