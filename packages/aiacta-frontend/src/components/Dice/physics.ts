@@ -60,7 +60,6 @@ self.addEventListener('message', (msg) => {
 
         body.addEventListener('collide', (event: any) => {
           if (!calculatingNewDice) {
-            console.log(event.contact);
             (self as any).postMessage({
               op: 'collision',
               id: die.id,
