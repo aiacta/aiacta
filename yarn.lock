@@ -40,7 +40,6 @@ __metadata:
     "@mantine/core": 1.2.1
     "@mantine/hooks": 1.2.1
     "@mantine/notifications": 1.2.1
-    "@react-three/cannon": 1.1.1
     "@react-three/drei": 5.1.6
     "@react-three/fiber": 6.1.5
     "@swc-node/jest": 1.3.0
@@ -2590,17 +2589,6 @@ __metadata:
   version: 2.23.0-36.adf5e8cba3daf12d456d911d72b6e9418681b28b
   resolution: "@prisma/engines@npm:2.23.0-36.adf5e8cba3daf12d456d911d72b6e9418681b28b"
   checksum: a0fffd848cb762adf8b027e948f0f9b20f5c7b7fcb3a4f2cbb87a20cd954c708f9b938a9bd8d6ee1f2057afe6b7a8357a0285bda3f2e503e8953ba133c93cda5
-  languageName: node
-  linkType: hard
-
-"@react-three/cannon@npm:1.1.1":
-  version: 1.1.1
-  resolution: "@react-three/cannon@npm:1.1.1"
-  peerDependencies:
-    react: ">=17.0"
-    react-dom: ">=17.0"
-    typescript: ">=4.2"
-  checksum: c85c0b79f71fe0763313f805bcdee838db0e255dd0a26fff9eeefb5b9b9e3c8c6ddd2b1f9df5efc35192c89267c7e86153eaf8695b5dfc315fdb1321da3b86c3
   languageName: node
   linkType: hard
 

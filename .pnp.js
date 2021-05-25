@@ -130,7 +130,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@mantine/core", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:1.2.1"],
             ["@mantine/hooks", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:1.2.1"],
             ["@mantine/notifications", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:1.2.1"],
-            ["@react-three/cannon", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:1.1.1"],
             ["@react-three/drei", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:5.1.6"],
             ["@react-three/fiber", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:6.1.5"],
             ["@swc-node/jest", "npm:1.3.0"],
@@ -3826,36 +3825,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@prisma-engines-version-npm-2.23.0-36.adf5e8cba3daf12d456d911d72b6e9418681b28b-ada144a754-71798acd7a.zip/node_modules/@prisma/engines-version/",
           "packageDependencies": [
             ["@prisma/engines-version", "npm:2.23.0-36.adf5e8cba3daf12d456d911d72b6e9418681b28b"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
-      ["@react-three/cannon", [
-        ["npm:1.1.1", {
-          "packageLocation": "./.yarn/cache/@react-three-cannon-npm-1.1.1-b903d1bc44-c85c0b79f7.zip/node_modules/@react-three/cannon/",
-          "packageDependencies": [
-            ["@react-three/cannon", "npm:1.1.1"]
-          ],
-          "linkType": "SOFT",
-        }],
-        ["virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:1.1.1", {
-          "packageLocation": "./.yarn/$$virtual/@react-three-cannon-virtual-a410dfa15c/0/cache/@react-three-cannon-npm-1.1.1-b903d1bc44-c85c0b79f7.zip/node_modules/@react-three/cannon/",
-          "packageDependencies": [
-            ["@react-three/cannon", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:1.1.1"],
-            ["@types/react", "npm:17.0.6"],
-            ["@types/react-dom", "npm:17.0.5"],
-            ["@types/typescript", null],
-            ["react", "npm:17.0.2"],
-            ["react-dom", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:17.0.2"],
-            ["typescript", "patch:typescript@npm%3A4.2.4#builtin<compat/typescript>::version=4.2.4&hash=a45b0e"]
-          ],
-          "packagePeers": [
-            "@types/react-dom",
-            "@types/react",
-            "@types/typescript",
-            "react-dom",
-            "react",
-            "typescript"
           ],
           "linkType": "HARD",
         }]

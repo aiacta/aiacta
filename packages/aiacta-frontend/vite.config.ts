@@ -19,6 +19,42 @@ export default defineConfig({
     },
   },
   assetsInclude: [/\.gltf$/],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          react: ['react', 'react-dom'],
+          three: ['three', '@react-three/fiber', '@react-three/drei'],
+          cannon: ['cannon-es'],
+          ui: [
+            '@mantine/core',
+            '@mantine/hooks',
+            '@mantine/notifications',
+            'draft-js',
+            'framer-motion',
+            'react-error-boundary',
+            'react-hook-form',
+            'react-icons',
+            'react-intl',
+            'react-jss',
+          ],
+          api: [
+            'recoil',
+            'graphql',
+            'graphql-tag',
+            'graphql-ws',
+            'history',
+            'msw',
+            'react-router-dom',
+            'urql',
+            '@urql/devtools',
+            '@urql/exchange-auth',
+            '@urql/exchange-graphcache',
+          ],
+        },
+      },
+    },
+  },
 });
 
 function reactIntl() {
