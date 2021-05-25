@@ -1,6 +1,11 @@
 import { Body, ConvexPolyhedron, Vec3, World } from 'cannon-es';
 import { createShape } from './factory/shape';
-import { createWorld, DieMaterial } from './world';
+import {
+  angularDamping,
+  createWorld,
+  DieMaterial,
+  linearDamping,
+} from './world';
 
 let world: World;
 let calculatingNewDice = false;
@@ -48,13 +53,14 @@ self.addEventListener('message', (msg) => {
 
         body.material = DieMaterial;
         body.sleepSpeedLimit = 10;
-        body.linearDamping = 0.1;
-        body.angularDamping = 0.1;
+        body.linearDamping = linearDamping;
+        body.angularDamping = angularDamping;
         (body as any).dieId = die.id;
         (body as any).bufferIndex = die.idx;
 
         body.addEventListener('collide', (event: any) => {
           if (!calculatingNewDice) {
+            console.log(event.contact);
             (self as any).postMessage({
               op: 'collision',
               id: die.id,

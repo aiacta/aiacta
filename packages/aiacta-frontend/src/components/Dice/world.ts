@@ -12,6 +12,9 @@ export const DieMaterial = new Material();
 export const FloorMaterial = new Material();
 export const BarrierMaterial = new Material();
 
+export const linearDamping = 0.1;
+export const angularDamping = 0.1;
+
 export function createWorld(width: number, height: number, gravity = -500) {
   const world = new World({ allowSleep: true });
 

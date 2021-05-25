@@ -96,10 +96,7 @@ export function Die({
       Physics.setDie(id, {
         mesh: ref.current,
         onCollision: (info) => {
-          if (
-            !audioRef.current?.isPlaying &&
-            info.contact.restitution === 0.3
-          ) {
+          if (!audioRef.current?.isPlaying) {
             audioRef.current?.setVolume(
               Math.min(1, info.target.velocity.length() / 50),
             );
