@@ -183,7 +183,8 @@ export const Physics = (() => {
 })();
 
 export function DiceBox() {
-  const { rolls, removeRoll } = useDiceRolls();
+  const { worldId } = useParams();
+  const [rolls] = useDiceRollsSubscription({ variables: { worldId } });
 
   return (
     <ThreeCanvas
@@ -201,13 +202,25 @@ export function DiceBox() {
       }}
     >
       <SetupPhysics />
-      <React.Suspense fallback={null}>
-        {rolls.map((roll) => (
-          <Roll key={roll.id} roll={roll} onRemove={() => removeRoll(roll)} />
-        ))}
-        {debug && <DebugRolls />}
-      </React.Suspense>
+      <Rolls rolls={rolls.data?.diceRolls.filter(isTruthy)} />
     </ThreeCanvas>
+  );
+}
+
+function Rolls({
+  rolls: rollData,
+}: {
+  rolls?: { id: string; dice: { id: string; type: string; value: number }[] }[];
+}) {
+  const { rolls, removeRoll } = useDiceRolls(rollData);
+
+  return (
+    <React.Suspense fallback={null}>
+      {rolls.map((roll) => (
+        <Roll key={roll.id} roll={roll} onRemove={() => removeRoll(roll)} />
+      ))}
+      {debug && <DebugRolls />}
+    </React.Suspense>
   );
 }
 
@@ -224,9 +237,9 @@ function SetupPhysics() {
   return null;
 }
 
-function useDiceRolls() {
-  const { worldId } = useParams();
-
+function useDiceRolls(
+  rolls?: { id: string; dice: { id: string; type: string; value: number }[] }[],
+) {
   const currentRolls = useQueue<{
     id: string;
     dice: {
@@ -240,23 +253,54 @@ function useDiceRolls() {
     limit: maxConcurrentRolls,
   });
 
-  const [rolls] = useDiceRollsSubscription({ variables: { worldId } });
+  const aspect = useAspect(
+    100,
+    (100 * window.innerHeight) / window.innerWidth,
+    0.6,
+  );
+
+  const minX = -aspect[0] / 2;
+  const minY = -aspect[1] / 2;
+  const maxX = aspect[0] / 2;
+  const maxY = aspect[1] / 2;
+
   React.useEffect(() => {
-    if (rolls.data?.diceRolls) {
+    if (rolls) {
       Promise.all(
-        rolls.data.diceRolls.filter(isTruthy).map(async (roll) => {
+        rolls.filter(isTruthy).map(async (roll) => {
+          const verticalOrHorizontal =
+            Math.sign(Math.random() - 0.5) < 0 ? 'vertical' : 'horizontal';
+          const position = (
+            verticalOrHorizontal === 'vertical'
+              ? [
+                  Math.sign(Math.random() - 0.5) < 0 ? minX : maxX,
+                  minY + aspect[1] * Math.random(),
+                  30,
+                ]
+              : [
+                  minX + aspect[0] * Math.random(),
+                  Math.sign(Math.random() - 0.5) < 0 ? minY : maxY,
+                  30,
+                ]
+          ) as [number, number, number];
+          const velocity = [-position[0] * 5, -position[1] * 5, 0] as [
+            number,
+            number,
+            number,
+          ];
+
           const results = await Physics.addDice(
             roll.dice.map((die) => ({
               ...die,
               type: die.type.toLowerCase(),
-              position: [0, 0, 10],
+              position,
               quaternion: [
                 Math.random(),
                 Math.random(),
                 Math.random(),
                 Math.random(),
               ],
-              velocity: [0, 0, 0],
+              velocity,
               angularVelocity: [
                 (0.7 + Math.random() * 0.3) *
                   20 *
@@ -283,7 +327,7 @@ function useDiceRolls() {
         }),
       );
     }
-  }, [rolls.data?.diceRolls]);
+  }, [rolls]);
 
   return {
     rolls: currentRolls.state,

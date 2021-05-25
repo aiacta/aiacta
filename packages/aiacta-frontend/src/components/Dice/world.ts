@@ -11,7 +11,7 @@ export const DieMaterial = new Material();
 export const FloorMaterial = new Material();
 export const BarrierMaterial = new Material();
 
-export function createWorld(width: number, height: number, gravity = -100) {
+export function createWorld(width: number, height: number, gravity = -1000) {
   const world = new World({ allowSleep: true });
 
   world.gravity.set(0, 0, gravity);

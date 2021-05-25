@@ -47,8 +47,8 @@ self.addEventListener('message', (msg) => {
         body.angularVelocity.set(...die.angularVelocity);
 
         body.material = DieMaterial;
-        body.sleepSpeedLimit = 1;
-        body.linearDamping = 0.1;
+        body.sleepSpeedLimit = 10;
+        // body.linearDamping = 0.1;
         body.angularDamping = 0.1;
         (body as any).dieId = die.id;
         (body as any).bufferIndex = die.idx;
@@ -184,7 +184,7 @@ function calculateFaceValue(body: Body, upside: -1 | 1) {
   for (const [idx, faceNormal] of shape.faceNormals.entries()) {
     const worldNormal = body.quaternion.vmult(faceNormal);
     const d = worldNormal.dot(upVec);
-    if (d > closestD) {
+    if (d > closestD && faces[idx]?.faceValue) {
       closestFace = idx;
       closestD = d;
     }
