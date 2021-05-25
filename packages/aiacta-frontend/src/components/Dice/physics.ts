@@ -1,17 +1,17 @@
 import { Body, ConvexPolyhedron, Vec3, World } from 'cannon-es';
-import { createDie } from './factory';
+import { createShape } from './factory/shape';
 import { createWorld, DieMaterial } from './world';
 
 let world: World;
 let calculatingNewDice = false;
 
 const shapes = {
-  d4: createDie('d4').shape,
-  d6: createDie('d6').shape,
-  d8: createDie('d8').shape,
-  d10: createDie('d10').shape,
-  d12: createDie('d12').shape,
-  d20: createDie('d20').shape,
+  d4: createShape('d4'),
+  d6: createShape('d6'),
+  d8: createShape('d8'),
+  d10: createShape('d10'),
+  d12: createShape('d12'),
+  d20: createShape('d20'),
 };
 
 self.addEventListener('message', (msg) => {

@@ -1,24 +1,19 @@
 import { DieType } from './dieValues';
 import { createGeometry } from './geometry';
-import { createShape } from './shape';
 import { createTextures } from './texture';
 
 export function createDie(die: DieType) {
-  const { geometry, vertices, faces, faceGroups } = createGeometry(die);
+  const geometry = createGeometry(die);
 
-  const shape = createShape(geometry, vertices, faces);
-
-  if (typeof document === 'undefined') {
-    return { geometry, shape, textureDataUrls: [] };
-  }
-
-  const { uv, textureDataUrls } = createTextures(die, vertices, faceGroups);
+  const { uv, textureDataUrls } = createTextures(
+    die,
+    geometry.attributes.position.count,
+  );
 
   geometry.setAttribute('uv', uv);
 
   return {
     geometry,
     textureDataUrls,
-    shape,
   };
 }

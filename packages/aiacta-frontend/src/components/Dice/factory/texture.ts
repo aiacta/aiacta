@@ -1,4 +1,4 @@
-import { BufferAttribute, Vector2, Vector3 } from 'three';
+import { BufferAttribute, Vector2 } from 'three';
 import { dice, DieType } from './dieValues';
 
 const textureWidth = 256;
@@ -8,19 +8,15 @@ const debug = false;
 
 const textureBgStyle = 'rgb( 255, 63, 63 )';
 
-export function createTextures(
-  die: DieType,
-  vertices: Vector3[],
-  faceGroups: { value: number; indices: number[][] }[],
-) {
+export function createTextures(die: DieType, vertexCount: number) {
   const dataUrls: string[] = [];
 
-  const { uvTemplate } = dice[die];
+  const { uvTemplate, faces } = dice[die];
 
   const distinct6and9 =
-    Math.max(...Object.values(faceGroups.map((g) => g.value))) >= 9;
+    Math.max(...Object.values(faces.map((g) => g.value))) >= 9;
 
-  const uvs = faceGroups
+  const uvs = faces
     .filter(({ value }) => value > 0)
     .flatMap(({ indices, value }, groupIdx) => {
       const uvVertices = indices.flat().flatMap((_, vertexIdx) => {
@@ -186,7 +182,7 @@ export function createTextures(
   }
 
   // fill uvs with empty slots for extra vertices
-  uvs.length = vertices.length * 2;
+  uvs.length = vertexCount * 2;
 
   return {
     uv: new BufferAttribute(
