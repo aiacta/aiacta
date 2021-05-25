@@ -37,7 +37,7 @@ self.addEventListener('message', (msg) => {
       };
 
       const diceBodies = dice.map((die) => {
-        const body = new Body({ mass: 100 });
+        const body = new Body({ mass: 10 });
 
         body.addShape(shapes[die.type as keyof typeof shapes]);
 
@@ -48,7 +48,7 @@ self.addEventListener('message', (msg) => {
 
         body.material = DieMaterial;
         body.sleepSpeedLimit = 10;
-        // body.linearDamping = 0.1;
+        body.linearDamping = 0.1;
         body.angularDamping = 0.1;
         (body as any).dieId = die.id;
         (body as any).bufferIndex = die.idx;

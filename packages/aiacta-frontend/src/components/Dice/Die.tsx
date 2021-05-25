@@ -111,7 +111,14 @@ export function Die({
   }, []);
 
   return (
-    <mesh ref={ref} name={type} geometry={geometry} castShadow receiveShadow>
+    <mesh
+      ref={ref}
+      name={type}
+      geometry={geometry}
+      castShadow
+      receiveShadow
+      position={[1000, 0, 0]}
+    >
       <shaderMaterial
         attachArray="material"
         fragmentShader={fragmentNoImageShader}
