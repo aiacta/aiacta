@@ -1,207 +1,266 @@
-import { Body, ConvexPolyhedron, Vec3, World } from 'cannon-es';
-import { createShape } from './factory/shape';
-import {
-  angularDamping,
-  createWorld,
-  DieMaterial,
-  linearDamping,
-} from './world';
+import * as React from 'react';
+import { Mesh, Vector3 } from 'three';
+import { isTruthy } from '../../util';
+import PhysicsWorker from './physics.worker?worker';
 
-let world: World;
-let calculatingNewDice = false;
+const Physics = new PhysicsWorker();
+const PhysicsContext =
+  React.createContext<{
+    setDie(
+      id: string,
+      opts: {
+        mesh: Mesh;
+        onCollision: (info: {
+          body: { velocity: Vector3 };
+          target: { velocity: Vector3 };
+          contact: { restitution: number };
+        }) => void;
+      },
+    ): void;
+    addDice(
+      dice: {
+        id: string;
+        type: string;
+        position: [number, number, number];
+        quaternion: [number, number, number, number];
+        velocity: [number, number, number];
+        angularVelocity: [number, number, number];
+      }[],
+    ): Promise<{ rolledValue: number; iteration: number }[]>;
+    removeDie(props: { id: string }): void;
+  } | null>(null);
 
-const shapes = {
-  d4: createShape('d4'),
-  d6: createShape('d6'),
-  d8: createShape('d8'),
-  d10: createShape('d10'),
-  d12: createShape('d12'),
-  d20: createShape('d20'),
-};
+const maxConcurrentDice = 100;
 
-self.addEventListener('message', (msg) => {
-  const { op, ...data } = msg.data;
-  switch (op) {
-    case 'init': {
-      const { width = 100, height = 100 } = data;
-      world = createWorld(width, height);
-      // todo copy old bodies?
-      break;
+export function usePhysics({
+  width,
+  height,
+}: {
+  width: number;
+  height: number;
+}) {
+  const [api] = React.useState(() => {
+    const bodies = Array.from(
+      { length: maxConcurrentDice },
+      () => null as null | string,
+    );
+    const meta = new Map<
+      string,
+      {
+        mesh: Mesh;
+        onCollision: (info: {
+          body: { velocity: Vector3 };
+          target: { velocity: Vector3 };
+          contact: { restitution: number };
+        }) => void;
+        onWakeUp: () => void;
+        onRest: () => void;
+      }
+    >();
+    let positions = new Float32Array(maxConcurrentDice * 3);
+    let quaternions = new Float32Array(maxConcurrentDice * 4);
+
+    const waitingDice = new Map<
+      string,
+      (r: { rolledValue: number; iteration: number }) => void
+    >();
+
+    function physicsLoop() {
+      if (positions.byteLength !== 0 && quaternions.byteLength !== 0) {
+        Physics.postMessage({ op: 'step', positions, quaternions }, [
+          positions.buffer,
+          quaternions.buffer,
+        ]);
+      }
+      requestAnimationFrame(physicsLoop);
     }
-    case 'addDice': {
-      const { dice } = data as {
+
+    Physics.addEventListener('message', (msg) => {
+      const { op, ...data } = msg.data;
+      switch (op) {
+        case 'frame': {
+          positions = data.positions;
+          quaternions = data.quaternions;
+          for (const [key, value] of meta) {
+            const idx = bodies.indexOf(key);
+            value.mesh.position.set(
+              positions[idx * 3 + 0],
+              positions[idx * 3 + 1],
+              positions[idx * 3 + 2],
+            );
+            value.mesh.quaternion.set(
+              quaternions[idx * 4 + 0],
+              quaternions[idx * 4 + 1],
+              quaternions[idx * 4 + 2],
+              quaternions[idx * 4 + 3],
+            );
+          }
+          break;
+        }
+        case 'collision': {
+          const { id, body, target, contact } = data as {
+            id: string;
+            body: { velocity: [number, number, number] };
+            target: { velocity: [number, number, number] };
+            contact: { restitution: number };
+          };
+          meta.get(id)?.onCollision({
+            body: { velocity: new Vector3(...body.velocity) },
+            target: { velocity: new Vector3(...target.velocity) },
+            contact,
+          });
+          break;
+        }
+        case 'wakeup': {
+          const { id } = data as { id: string };
+          meta.get(id)?.onWakeUp();
+          break;
+        }
+        case 'sleep': {
+          const { id } = data as { id: string };
+          meta.get(id)?.onRest();
+          break;
+        }
+        case 'roll': {
+          const { results, iteration } = data as {
+            results: { id: string; rolledValue: number }[];
+            iteration: number;
+          };
+          results.forEach((die) => {
+            waitingDice.get(die.id)?.({
+              rolledValue: die.rolledValue,
+              iteration,
+            });
+          });
+          break;
+        }
+      }
+    });
+
+    requestAnimationFrame(physicsLoop);
+
+    return {
+      init(width: number, height: number) {
+        Physics.postMessage({
+          op: 'init',
+          width,
+          height,
+        });
+      },
+      async addDice(
         dice: {
           id: string;
           type: string;
-          idx: number;
           position: [number, number, number];
           quaternion: [number, number, number, number];
           velocity: [number, number, number];
           angularVelocity: [number, number, number];
-        }[];
-      };
+        }[],
+      ) {
+        const diceToAdd = dice
+          .map((die) => {
+            const idx = bodies.findIndex((b) => !b);
 
-      const diceBodies = dice.map((die) => {
-        const body = new Body({ mass: 10 });
+            if (idx === -1) {
+              return null;
+            }
 
-        body.addShape(shapes[die.type as keyof typeof shapes]);
+            bodies[idx] = die.id;
 
-        body.position.set(...die.position);
-        body.quaternion.set(...die.quaternion);
-        body.velocity.set(...die.velocity);
-        body.angularVelocity.set(...die.angularVelocity);
-
-        body.material = DieMaterial;
-        body.sleepSpeedLimit = 10;
-        body.linearDamping = linearDamping;
-        body.angularDamping = angularDamping;
-        (body as any).dieId = die.id;
-        (body as any).bufferIndex = die.idx;
-
-        body.addEventListener('collide', (event: any) => {
-          if (!calculatingNewDice) {
-            (self as any).postMessage({
-              op: 'collision',
+            return {
               id: die.id,
-              body: { velocity: event.body.velocity.toArray() },
-              target: { velocity: event.target.velocity.toArray() },
-              contact: { restitution: event.contact.restitution },
-            });
-          }
+              type: die.type,
+              idx,
+              position: die.position,
+              quaternion: die.quaternion,
+              velocity: die.velocity,
+              angularVelocity: die.angularVelocity,
+            };
+          })
+          .filter(isTruthy);
+
+        Physics.postMessage({
+          op: 'addDice',
+          dice: diceToAdd,
         });
 
-        world.addBody(body);
-
-        return {
-          ...die,
-          body,
-        };
-      });
-
-      const { results, iteration } = calculateResults(diceBodies);
-
-      (self as any).postMessage({
-        op: 'roll',
-        results: results.map(({ id, rolledValue }) => ({ id, rolledValue })),
-        iteration,
-      });
-
-      break;
-    }
-    case 'removeDie': {
-      const { id } = data;
-
-      const body = world.bodies.find((body) => (body as any).dieId === id);
-      if (body) {
-        world.removeBody(body);
-      }
-
-      break;
-    }
-    case 'step': {
-      const { positions, quaternions } = data;
-
-      if (world) {
-        world.step(1 / 60);
-
-        world.bodies.forEach((body) => {
-          const idx = (body as any).bufferIndex;
-          if (typeof idx === 'number') {
-            positions[idx * 3 + 0] = body.position.x;
-            positions[idx * 3 + 1] = body.position.y;
-            positions[idx * 3 + 2] = body.position.z;
-
-            quaternions[idx * 4 + 0] = body.quaternion.x;
-            quaternions[idx * 4 + 1] = body.quaternion.y;
-            quaternions[idx * 4 + 2] = body.quaternion.z;
-            quaternions[idx * 4 + 3] = body.quaternion.w;
-          }
-        });
-      }
-
-      (self as any).postMessage(
-        {
-          op: 'frame',
-          positions,
-          quaternions,
-        },
-        [positions.buffer, quaternions.buffer],
-      );
-      break;
-    }
-  }
-});
-
-function calculateResults(dice: { id: string; body: Body; type: string }[]) {
-  calculatingNewDice = true;
-
-  const vectorsPreCalculation = new Map(
-    world.bodies.map((body) => [
-      body,
-      {
-        position: body.position.clone(),
-        quaternion: body.quaternion.clone(),
-        velocity: body.velocity.clone(),
-        angularVelocity: body.angularVelocity.clone(),
+        return Promise.all(
+          diceToAdd.map(
+            (die) =>
+              new Promise<{ rolledValue: number; iteration: number }>(
+                (resolve) => {
+                  waitingDice.set(die.id, resolve);
+                },
+              ),
+          ),
+        );
       },
-    ]),
-  );
-
-  let iteration = 0;
-  do {
-    world.step(1 / 60);
-  } while (world.hasActiveBodies && ++iteration < 10000);
-
-  if (iteration >= 10000) {
-    console.log('Could not settle dice', world.hasActiveBodies, iteration);
-  }
-
-  const results = dice.map((die) => {
-    const { body, type } = die;
-    const value = calculateFaceValue(body, type === 'd4' ? -1 : 1);
-    if (!value) {
-      console.log('No face found');
-    }
-    return { ...die, rolledValue: value };
+      removeDie(props: { id: string }) {
+        Physics.postMessage({
+          op: 'removeDie',
+          id: props.id,
+        });
+        bodies[bodies.indexOf(props.id)] = null;
+        meta.delete(props.id);
+      },
+      setDie(
+        id: string,
+        opts: {
+          mesh: Mesh;
+          onCollision: (info: {
+            body: { velocity: Vector3 };
+            target: { velocity: Vector3 };
+            contact: { restitution: number };
+          }) => void;
+          onWakeUp: () => void;
+          onRest: () => void;
+        },
+      ) {
+        meta.set(id, opts);
+      },
+    };
   });
 
-  world.bodies.forEach((body) => {
-    body.position = vectorsPreCalculation.get(body)!.position;
-    body.quaternion = vectorsPreCalculation.get(body)!.quaternion;
-    body.velocity = vectorsPreCalculation.get(body)!.velocity;
-    body.angularVelocity = vectorsPreCalculation.get(body)!.angularVelocity;
-    body.wakeUp();
-  });
+  React.useEffect(() => {
+    api.init(width, height);
+  }, [width, height]);
 
-  calculatingNewDice = false;
-
-  return { results, iteration };
+  return api;
 }
 
-function calculateFaceValue(body: Body, upside: -1 | 1) {
-  const shape = body.shapes[0] as ConvexPolyhedron;
-  const faces = shape.faces as any as (number[] & {
-    faceValue: number;
-  })[];
-  const upVec = new Vec3(0, 0, upside);
-  let closestFace = -1;
-  let closestD = -1;
-  for (const [idx, faceNormal] of shape.faceNormals.entries()) {
-    const worldNormal = body.quaternion.vmult(faceNormal);
-    const d = worldNormal.dot(upVec);
-    if (d > closestD && faces[idx]?.faceValue) {
-      closestFace = idx;
-      closestD = d;
-    }
+export const PhysicsProvider = PhysicsContext.Provider;
+
+export function usePhysicsApi() {
+  const api = React.useContext(PhysicsContext);
+
+  if (!api) {
+    throw new Error('Not inside a PhysicsContext!');
   }
-  if (closestFace >= 0) {
-    if (closestD < 1 - 1e-3) {
-      console.warn('No face straight up landed, using closest face');
-    }
-    return faces[closestFace].faceValue;
-  } else {
-    return null;
-  }
+
+  return api;
 }
 
-export {};
+export function usePhysicsForDie(
+  id: string,
+  opts: {
+    mesh: React.MutableRefObject<Mesh | undefined>;
+    onCollision: (info: {
+      body: { velocity: Vector3 };
+      target: { velocity: Vector3 };
+      contact: { restitution: number };
+    }) => void;
+    onWakeUp: () => void;
+    onRest: () => void;
+  },
+) {
+  const api = usePhysicsApi();
+
+  React.useEffect(() => {
+    if (opts.mesh.current) {
+      api.setDie(id, {
+        ...opts,
+        mesh: opts.mesh.current,
+      });
+    }
+  }, [id]);
+}

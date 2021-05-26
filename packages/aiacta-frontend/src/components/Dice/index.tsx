@@ -1,190 +1,96 @@
 import { useQueue } from '@mantine/hooks';
-import { Plane, useAspect } from '@react-three/drei';
+import { Plane, useAspect, useContextBridge } from '@react-three/drei';
 import { Canvas as ThreeCanvas } from '@react-three/fiber';
 import * as React from 'react';
 import { useParams } from 'react-router-dom';
-import { Mesh, Vector3 } from 'three';
 import { useDiceRollsSubscription } from '../../api';
 import { isTruthy, zIndices } from '../../util';
 import { Die } from './Die';
-import PhysicsWorker from './physics?worker';
+import { PhysicsProvider, usePhysics, usePhysicsApi } from './physics';
 
 const maxConcurrentRolls = 10;
-const maxConcurrentDice = 100;
 const debug = false;
 
-export const Physics = (() => {
-  const Physics = new PhysicsWorker();
+const RollContext =
+  React.createContext<{
+    shouldAwait: (date: string) => boolean;
+    awaitRoll: (id: string) => Promise<void>;
+    finishRoll: (id: string) => void;
+  } | null>(null);
 
-  const bodies = Array.from(
-    { length: maxConcurrentDice },
-    () => null as null | string,
-  );
-  const meta = new Map<
-    string,
-    {
-      mesh: Mesh;
-      onCollision: (info: {
-        body: { velocity: Vector3 };
-        target: { velocity: Vector3 };
-        contact: { restitution: number };
-      }) => void;
-    }
-  >();
-  let positions = new Float32Array(maxConcurrentDice * 3);
-  let quaternions = new Float32Array(maxConcurrentDice * 4);
+export function RollProvider({ children }: { children: React.ReactNode }) {
+  const [api] = React.useState(() => {
+    const waitingPromises = new Map<string, Promise<void>>();
+    const deferredRolls = new Map<string, () => void>();
+    const finishedRolls = new Set<string>();
+    const listeningSince = Date.now();
 
-  const waitingDice = new Map<
-    string,
-    (r: { rolledValue: number; iteration: number }) => void
-  >();
-
-  function physicsLoop() {
-    if (positions.byteLength !== 0 && quaternions.byteLength !== 0) {
-      Physics.postMessage({ op: 'step', positions, quaternions }, [
-        positions.buffer,
-        quaternions.buffer,
-      ]);
-    }
-    requestAnimationFrame(physicsLoop);
-  }
-
-  Physics.addEventListener('message', (msg) => {
-    const { op, ...data } = msg.data;
-    switch (op) {
-      case 'frame': {
-        positions = data.positions;
-        quaternions = data.quaternions;
-        for (const [key, value] of meta) {
-          const idx = bodies.indexOf(key);
-          value.mesh.position.set(
-            positions[idx * 3 + 0],
-            positions[idx * 3 + 1],
-            positions[idx * 3 + 2],
-          );
-          value.mesh.quaternion.set(
-            quaternions[idx * 4 + 0],
-            quaternions[idx * 4 + 1],
-            quaternions[idx * 4 + 2],
-            quaternions[idx * 4 + 3],
+    return {
+      shouldAwait(date: string) {
+        return new Date(date).getTime() >= listeningSince;
+      },
+      awaitRoll(id: string) {
+        if (finishedRolls.has(id)) {
+          return Promise.resolve();
+        }
+        if (!waitingPromises.has(id)) {
+          waitingPromises.set(
+            id,
+            new Promise<void>((resolve) => deferredRolls.set(id, resolve)),
           );
         }
-        break;
-      }
-      case 'collision': {
-        const { id, body, target, contact } = data as {
-          id: string;
-          body: { velocity: [number, number, number] };
-          target: { velocity: [number, number, number] };
-          contact: { restitution: number };
-        };
-        meta.get(id)?.onCollision({
-          body: { velocity: new Vector3(...body.velocity) },
-          target: { velocity: new Vector3(...target.velocity) },
-          contact,
-        });
-        break;
-      }
-      case 'roll': {
-        const { results, iteration } = data as {
-          results: { id: string; rolledValue: number }[];
-          iteration: number;
-        };
-        results.forEach((die) => {
-          waitingDice.get(die.id)?.({
-            rolledValue: die.rolledValue,
-            iteration,
-          });
-        });
-        break;
-      }
-    }
+        return waitingPromises.get(id)!;
+      },
+      finishRoll(id: string) {
+        deferredRolls.get(id)?.();
+        finishedRolls.add(id);
+      },
+    };
   });
 
-  requestAnimationFrame(physicsLoop);
+  return <RollContext.Provider value={api}>{children}</RollContext.Provider>;
+}
+
+export function useRollStatus(id: string, date: string) {
+  return useRollsStatus([id], date);
+}
+
+export function useRollsStatus(ids: string[], date: string) {
+  const api = React.useContext(RollContext);
+
+  if (!api) {
+    throw new Error('Not inside a RollContext');
+  }
+
+  const [status, setStatus] = React.useState<'rolling' | 'rolled'>(
+    ids.length > 0 && api.shouldAwait(date) ? 'rolling' : 'rolled',
+  );
+
+  React.useEffect(() => {
+    let isMounted = true;
+
+    Promise.all(ids.map((id) => api.awaitRoll(id))).then(() => {
+      if (isMounted) {
+        setStatus('rolled');
+      }
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [ids.join(',')]);
 
   return {
-    async addDice(
-      dice: {
-        id: string;
-        type: string;
-        position: [number, number, number];
-        quaternion: [number, number, number, number];
-        velocity: [number, number, number];
-        angularVelocity: [number, number, number];
-      }[],
-    ) {
-      const diceToAdd = dice
-        .map((die) => {
-          const idx = bodies.findIndex((b) => !b);
-
-          if (idx === -1) {
-            return null;
-          }
-
-          bodies[idx] = die.id;
-
-          return {
-            id: die.id,
-            type: die.type,
-            idx,
-            position: die.position,
-            quaternion: die.quaternion,
-            velocity: die.velocity,
-            angularVelocity: die.angularVelocity,
-          };
-        })
-        .filter(isTruthy);
-
-      Physics.postMessage({
-        op: 'addDice',
-        dice: diceToAdd,
-      });
-      return Promise.all(
-        diceToAdd.map(
-          (die) =>
-            new Promise<{ rolledValue: number; iteration: number }>(
-              (resolve) => {
-                waitingDice.set(die.id, resolve);
-              },
-            ),
-        ),
-      );
-    },
-    removeDie(props: { id: string }) {
-      Physics.postMessage({
-        op: 'removeDie',
-        id: props.id,
-      });
-      bodies[bodies.indexOf(props.id)] = null;
-      meta.delete(props.id);
-    },
-    setDie(
-      id: string,
-      opts: {
-        mesh: Mesh;
-        onCollision: (info: {
-          body: { velocity: Vector3 };
-          target: { velocity: Vector3 };
-          contact: { restitution: number };
-        }) => void;
-      },
-    ) {
-      meta.set(id, opts);
-    },
-    setSize(width: number, height: number) {
-      Physics.postMessage({
-        op: 'init',
-        width,
-        height,
-      });
-    },
+    isRolling: status === 'rolling',
+    isRolled: status === 'rolled',
+    status,
   };
-})();
+}
 
 export function DiceBox() {
   const { worldId } = useParams();
   const [rolls] = useDiceRollsSubscription({ variables: { worldId } });
+  const ContextBridge = useContextBridge(RollContext);
 
   return (
     <ThreeCanvas
@@ -215,11 +121,14 @@ export function DiceBox() {
         shadow-camera-left={-100}
         shadow-camera-right={100}
       />
-      <SetupPhysics />
-      <Rolls rolls={rolls.data?.diceRolls.filter(isTruthy)} />
-      <Plane receiveShadow args={[100, 100]}>
-        <shadowMaterial attach="material" />
-      </Plane>
+      <ContextBridge>
+        <Physics>
+          <Rolls rolls={rolls.data?.diceRolls.filter(isTruthy)} />
+          <Plane receiveShadow args={[100, 100]}>
+            <shadowMaterial attach="material" />
+          </Plane>
+        </Physics>
+      </ContextBridge>
     </ThreeCanvas>
   );
 }
@@ -231,27 +140,37 @@ function Rolls({
 }) {
   const { rolls, removeRoll } = useDiceRolls(rollData);
 
+  const rollsContext = React.useContext(RollContext);
+
+  if (!rollsContext) {
+    throw new Error('Not inside a RollContext');
+  }
+
   return (
     <React.Suspense fallback={null}>
       {rolls.map((roll) => (
-        <Roll key={roll.id} roll={roll} onRemove={() => removeRoll(roll)} />
+        <Roll
+          key={roll.id}
+          roll={roll}
+          onRemove={() => removeRoll(roll)}
+          onRest={() => rollsContext.finishRoll(roll.id)}
+        />
       ))}
       {debug && <DebugRolls />}
     </React.Suspense>
   );
 }
 
-function SetupPhysics() {
+function Physics({ children }: { children: React.ReactNode }) {
   const aspect = useAspect(
     100,
     (100 * window.innerHeight) / window.innerWidth,
     0.8,
   );
-  React.useEffect(() => {
-    Physics.setSize(aspect[0], aspect[1]);
-  }, [aspect[0], aspect[1]]);
 
-  return null;
+  const api = usePhysics({ width: aspect[0], height: aspect[1] });
+
+  return <PhysicsProvider value={api}>{children}</PhysicsProvider>;
 }
 
 function useDiceRolls(
@@ -281,6 +200,8 @@ function useDiceRolls(
   const maxX = aspect[0] / 2;
   const maxY = aspect[1] / 2;
 
+  const api = usePhysicsApi();
+
   React.useEffect(() => {
     if (rolls) {
       Promise.all(
@@ -306,7 +227,7 @@ function useDiceRolls(
             number,
           ];
 
-          const results = await Physics.addDice(
+          const results = await api.addDice(
             roll.dice.map((die) => ({
               ...die,
               type: die.type.toLowerCase(),
@@ -356,6 +277,7 @@ function useDiceRolls(
 function Roll({
   roll,
   onRemove,
+  onRest,
 }: {
   roll: {
     id: string;
@@ -368,8 +290,12 @@ function Roll({
     }[];
   };
   onRemove: () => void;
+  onRest: () => void;
 }) {
   const dissolved = React.useRef(0);
+  const resting = React.useRef(0);
+
+  const api = usePhysicsApi();
 
   return (
     <React.Fragment>
@@ -380,7 +306,13 @@ function Roll({
           type={die.type as any}
           onDissolved={() => {
             ++dissolved.current >= roll.dice.length && onRemove();
-            Physics.removeDie(die);
+            api.removeDie(die);
+          }}
+          onWakeUp={() => {
+            --resting.current;
+          }}
+          onRest={() => {
+            ++resting.current >= roll.dice.length && onRest();
           }}
           targetValue={die.targetValue}
           rolledValue={die.rolledValue}
@@ -393,6 +325,8 @@ function Roll({
 
 function DebugRolls() {
   const [rolls, setRolls] = React.useState([] as any[]);
+
+  const api = usePhysicsApi();
 
   React.useEffect(() => {
     const demoDice = [
@@ -422,7 +356,7 @@ function DebugRolls() {
       },
     ] as any[];
 
-    Physics.addDice(demoDice).then((result) => {
+    api.addDice(demoDice).then((result) => {
       setRolls([
         {
           id: 'test' + Math.random(),
@@ -444,6 +378,9 @@ function DebugRolls() {
           key={roll.id}
           roll={roll}
           onRemove={() => {
+            //
+          }}
+          onRest={() => {
             //
           }}
         />

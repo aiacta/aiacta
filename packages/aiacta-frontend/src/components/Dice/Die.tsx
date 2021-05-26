@@ -7,10 +7,10 @@ import {
   PositionalAudio,
   TextureLoader,
 } from 'three';
-import { Physics } from '.';
 import paper from './assets/crumpled_paper.jpeg';
 import dieSound from './assets/die.wav?url';
 import { createDie } from './factory';
+import { usePhysicsForDie } from './physics';
 import fragmentShader from './shader/dissolve_frag.glsl?raw';
 import fragmentNoImageShader from './shader/dissolve_fragNoImage.glsl?raw';
 import vertexShader from './shader/dissolve_vert.glsl?raw';
@@ -20,13 +20,17 @@ export function Die({
   id,
   type,
   onDissolved,
+  onWakeUp,
+  onRest,
   targetValue,
   rolledValue,
   iteration,
 }: {
   id: string;
   type: keyof typeof dice;
-  onDissolved?: () => void;
+  onDissolved: () => void;
+  onWakeUp: () => void;
+  onRest: () => void;
   targetValue: number;
   rolledValue: number;
   iteration: number;
@@ -91,21 +95,19 @@ export function Die({
     };
   }, [geometry]);
 
-  React.useEffect(() => {
-    if (ref.current) {
-      Physics.setDie(id, {
-        mesh: ref.current,
-        onCollision: (info) => {
-          if (!audioRef.current?.isPlaying) {
-            audioRef.current?.setVolume(
-              Math.min(1, info.target.velocity.length() / 50),
-            );
-            audioRef.current?.play();
-          }
-        },
-      });
-    }
-  }, []);
+  usePhysicsForDie(id, {
+    mesh: ref,
+    onCollision: (info) => {
+      if (!audioRef.current?.isPlaying) {
+        audioRef.current?.setVolume(
+          Math.min(1, info.target.velocity.length() / 50),
+        );
+        audioRef.current?.play();
+      }
+    },
+    onWakeUp,
+    onRest,
+  });
 
   return (
     <mesh
