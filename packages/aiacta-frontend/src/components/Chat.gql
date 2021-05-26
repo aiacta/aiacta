@@ -1,16 +1,21 @@
+fragment MessageData on Message {
+  id
+  component
+  text
+  author {
+    id
+    name
+    color
+  }
+  createdAt
+  rolls
+}
+
 query ChatMessages($worldId: ID!) {
   world(id: $worldId) {
     id
     messages {
-      id
-      component
-      text
-      author {
-        id
-        name
-        color
-      }
-      createdAt
+      ...MessageData
     }
   }
 }
@@ -20,28 +25,12 @@ mutation SendMessage($worldId: ID!, $text: String, $component: String) {
     worldId: $worldId
     input: { text: $text, component: $component }
   ) {
-    id
-    component
-    text
-    author {
-      id
-      name
-      color
-    }
-    createdAt
+    ...MessageData
   }
 }
 
 subscription NewChatMessages($worldId: ID!) {
   newMessages(worldId: $worldId) {
-    id
-    component
-    text
-    author {
-      id
-      name
-      color
-    }
-    createdAt
+    ...MessageData
   }
 }

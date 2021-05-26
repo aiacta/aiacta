@@ -28,45 +28,46 @@ export const MutationSendMessageResolver: Resolvers<Context> = {
 
         switch (command) {
           case 'r':
-          case 'roll':
-            {
-              const playerInWorld = await prisma.playerInWorld.findUnique({
-                where: { playerId_worldId: { playerId, worldId } },
-                include: { player: true },
-              });
+          case 'roll': {
+            const playerInWorld = await prisma.playerInWorld.findUnique({
+              where: { playerId_worldId: { playerId, worldId } },
+              include: { player: true },
+            });
 
-              if (!playerInWorld) {
-                throw new ForbiddenError('Not logged in or invalid token');
-              }
-
-              const context = {}; // get from input def
-
-              const { result, rolledDice } = await rollDice(args, context);
-
-              const diceRoll = {
-                worldId,
-                id: uuid(),
-                roller: { ...playerInWorld.player, role: playerInWorld.role },
-                dice: rolledDice,
-                message: result.toChatMessage(),
-              };
-
-              const message = await prisma.chatMessage.create({
-                data: {
-                  world: { connect: { id: worldId } },
-                  author: { connect: { id: playerId } },
-                  component: 'DiceRoll',
-                  text: result.toChatMessage(),
-                },
-                include: {
-                  author: true,
-                },
-              });
-
-              pubsub.publish('rollDice', diceRoll);
-              pubsub.publish('createMessage', message);
+            if (!playerInWorld) {
+              throw new ForbiddenError('Not logged in or invalid token');
             }
-            return null;
+
+            const context = {}; // get from input def
+
+            const { result, rolledDice } = await rollDice(args, context);
+
+            const diceRoll = {
+              worldId,
+              id: uuid(),
+              roller: { ...playerInWorld.player, role: playerInWorld.role },
+              dice: rolledDice,
+              message: result.toChatMessage(),
+            };
+
+            const message = await prisma.chatMessage.create({
+              data: {
+                world: { connect: { id: worldId } },
+                author: { connect: { id: playerId } },
+                component: 'DiceRoll',
+                text: result.toChatMessage(),
+                rolls: [diceRoll.id],
+              },
+              include: {
+                author: true,
+              },
+            });
+
+            pubsub.publish('rollDice', diceRoll);
+            pubsub.publish('createMessage', message);
+
+            return message;
+          }
         }
       } catch (err) {
         console.error(err);

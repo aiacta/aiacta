@@ -60,4 +60,5 @@ model ChatMessage {
   author    Player   @relation(fields: [authorId], references: [id])
   authorId  String
   createdAt DateTime @default(now())
+  rolls     String[]
 }

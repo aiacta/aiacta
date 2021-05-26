@@ -11,6 +11,7 @@ import {
   useSendMessageMutation,
 } from '../api';
 import { isTruthy, zIndices } from '../util';
+import { useRollsStatus } from './Dice';
 import { SynchronizedFormattedRelativeTime } from './SynchronizedFormattedRelativeTime';
 import { TextDisplay, TextEditor, useTextEditorRef } from './TextEditor';
 
@@ -82,42 +83,72 @@ function Messages() {
       {messages.fetching ? null : (
         <AnimatePresence initial={false}>
           {messages.data?.world?.messages?.filter(isTruthy).map((msg) => (
-            <div key={msg.id} className={classes.message}>
-              <Text className={classes.from} size="xs">
-                <em>{msg.author.name}</em>
-              </Text>
-              <div className={classes.time}>
-                <Tooltip
-                  label={
-                    <SynchronizedFormattedRelativeTime value={msg.createdAt} />
-                  }
-                  withArrow
-                  position="left"
-                >
-                  <MdAccessTime />
-                </Tooltip>
-              </div>
-              <motion.div
-                initial={{ height: 0, scaleY: 0 }}
-                animate={{ height: 'auto', scaleY: 1 }}
-                className={classes.body}
-              >
-                {msg.component ? (
-                  <>
-                    {msg.component}: {msg.text}
-                  </>
-                ) : (
-                  msg.text && (
-                    <Text size="sm">
-                      <TextDisplay value={msg.text} />
-                    </Text>
-                  )
-                )}
-              </motion.div>
-            </div>
+            <Message
+              key={msg.id}
+              id={msg.id}
+              author={msg.author}
+              createdAt={msg.createdAt}
+              component={msg.component}
+              text={msg.text}
+              rolls={msg.rolls?.filter(isTruthy)}
+            />
           ))}
         </AnimatePresence>
       )}
+    </div>
+  );
+}
+
+function Message({
+  id,
+  author,
+  createdAt,
+  component,
+  text,
+  rolls,
+}: {
+  id: string;
+  author: { name: string };
+  createdAt: string;
+  component?: string | null;
+  text?: string | null;
+  rolls?: string[] | null;
+}) {
+  const classes = useStyles();
+
+  const { isRolling } = useRollsStatus(rolls ?? [], createdAt);
+
+  return (
+    <div key={id} className={classes.message}>
+      <Text className={classes.from} size="xs">
+        <em>{author.name}</em>
+      </Text>
+      <div className={classes.time}>
+        <Tooltip
+          label={<SynchronizedFormattedRelativeTime value={createdAt} />}
+          withArrow
+          position="left"
+        >
+          <MdAccessTime />
+        </Tooltip>
+      </div>
+      <motion.div
+        initial={{ height: 0, scaleY: 0 }}
+        animate={{ height: 'auto', scaleY: 1 }}
+        className={classes.body}
+      >
+        {component ? (
+          <>
+            {component}: {isRolling ? 'ROLLING' : text}
+          </>
+        ) : (
+          text && (
+            <Text size="sm">
+              <TextDisplay value={text} />
+            </Text>
+          )
+        )}
+      </motion.div>
     </div>
   );
 }

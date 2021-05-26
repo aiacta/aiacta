@@ -5,6 +5,7 @@ import { JssProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import { ApiProvider } from './api';
+import { RollProvider } from './components';
 import { useColorScheme } from './hooks';
 
 export function Provider({ children }: { children: React.ReactNode }) {
@@ -16,7 +17,9 @@ export function Provider({ children }: { children: React.ReactNode }) {
         <ThemeProvider>
           <IntlProvider locale="en" messages={messages}>
             <ApiProvider>
-              <BrowserRouter>{children}</BrowserRouter>
+              <BrowserRouter>
+                <RollProvider>{children}</RollProvider>
+              </BrowserRouter>
             </ApiProvider>
           </IntlProvider>
         </ThemeProvider>

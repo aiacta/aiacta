@@ -177,6 +177,7 @@ export type Message = {
   createdAt: Scalars['DateTime'];
   component?: Maybe<Scalars['String']>;
   text?: Maybe<Scalars['String']>;
+  rolls?: Maybe<Array<Maybe<Scalars['ID']>>>;
 };
 
 export type MessageInput = {
@@ -190,6 +191,18 @@ export type WorldInput = {
   password?: Maybe<Scalars['String']>;
 };
 
+export type MessageDataFragment = { __typename?: 'Message' } & Pick<
+  Message,
+  'id' | 'component' | 'text' | 'createdAt' | 'rolls'
+> & {
+    author:
+      | ({ __typename?: 'PlayerInWorld' } & Pick<
+          PlayerInWorld,
+          'id' | 'name' | 'color'
+        >)
+      | ({ __typename?: 'Player' } & Pick<Player, 'id' | 'name' | 'color'>);
+  };
+
 export type ChatMessagesQueryVariables = Exact<{
   worldId: Scalars['ID'];
 }>;
@@ -198,24 +211,7 @@ export type ChatMessagesQuery = { __typename?: 'Query' } & {
   world?: Maybe<
     { __typename?: 'World' } & Pick<World, 'id'> & {
         messages?: Maybe<
-          Array<
-            Maybe<
-              { __typename?: 'Message' } & Pick<
-                Message,
-                'id' | 'component' | 'text' | 'createdAt'
-              > & {
-                  author:
-                    | ({ __typename?: 'PlayerInWorld' } & Pick<
-                        PlayerInWorld,
-                        'id' | 'name' | 'color'
-                      >)
-                    | ({ __typename?: 'Player' } & Pick<
-                        Player,
-                        'id' | 'name' | 'color'
-                      >);
-                }
-            >
-          >
+          Array<Maybe<{ __typename?: 'Message' } & MessageDataFragment>>
         >;
       }
   >;
@@ -228,19 +224,7 @@ export type SendMessageMutationVariables = Exact<{
 }>;
 
 export type SendMessageMutation = { __typename?: 'Mutation' } & {
-  sendMessage?: Maybe<
-    { __typename?: 'Message' } & Pick<
-      Message,
-      'id' | 'component' | 'text' | 'createdAt'
-    > & {
-        author:
-          | ({ __typename?: 'PlayerInWorld' } & Pick<
-              PlayerInWorld,
-              'id' | 'name' | 'color'
-            >)
-          | ({ __typename?: 'Player' } & Pick<Player, 'id' | 'name' | 'color'>);
-      }
-  >;
+  sendMessage?: Maybe<{ __typename?: 'Message' } & MessageDataFragment>;
 };
 
 export type NewChatMessagesSubscriptionVariables = Exact<{
@@ -248,24 +232,7 @@ export type NewChatMessagesSubscriptionVariables = Exact<{
 }>;
 
 export type NewChatMessagesSubscription = { __typename?: 'Subscription' } & {
-  newMessages: Array<
-    Maybe<
-      { __typename?: 'Message' } & Pick<
-        Message,
-        'id' | 'component' | 'text' | 'createdAt'
-      > & {
-          author:
-            | ({ __typename?: 'PlayerInWorld' } & Pick<
-                PlayerInWorld,
-                'id' | 'name' | 'color'
-              >)
-            | ({ __typename?: 'Player' } & Pick<
-                Player,
-                'id' | 'name' | 'color'
-              >);
-        }
-    >
-  >;
+  newMessages: Array<Maybe<{ __typename?: 'Message' } & MessageDataFragment>>;
 };
 
 export type RollDiceMutationVariables = Exact<{
@@ -384,6 +351,20 @@ export type JoinWorldMutation = { __typename?: 'Mutation' } & {
   >;
 };
 
+export const MessageDataFragmentDoc = gql`
+  fragment MessageData on Message {
+    id
+    component
+    text
+    author {
+      id
+      name
+      color
+    }
+    createdAt
+    rolls
+  }
+`;
 export const ListInfoWorldFragmentDoc = gql`
   fragment ListInfoWorld on World {
     id
@@ -404,18 +385,11 @@ export const ChatMessagesDocument = gql`
     world(id: $worldId) {
       id
       messages {
-        id
-        component
-        text
-        author {
-          id
-          name
-          color
-        }
-        createdAt
+        ...MessageData
       }
     }
   }
+  ${MessageDataFragmentDoc}
 `;
 
 export function useChatMessagesQuery(
@@ -432,17 +406,10 @@ export const SendMessageDocument = gql`
       worldId: $worldId
       input: { text: $text, component: $component }
     ) {
-      id
-      component
-      text
-      author {
-        id
-        name
-        color
-      }
-      createdAt
+      ...MessageData
     }
   }
+  ${MessageDataFragmentDoc}
 `;
 
 export function useSendMessageMutation() {
@@ -453,21 +420,14 @@ export function useSendMessageMutation() {
 export const NewChatMessagesDocument = gql`
   subscription NewChatMessages($worldId: ID!) {
     newMessages(worldId: $worldId) {
-      id
-      component
-      text
-      author {
-        id
-        name
-        color
-      }
-      createdAt
+      ...MessageData
     }
   }
+  ${MessageDataFragmentDoc}
 `;
 
 export function useNewChatMessagesSubscription<
-  TData = NewChatMessagesSubscription
+  TData = NewChatMessagesSubscription,
 >(
   options: Omit<
     Urql.UseSubscriptionArgs<NewChatMessagesSubscriptionVariables>,

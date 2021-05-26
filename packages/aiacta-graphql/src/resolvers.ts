@@ -187,6 +187,7 @@ export type Message = {
   createdAt: Scalars['DateTime'];
   component?: Maybe<Scalars['String']>;
   text?: Maybe<Scalars['String']>;
+  rolls?: Maybe<Array<Maybe<Scalars['ID']>>>;
 };
 
 export type MessageInput = {
@@ -202,12 +203,8 @@ export type WorldInput = {
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
 
-export type Resolver<
-  TResult,
-  TParent = {},
-  TContext = {},
-  TArgs = {}
-> = ResolverFn<TResult, TParent, TContext, TArgs>;
+export type Resolver<TResult, TParent = {}, TContext = {}, TArgs = {}> =
+  ResolverFn<TResult, TParent, TContext, TArgs>;
 
 export type ResolverFn<TResult, TParent, TContext, TArgs> = (
   parent: TParent,
@@ -235,7 +232,7 @@ export interface SubscriptionSubscriberObject<
   TKey extends string,
   TParent,
   TContext,
-  TArgs
+  TArgs,
 > {
   subscribe: SubscriptionSubscribeFn<
     { [key in TKey]: TResult },
@@ -261,7 +258,7 @@ export type SubscriptionObject<
   TKey extends string,
   TParent,
   TContext,
-  TArgs
+  TArgs,
 > =
   | SubscriptionSubscriberObject<TResult, TKey, TParent, TContext, TArgs>
   | SubscriptionResolverObject<TResult, TParent, TContext, TArgs>;
@@ -271,7 +268,7 @@ export type SubscriptionResolver<
   TKey extends string,
   TParent = {},
   TContext = {},
-  TArgs = {}
+  TArgs = {},
 > =
   | ((
       ...args: any[]
@@ -296,7 +293,7 @@ export type DirectiveResolverFn<
   TResult = {},
   TParent = {},
   TContext = {},
-  TArgs = {}
+  TArgs = {},
 > = (
   next: NextResolverFn<TResult>,
   parent: TParent,
@@ -379,7 +376,7 @@ export type RoleResolvers = EnumResolverSignature<
 
 export type AuthInfoResolvers<
   ContextType = any,
-  ParentType extends ResolversParentTypes['AuthInfo'] = ResolversParentTypes['AuthInfo']
+  ParentType extends ResolversParentTypes['AuthInfo'] = ResolversParentTypes['AuthInfo'],
 > = {
   token?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   player?: Resolver<ResolversTypes['Player'], ParentType, ContextType>;
@@ -388,7 +385,7 @@ export type AuthInfoResolvers<
 
 export type QueryResolvers<
   ContextType = any,
-  ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
+  ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query'],
 > = {
   invitesToWorlds?: Resolver<
     Maybe<Array<Maybe<ResolversTypes['World']>>>,
@@ -411,7 +408,7 @@ export type QueryResolvers<
 
 export type MutationResolvers<
   ContextType = any,
-  ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
+  ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation'],
 > = {
   createWorld?: Resolver<
     Maybe<ResolversTypes['World']>,
@@ -453,7 +450,7 @@ export type MutationResolvers<
 
 export type DiceRollResolvers<
   ContextType = any,
-  ParentType extends ResolversParentTypes['DiceRoll'] = ResolversParentTypes['DiceRoll']
+  ParentType extends ResolversParentTypes['DiceRoll'] = ResolversParentTypes['DiceRoll'],
 > = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   roller?: Resolver<ResolversTypes['PlayerInWorld'], ParentType, ContextType>;
@@ -463,7 +460,7 @@ export type DiceRollResolvers<
 
 export type DieResolvers<
   ContextType = any,
-  ParentType extends ResolversParentTypes['Die'] = ResolversParentTypes['Die']
+  ParentType extends ResolversParentTypes['Die'] = ResolversParentTypes['Die'],
 > = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['DieType'], ParentType, ContextType>;
@@ -473,7 +470,7 @@ export type DieResolvers<
 
 export type SubscriptionResolvers<
   ContextType = any,
-  ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']
+  ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription'],
 > = {
   diceRolls?: SubscriptionResolver<
     Array<Maybe<ResolversTypes['DiceRoll']>>,
@@ -498,7 +495,7 @@ export interface DateTimeScalarConfig
 
 export type WorldResolvers<
   ContextType = any,
-  ParentType extends ResolversParentTypes['World'] = ResolversParentTypes['World']
+  ParentType extends ResolversParentTypes['World'] = ResolversParentTypes['World'],
 > = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -528,7 +525,7 @@ export type WorldResolvers<
 
 export type PlayerInfoResolvers<
   ContextType = any,
-  ParentType extends ResolversParentTypes['PlayerInfo'] = ResolversParentTypes['PlayerInfo']
+  ParentType extends ResolversParentTypes['PlayerInfo'] = ResolversParentTypes['PlayerInfo'],
 > = {
   __resolveType: TypeResolveFn<
     'PlayerInWorld' | 'Player',
@@ -542,7 +539,7 @@ export type PlayerInfoResolvers<
 
 export type PlayerInWorldResolvers<
   ContextType = any,
-  ParentType extends ResolversParentTypes['PlayerInWorld'] = ResolversParentTypes['PlayerInWorld']
+  ParentType extends ResolversParentTypes['PlayerInWorld'] = ResolversParentTypes['PlayerInWorld'],
 > = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -553,7 +550,7 @@ export type PlayerInWorldResolvers<
 
 export type PlayerResolvers<
   ContextType = any,
-  ParentType extends ResolversParentTypes['Player'] = ResolversParentTypes['Player']
+  ParentType extends ResolversParentTypes['Player'] = ResolversParentTypes['Player'],
 > = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -568,7 +565,7 @@ export type PlayerResolvers<
 
 export type MessageResolvers<
   ContextType = any,
-  ParentType extends ResolversParentTypes['Message'] = ResolversParentTypes['Message']
+  ParentType extends ResolversParentTypes['Message'] = ResolversParentTypes['Message'],
 > = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   author?: Resolver<ResolversTypes['PlayerInfo'], ParentType, ContextType>;
@@ -579,6 +576,11 @@ export type MessageResolvers<
     ContextType
   >;
   text?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  rolls?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['ID']>>>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 

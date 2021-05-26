@@ -36,6 +36,7 @@ type Message {
   createdAt: DateTime!
   component: String
   text: String
+  rolls: [ID]
 }
 
 input MessageInput {
