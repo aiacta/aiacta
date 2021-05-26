@@ -9,11 +9,11 @@ import {
   useChatMessagesQuery,
   useNewChatMessagesSubscription,
   useSendMessageMutation,
-} from '../api';
-import { isTruthy, zIndices } from '../util';
-import { useRollsStatus } from './Dice';
-import { SynchronizedFormattedRelativeTime } from './SynchronizedFormattedRelativeTime';
-import { TextDisplay, TextEditor, useTextEditorRef } from './TextEditor';
+} from '../../api';
+import { isTruthy, zIndices } from '../../util';
+import { SynchronizedFormattedRelativeTime } from '../SynchronizedFormattedRelativeTime';
+import { TextDisplay, TextEditor, useTextEditorRef } from '../TextEditor';
+import { DiceRoll } from './DiceRoll';
 
 const useStyles = createUseStyles({
   container: {
@@ -116,7 +116,12 @@ function Message({
 }) {
   const classes = useStyles();
 
-  const { isRolling } = useRollsStatus(rolls ?? [], createdAt);
+  const renderedComponent = renderMessage({
+    component,
+    rolls,
+    text,
+    createdAt,
+  });
 
   return (
     <div key={id} className={classes.message}>
@@ -137,17 +142,12 @@ function Message({
         animate={{ height: 'auto', scaleY: 1 }}
         className={classes.body}
       >
-        {component ? (
-          <>
-            {component}: {isRolling ? 'ROLLING' : text}
-          </>
-        ) : (
-          text && (
+        {renderedComponent ??
+          (text && (
             <Text size="sm">
               <TextDisplay value={text} />
             </Text>
-          )
-        )}
+          ))}
       </motion.div>
     </div>
   );
@@ -185,4 +185,29 @@ function MessageInput() {
       </Button>
     </Group>
   );
+}
+
+function renderMessage({
+  component,
+  text,
+  createdAt,
+  ...rest
+}: {
+  createdAt: string;
+  component?: string | null;
+  text?: string | null;
+  rolls?: string[] | null;
+}) {
+  switch (component) {
+    case 'DiceRoll': {
+      return (
+        <DiceRoll
+          createdAt={createdAt}
+          rolls={rest.rolls ?? []}
+          text={text ?? ''}
+        />
+      );
+    }
+  }
+  return null;
 }

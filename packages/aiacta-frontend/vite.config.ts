@@ -7,6 +7,7 @@ export default defineConfig({
   plugins: [reactRefresh(), reactIntl()],
   define: {
     'process.env.RUN_ENV': '"development"',
+    'window.process': '{cwd(){}}',
   },
   server: {
     proxy: {
@@ -51,6 +52,7 @@ export default defineConfig({
             '@urql/exchange-auth',
             '@urql/exchange-graphcache',
           ],
+          mdx: ['@mdx-js/runtime'],
         },
       },
     },
