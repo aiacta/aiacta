@@ -47,14 +47,17 @@ import { Methods } from './executor';
         (isLeaf ? ` = ${this.value}` : '')
       );
     },
-  dice: function () {
-    return `(${this.dice
-      .map(
-        (d) =>
-          `<Die faces={${d.faces}} value={${d.value}}${
-            d.critical ? ' critical' : ''
-          }${d.dropped ? ' dropped' : ''} />`,
-      )
-      .join(', ')})`;
+  dice: function (isLeaf) {
+    const [num, die] = this.of!;
+    return (
+      `${num.toChatMessage()}d${die.toChatMessage()} (${this.dice
+        .map(
+          (d) =>
+            `<Die faces={${d.faces}} value={${d.value}}${
+              d.critical ? ' critical' : ''
+            }${d.dropped ? ' dropped' : ''} />`,
+        )
+        .join(', ')})` + (isLeaf ? ` = ${this.value}` : '')
+    );
   },
 } as Required<Methods['chatMessages']>;
