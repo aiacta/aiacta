@@ -1,56 +1,56 @@
 import { Methods } from './executor';
 
 /** @internal */ export default {
-  min: function(isLeaf) {
+  min: function (isLeaf) {
     return (
-      `min(${this.of.map(arg => arg.toChatMessage()).join(', ')})` +
+      `min(${this.of.map((arg) => arg.toChatMessage()).join(', ')})` +
       (isLeaf ? ` = ${this.value}` : '')
     );
   },
-  max: function(isLeaf) {
+  max: function (isLeaf) {
     return (
-      `max(${this.of.map(arg => arg.toChatMessage()).join(', ')})` +
+      `max(${this.of.map((arg) => arg.toChatMessage()).join(', ')})` +
       (isLeaf ? ` = ${this.value}` : '')
     );
   },
-  ceil: function(isLeaf) {
+  ceil: function (isLeaf) {
     return (
       `ceil(${this.of[0].toChatMessage()})` + (isLeaf ? ` = ${this.value}` : '')
     );
   },
-  floor: function(isLeaf) {
+  floor: function (isLeaf) {
     return (
       `floor(${this.of[0].toChatMessage()})` +
       (isLeaf ? ` = ${this.value}` : '')
     );
   },
-  abs: function(isLeaf) {
+  abs: function (isLeaf) {
     return (
       `abs(${this.of[0].toChatMessage()})` + (isLeaf ? ` = ${this.value}` : '')
     );
   },
-  identifier: function() {
+  identifier: function () {
     return this.name;
   },
-  literal: function() {
+  literal: function () {
     return this.value.toString();
   },
-  propertyAccess: function(isLeaf) {
+  propertyAccess: function (isLeaf) {
     const [o, k] = this.of!;
     return `${o.toChatMessage()}[${k}]` + (isLeaf ? ` = ${this.value}` : '');
   },
-  binaryOp: op =>
-    function(isLeaf) {
+  binaryOp: (op) =>
+    function (isLeaf) {
       const [l, r] = this.of;
       return (
         `${l.toChatMessage()} ${op} ${r.toChatMessage()}` +
         (isLeaf ? ` = ${this.value}` : '')
       );
     },
-  dice: function() {
+  dice: function () {
     return `(${this.dice
       .map(
-        d =>
+        (d) =>
           `<Die faces={${d.faces}} value={${d.value}}${
             d.critical ? ' critical' : ''
           }${d.dropped ? ' dropped' : ''} />`,

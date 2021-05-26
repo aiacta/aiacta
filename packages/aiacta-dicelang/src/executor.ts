@@ -1,3 +1,4 @@
+import defaultChatMessages from './defaultChatMessages';
 import {
   BinaryExpression,
   CallExpression,
@@ -6,7 +7,6 @@ import {
   Statement,
   TernaryExpression,
 } from './parser';
-import defaultChatMessages from './defaultChatMessages';
 
 export interface Methods {
   roll(faces: number): Promise<number>;
@@ -43,16 +43,19 @@ export interface Context {
   };
   const heap = new Map<
     string,
-    ((...args: Resolution[]) => Resolution | Promise<Resolution>) | {}
+    | ((...args: Resolution[]) => Resolution | Promise<Resolution>)
+    | Record<any, any>
   >([
     ...Object.entries(context).map(
-      ([key, value]) => [key, value] as [string, {}],
+      ([key, value]) => [key, value] as [string, Record<any, any>],
     ),
     [
       'min',
       (...args) => {
         return {
-          value: Math.min(...args.map(a => unbox(a, Number.MAX_SAFE_INTEGER))),
+          value: Math.min(
+            ...args.map((a) => unbox(a, Number.MAX_SAFE_INTEGER)),
+          ),
           of: [...args],
           toChatMessage: chatMessages.min,
         } as ValueResolution;
@@ -62,7 +65,9 @@ export interface Context {
       'max',
       (...args) => {
         return {
-          value: Math.max(...args.map(a => unbox(a, Number.MIN_SAFE_INTEGER))),
+          value: Math.max(
+            ...args.map((a) => unbox(a, Number.MIN_SAFE_INTEGER)),
+          ),
           of: [...args],
           toChatMessage: chatMessages.max,
         } as ValueResolution;
@@ -70,7 +75,7 @@ export interface Context {
     ],
     [
       'ceil',
-      arg => {
+      (arg) => {
         if (!isValueResultion(arg)) {
           throw new Error(`Cant ceil a non-value.`);
         }
@@ -83,7 +88,7 @@ export interface Context {
     ],
     [
       'floor',
-      arg => {
+      (arg) => {
         if (!isValueResultion(arg)) {
           throw new Error(`Cant floor a non-value.`);
         }
@@ -96,7 +101,7 @@ export interface Context {
     ],
     [
       'abs',
-      arg => {
+      (arg) => {
         if (!isValueResultion(arg)) {
           throw new Error(`Cant abs a non-value.`);
         }
@@ -122,10 +127,10 @@ export interface Context {
           ...arr,
           get value() {
             return this.dice
-              .map(d => (d.dropped ? 0 : d.value))
+              .map((d) => (d.dropped ? 0 : d.value))
               .reduce((acc, cur) => acc + cur, 0);
           },
-          dice: arr.dice.map(d =>
+          dice: arr.dice.map((d) =>
             sorted.indexOf(d) >= 0 ? d : { ...d, dropped: true },
           ),
         } as RollResolution;
@@ -146,10 +151,10 @@ export interface Context {
           ...arr,
           get value() {
             return this.dice
-              .map(d => (d.dropped ? 0 : d.value))
+              .map((d) => (d.dropped ? 0 : d.value))
               .reduce((acc, cur) => acc + cur, 0);
           },
-          dice: arr.dice.map(d =>
+          dice: arr.dice.map((d) =>
             sorted.indexOf(d) < 0 ? d : { ...d, dropped: true },
           ),
         } as RollResolution;
@@ -165,18 +170,15 @@ export interface Context {
         if (!isRollResolution(arr)) {
           throw new Error(`Cant keep lowest of non-roll.`);
         }
-        const sorted = [...arr.dice]
-          .sort(dieSort)
-          .reverse()
-          .slice(0, num);
+        const sorted = [...arr.dice].sort(dieSort).reverse().slice(0, num);
         return {
           ...arr,
           get value() {
             return this.dice
-              .map(d => (d.dropped ? 0 : d.value))
+              .map((d) => (d.dropped ? 0 : d.value))
               .reduce((acc, cur) => acc + cur, 0);
           },
-          dice: arr.dice.map(d =>
+          dice: arr.dice.map((d) =>
             sorted.indexOf(d) >= 0 ? d : { ...d, dropped: true },
           ),
         } as RollResolution;
@@ -192,18 +194,15 @@ export interface Context {
         if (!isRollResolution(arr)) {
           throw new Error(`Cant drop lowest of non-roll.`);
         }
-        const sorted = [...arr.dice]
-          .sort(dieSort)
-          .reverse()
-          .slice(0, num);
+        const sorted = [...arr.dice].sort(dieSort).reverse().slice(0, num);
         return {
           ...arr,
           get value() {
             return this.dice
-              .map(d => (d.dropped ? 0 : d.value))
+              .map((d) => (d.dropped ? 0 : d.value))
               .reduce((acc, cur) => acc + cur, 0);
           },
-          dice: arr.dice.map(d =>
+          dice: arr.dice.map((d) =>
             sorted.indexOf(d) < 0 ? d : { ...d, dropped: true },
           ),
         } as RollResolution;
@@ -223,11 +222,11 @@ export interface Context {
           ...arr,
           get value() {
             return this.dice
-              .map(d => (d.dropped ? 0 : d.value))
+              .map((d) => (d.dropped ? 0 : d.value))
               .reduce((acc, cur) => acc + cur, 0);
           },
           dice: await Promise.all(
-            arr.dice.map(async d => (d.value < num ? d.reroll() : d)),
+            arr.dice.map(async (d) => (d.value < num ? d.reroll() : d)),
           ),
         } as RollResolution;
       },
@@ -246,11 +245,11 @@ export interface Context {
           ...arr,
           get value() {
             return this.dice
-              .map(d => (d.dropped ? 0 : d.value))
+              .map((d) => (d.dropped ? 0 : d.value))
               .reduce((acc, cur) => acc + cur, 0);
           },
           dice: await Promise.all(
-            arr.dice.map(async d => (d.value > num ? d.reroll() : d)),
+            arr.dice.map(async (d) => (d.value > num ? d.reroll() : d)),
           ),
         } as RollResolution;
       },
@@ -269,10 +268,10 @@ export interface Context {
           ...arr,
           get value() {
             return this.dice
-              .map(d => (d.dropped ? 0 : d.value))
+              .map((d) => (d.dropped ? 0 : d.value))
               .reduce((acc, cur) => acc + cur, 0);
           },
-          dice: arr.dice.map(d =>
+          dice: arr.dice.map((d) =>
             d.value >= num ? { ...d, critical: true } : d,
           ),
         } as RollResolution;
@@ -350,7 +349,7 @@ export interface Context {
     fn: (res: Resolution) => Resolution | PromiseLike<Resolution>,
   ): PromiseLike<Resolution> {
     let resolution: Resolution | undefined;
-    exp.then(r => {
+    exp.then((r) => {
       resolution = r;
     });
     if (resolution) {
@@ -359,7 +358,7 @@ export interface Context {
         then(cb?: (value: Resolution) => Resolution) {
           if (cb) {
             if ('then' in res) {
-              return executeMaybePromise(res, r => cb(r));
+              return executeMaybePromise(res, (r) => cb(r));
             } else {
               cb(res);
             }
@@ -368,7 +367,7 @@ export interface Context {
         },
       } as PromiseLike<Resolution>;
     } else {
-      return exp.then(res => fn(res));
+      return exp.then((res) => fn(res));
     }
   }
 
@@ -376,9 +375,9 @@ export interface Context {
     exps: Array<PromiseLike<Resolution>>,
     fn: (res: Resolution[]) => Resolution | PromiseLike<Resolution>,
   ): PromiseLike<Resolution> {
-    const resolved = exps.map(e => {
+    const resolved = exps.map((e) => {
       let res: Resolution | undefined;
-      e.then(r => {
+      e.then((r) => {
         res = r;
       });
       return res!;
@@ -389,7 +388,7 @@ export interface Context {
         then(cb?: (value: Resolution) => Resolution) {
           if (cb) {
             if ('then' in res) {
-              return executeMaybePromise(res, r => cb(r));
+              return executeMaybePromise(res, (r) => cb(r));
             } else {
               cb(res);
             }
@@ -398,7 +397,7 @@ export interface Context {
         },
       } as PromiseLike<Resolution>;
     } else {
-      return Promise.all(exps).then(res => fn(res));
+      return Promise.all(exps).then((res) => fn(res));
     }
   }
 
@@ -409,7 +408,7 @@ export interface Context {
       [
         executeExpression(expression.func),
         ...(expression.args
-          ? expression.args.map(arg => executeExpression(arg))
+          ? expression.args.map((arg) => executeExpression(arg))
           : []),
       ],
       ([func, ...args]) => {
@@ -421,7 +420,7 @@ export interface Context {
   function executePropertyAccess(
     expression: PropertyAccessExpression,
   ): PromiseLike<Resolution> {
-    return executeMaybePromise(executeExpression(expression.obj), obj => {
+    return executeMaybePromise(executeExpression(expression.obj), (obj) => {
       const key = expression.key.value;
       return {
         value:
@@ -471,9 +470,13 @@ export interface Context {
           case 'dl':
           case 'rb':
           case 'ra':
-          case 'cr':
+          case 'cr': {
             const func = heap.get(expression.op);
-            return (func as Function)(left, right);
+            if (typeof func !== 'function') {
+              throw new Error('Expected function for ' + expression.op);
+            }
+            return func(left, right);
+          }
           case '??': {
             const unboxedLeft = unbox(left);
             const unboxedRight = unbox(right);
@@ -494,16 +497,16 @@ export interface Context {
                 .fill(null)
                 .map(() => methods.roll(unboxedRight)),
             ).then(
-              rolls =>
+              (rolls) =>
                 ({
                   get value() {
                     return this.dice
-                      .map(d => (d.dropped ? 0 : d.value))
+                      .map((d) => (d.dropped ? 0 : d.value))
                       .reduce((acc, cur) => acc + cur, 0);
                   },
                   of: [left, right],
                   dice: rolls.map(
-                    value =>
+                    (value) =>
                       ({
                         value,
                         faces: unboxedRight,
@@ -535,7 +538,7 @@ export interface Context {
   function executeTernaryExpression(
     expression: TernaryExpression,
   ): PromiseLike<Resolution> {
-    return executeMaybePromise(executeExpression(expression.left), left => {
+    return executeMaybePromise(executeExpression(expression.left), (left) => {
       if (left.value) {
         return executeExpression(expression.middle);
       }
@@ -545,7 +548,7 @@ export interface Context {
 }
 
 export interface Resolution<
-  T = number | string | boolean | object | ((...args: any[]) => any)
+  T = number | string | boolean | Record<any, any> | ((...args: any[]) => any),
 > {
   value: T;
   of?: Resolution[];
