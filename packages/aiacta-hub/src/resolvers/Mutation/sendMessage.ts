@@ -47,7 +47,7 @@ export const MutationSendMessageResolver: Resolvers<Context> = {
               id: uuid(),
               roller: { ...playerInWorld.player, role: playerInWorld.role },
               dice: rolledDice,
-              message: result.toChatMessage(),
+              message: result.toChatMessage(true),
             };
 
             const message = await prisma.chatMessage.create({
@@ -55,7 +55,7 @@ export const MutationSendMessageResolver: Resolvers<Context> = {
                 world: { connect: { id: worldId } },
                 author: { connect: { id: playerId } },
                 component: 'DiceRoll',
-                text: result.toChatMessage(),
+                text: result.toChatMessage(true),
                 rolls: [diceRoll.id],
               },
               include: {

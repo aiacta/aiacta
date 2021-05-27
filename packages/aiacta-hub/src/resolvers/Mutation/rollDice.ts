@@ -28,7 +28,7 @@ export const MutationRollDiceResolver: Resolvers<Context> = {
         id: uuid(),
         roller: { ...playerInWorld.player, role: playerInWorld.role },
         dice: rolledDice,
-        message: result.toChatMessage(),
+        message: result.toChatMessage(true),
       };
 
       pubsub.publish('rollDice', diceRoll);
