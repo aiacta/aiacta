@@ -14,6 +14,7 @@ const debug = false;
 const RollContext =
   React.createContext<{
     shouldAwait: (date: string) => boolean;
+    hasRolled: (id: string) => boolean;
     awaitRoll: (id: string) => Promise<void>;
     finishRoll: (id: string) => void;
   } | null>(null);
@@ -28,6 +29,9 @@ export function RollProvider({ children }: { children: React.ReactNode }) {
     return {
       shouldAwait(date: string) {
         return new Date(date).getTime() >= listeningSince;
+      },
+      hasRolled(id: string) {
+        return finishedRolls.has(id);
       },
       awaitRoll(id: string) {
         if (finishedRolls.has(id)) {
@@ -202,67 +206,76 @@ function useDiceRolls(
 
   const api = usePhysicsApi();
 
+  const rollsApi = React.useContext(RollContext);
+
+  if (!rollsApi) {
+    throw new Error('Not inside a RollContext');
+  }
+
   React.useEffect(() => {
     if (rolls) {
       Promise.all(
-        rolls.filter(isTruthy).map(async (roll) => {
-          const verticalOrHorizontal =
-            Math.sign(Math.random() - 0.5) < 0 ? 'vertical' : 'horizontal';
-          const position = (
-            verticalOrHorizontal === 'vertical'
-              ? [
-                  Math.sign(Math.random() - 0.5) < 0 ? minX : maxX,
-                  minY + aspect[1] * Math.random(),
-                  30,
-                ]
-              : [
-                  minX + aspect[0] * Math.random(),
-                  Math.sign(Math.random() - 0.5) < 0 ? minY : maxY,
-                  30,
-                ]
-          ) as [number, number, number];
-          const velocity = [-position[0] * 5, -position[1] * 5, 0] as [
-            number,
-            number,
-            number,
-          ];
+        rolls
+          .filter(isTruthy)
+          .filter((roll) => !rollsApi.hasRolled(roll.id))
+          .map(async (roll) => {
+            const verticalOrHorizontal =
+              Math.sign(Math.random() - 0.5) < 0 ? 'vertical' : 'horizontal';
+            const position = (
+              verticalOrHorizontal === 'vertical'
+                ? [
+                    Math.sign(Math.random() - 0.5) < 0 ? minX : maxX,
+                    minY + aspect[1] * Math.random(),
+                    30,
+                  ]
+                : [
+                    minX + aspect[0] * Math.random(),
+                    Math.sign(Math.random() - 0.5) < 0 ? minY : maxY,
+                    30,
+                  ]
+            ) as [number, number, number];
+            const velocity = [-position[0] * 5, -position[1] * 5, 0] as [
+              number,
+              number,
+              number,
+            ];
 
-          const results = await api.addDice(
-            roll.dice.map((die) => ({
-              ...die,
-              type: die.type.toLowerCase(),
-              position,
-              quaternion: [
-                Math.random(),
-                Math.random(),
-                Math.random(),
-                Math.random(),
-              ],
-              velocity,
-              angularVelocity: [
-                (0.7 + Math.random() * 0.3) *
-                  20 *
-                  (Math.random() < 0.5 ? 1 : -1),
-                (0.7 + Math.random() * 0.3) *
-                  20 *
-                  (Math.random() < 0.5 ? 1 : -1),
-                (0.7 + Math.random() * 0.3) *
-                  20 *
-                  (Math.random() < 0.5 ? 1 : -1),
-              ],
-            })),
-          );
-          currentRolls.add({
-            ...roll,
-            dice: roll.dice.slice(0, results.length).map((die, idx) => ({
-              ...die,
-              type: die.type.toLowerCase(),
-              rolledValue: results[idx].rolledValue,
-              targetValue: die.value,
-              iteration: results[idx].iteration,
-            })),
-          });
-        }),
+            const results = await api.addDice(
+              roll.dice.map((die) => ({
+                ...die,
+                type: die.type.toLowerCase(),
+                position,
+                quaternion: [
+                  Math.random(),
+                  Math.random(),
+                  Math.random(),
+                  Math.random(),
+                ],
+                velocity,
+                angularVelocity: [
+                  (0.7 + Math.random() * 0.3) *
+                    20 *
+                    (Math.random() < 0.5 ? 1 : -1),
+                  (0.7 + Math.random() * 0.3) *
+                    20 *
+                    (Math.random() < 0.5 ? 1 : -1),
+                  (0.7 + Math.random() * 0.3) *
+                    20 *
+                    (Math.random() < 0.5 ? 1 : -1),
+                ],
+              })),
+            );
+            currentRolls.add({
+              ...roll,
+              dice: roll.dice.slice(0, results.length).map((die, idx) => ({
+                ...die,
+                type: die.type.toLowerCase(),
+                rolledValue: results[idx].rolledValue,
+                targetValue: die.value,
+                iteration: results[idx].iteration,
+              })),
+            });
+          }),
       );
     }
   }, [rolls]);
