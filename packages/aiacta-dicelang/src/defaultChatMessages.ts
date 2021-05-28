@@ -57,7 +57,8 @@ import { Methods } from './executor';
               d.critical ? ' critical' : ''
             }${d.dropped ? ' dropped' : ''} />`,
         )
-        .join(', ')})` + (isLeaf ? ` = ${this.value}` : '')
+        .join(' ')})` +
+      (isLeaf ? ` = <RollResult value={${this.value}} />` : '')
     );
   },
 } as Required<Methods['chatMessages']>;

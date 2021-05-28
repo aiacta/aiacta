@@ -1,6 +1,7 @@
 import { MantineTheme, theming } from '@mantine/core';
 import * as React from 'react';
 import { createUseStyles } from 'react-jss';
+import { RollingContext } from './DiceRoll';
 
 const useStyles = createUseStyles(
   (theme: MantineTheme) => ({
@@ -57,6 +58,26 @@ const useStyles = createUseStyles(
             : theme.colors.red[6],
       },
     },
+    rolling: {
+      filter: 'blur(2px)',
+      animation: '.6s linear infinite $roll',
+      '& text': {
+        fill:
+          theme.colorScheme === 'dark'
+            ? theme.colors.gray[2]
+            : theme.colors.dark[5],
+      },
+      '& $shade': {
+        fill:
+          theme.colorScheme === 'dark'
+            ? theme.colors.gray[2]
+            : theme.colors.dark[5],
+      },
+    },
+    '@keyframes roll': {
+      from: { transform: 'rotate(0deg)' },
+      to: { transform: 'rotate(360deg)' },
+    },
   }),
   { theming },
 );
@@ -74,11 +95,14 @@ export function DieIcon({
 }) {
   const classes = useStyles();
 
+  const isRolling = React.useContext(RollingContext);
+
   const className = [
     classes.die,
-    dropped && classes.dropped,
-    critical && classes.critical,
-    value === 1 && classes.failure,
+    !isRolling && dropped && classes.dropped,
+    !isRolling && critical && classes.critical,
+    !isRolling && value === 1 && classes.failure,
+    isRolling && classes.rolling,
   ]
     .filter(Boolean)
     .join(' ');
