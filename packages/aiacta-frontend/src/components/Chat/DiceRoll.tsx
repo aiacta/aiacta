@@ -25,11 +25,14 @@ export function DiceRoll({
 }) {
   const { isRolling } = useRollsStatus(rolls, createdAt);
 
+  const mdx = React.useMemo(
+    () => <MDX children={text} components={components} />,
+    [text],
+  );
+
   return (
     <RollingContext.Provider value={isRolling}>
-      <ErrorBoundary fallback={<>Render failed</>}>
-        <MDX children={text} scope={{ isRolling }} components={components} />
-      </ErrorBoundary>
+      <ErrorBoundary fallback={<>Render failed</>}>{mdx}</ErrorBoundary>
     </RollingContext.Provider>
   );
 }
