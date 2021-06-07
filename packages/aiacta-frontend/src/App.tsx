@@ -5,6 +5,7 @@ import { createUseStyles } from 'react-jss';
 import { Route, Routes } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { isAuthenticatedAtom } from './api';
+import { Omnibox } from './components';
 import { useColorScheme } from './hooks';
 import { LoginPage, WorldPage, WorldsPage } from './pages';
 
@@ -20,13 +21,14 @@ const useStyles = createUseStyles(
           theme.colorScheme === 'dark' ? theme.colors.dark[2] : theme.black,
       },
       input: {
-        '&:-webkit-autofill, &:-webkit-autofill:focus, &:-webkit-autofill:hover': {
-          WebkitTextFillColor:
-            theme.colorScheme === 'dark' ? theme.colors.dark[2] : theme.black,
-          WebkitBoxShadow: `0 0 0px 1000px ${
-            theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.white
-          } inset !important`,
-        },
+        '&:-webkit-autofill, &:-webkit-autofill:focus, &:-webkit-autofill:hover':
+          {
+            WebkitTextFillColor:
+              theme.colorScheme === 'dark' ? theme.colors.dark[2] : theme.black,
+            WebkitBoxShadow: `0 0 0px 1000px ${
+              theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.white
+            } inset !important`,
+          },
       },
     },
   }),
@@ -62,6 +64,7 @@ export function App() {
         <Route path="/worlds/new" element={<WorldsPage />} />
         <Route path="/world/:worldId" element={<WorldPage />} />
       </Routes>
+      <Omnibox />
     </>
   );
 }
