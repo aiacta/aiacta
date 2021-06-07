@@ -15,13 +15,13 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
   { [SubKey in K]: Maybe<T[SubKey]> };
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
-export type EnumResolverSignature<T, AllowedValues = any> = {
-  [key in keyof T]?: AllowedValues;
-};
 export type RequireFields<T, K extends keyof T> = {
   [X in Exclude<keyof T, K>]?: T[X];
 } &
   { [P in K]-?: NonNullable<T[P]> };
+export type EnumResolverSignature<T, AllowedValues = any> = {
+  [key in keyof T]?: AllowedValues;
+};
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -32,24 +32,65 @@ export type Scalars = {
   DateTime: any;
 };
 
-export { Role };
-
 export type AuthInfo = {
   __typename?: 'AuthInfo';
   token: Scalars['String'];
   player: Player;
 };
 
-export type Query = {
-  __typename?: 'Query';
-  invitesToWorlds?: Maybe<Array<Maybe<World>>>;
-  me?: Maybe<Player>;
-  world?: Maybe<World>;
-  worlds?: Maybe<Array<Maybe<World>>>;
+export type DiceRoll = {
+  __typename?: 'DiceRoll';
+  id: Scalars['ID'];
+  roller: PlayerInWorld;
+  dice: Array<Die>;
 };
 
-export type QueryWorldArgs = {
+export type DiceRollContext = {
+  id?: Maybe<Scalars['ID']>;
+  type?: Maybe<Scalars['String']>;
+};
+
+export type DiceRollInput = {
+  formula: Scalars['String'];
+  context?: Maybe<DiceRollContext>;
+  visibility?: Maybe<DiceRollVisibility>;
+};
+
+export enum DiceRollVisibility {
+  Everybody = 'EVERYBODY',
+  GmOnly = 'GM_ONLY',
+  MyselfOnly = 'MYSELF_ONLY',
+}
+
+export type Die = {
+  __typename?: 'Die';
   id: Scalars['ID'];
+  type: DieType;
+  value: Scalars['Int'];
+};
+
+export enum DieType {
+  D4 = 'D4',
+  D6 = 'D6',
+  D8 = 'D8',
+  D10 = 'D10',
+  D12 = 'D12',
+  D20 = 'D20',
+}
+
+export type Message = {
+  __typename?: 'Message';
+  id: Scalars['ID'];
+  author: PlayerInfo;
+  createdAt: Scalars['DateTime'];
+  component?: Maybe<Scalars['String']>;
+  text?: Maybe<Scalars['String']>;
+  rolls?: Maybe<Array<Maybe<Scalars['ID']>>>;
+};
+
+export type MessageInput = {
+  component?: Maybe<Scalars['String']>;
+  text?: Maybe<Scalars['String']>;
 };
 
 export type Mutation = {
@@ -93,45 +134,41 @@ export type MutationSignUpArgs = {
   color?: Maybe<Scalars['String']>;
 };
 
-export type DiceRoll = {
-  __typename?: 'DiceRoll';
+export type Player = PlayerInfo & {
+  __typename?: 'Player';
   id: Scalars['ID'];
-  roller: PlayerInWorld;
-  dice: Array<Die>;
+  name: Scalars['String'];
+  color: Scalars['String'];
+  worlds?: Maybe<Array<Maybe<World>>>;
 };
 
-export enum DieType {
-  D4 = 'D4',
-  D6 = 'D6',
-  D8 = 'D8',
-  D10 = 'D10',
-  D12 = 'D12',
-  D20 = 'D20',
-}
-
-export type Die = {
-  __typename?: 'Die';
+export type PlayerInWorld = PlayerInfo & {
+  __typename?: 'PlayerInWorld';
   id: Scalars['ID'];
-  type: DieType;
-  value: Scalars['Int'];
+  name: Scalars['String'];
+  color: Scalars['String'];
+  role: Role;
 };
 
-export enum DiceRollVisibility {
-  Everybody = 'EVERYBODY',
-  GmOnly = 'GM_ONLY',
-  MyselfOnly = 'MYSELF_ONLY',
-}
-
-export type DiceRollInput = {
-  formula: Scalars['String'];
-  context?: Maybe<DiceRollContext>;
-  visibility?: Maybe<DiceRollVisibility>;
+export type PlayerInfo = {
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  color: Scalars['String'];
 };
 
-export type DiceRollContext = {
-  id?: Maybe<Scalars['ID']>;
-  type?: Maybe<Scalars['String']>;
+export type Query = {
+  __typename?: 'Query';
+  invitesToWorlds?: Maybe<Array<Maybe<World>>>;
+  me?: Maybe<Player>;
+  world?: Maybe<World>;
+  worlds?: Maybe<Array<Maybe<World>>>;
 };
+
+export type QueryWorldArgs = {
+  id: Scalars['ID'];
+};
+
+export { Role };
 
 export type Subscription = {
   __typename?: 'Subscription';
@@ -158,43 +195,6 @@ export type World = {
   isPasswordProtected: Scalars['Boolean'];
 };
 
-export type PlayerInfo = {
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  color: Scalars['String'];
-};
-
-export type PlayerInWorld = PlayerInfo & {
-  __typename?: 'PlayerInWorld';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  color: Scalars['String'];
-  role: Role;
-};
-
-export type Player = PlayerInfo & {
-  __typename?: 'Player';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  color: Scalars['String'];
-  worlds?: Maybe<Array<Maybe<World>>>;
-};
-
-export type Message = {
-  __typename?: 'Message';
-  id: Scalars['ID'];
-  author: PlayerInfo;
-  createdAt: Scalars['DateTime'];
-  component?: Maybe<Scalars['String']>;
-  text?: Maybe<Scalars['String']>;
-  rolls?: Maybe<Array<Maybe<Scalars['ID']>>>;
-};
-
-export type MessageInput = {
-  component?: Maybe<Scalars['String']>;
-  text?: Maybe<Scalars['String']>;
-};
-
 export type WorldInput = {
   name: Scalars['String'];
   inviteOnly: Scalars['Boolean'];
@@ -203,8 +203,12 @@ export type WorldInput = {
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
 
-export type Resolver<TResult, TParent = {}, TContext = {}, TArgs = {}> =
-  ResolverFn<TResult, TParent, TContext, TArgs>;
+export type Resolver<
+  TResult,
+  TParent = {},
+  TContext = {},
+  TArgs = {},
+> = ResolverFn<TResult, TParent, TContext, TArgs>;
 
 export type ResolverFn<TResult, TParent, TContext, TArgs> = (
   parent: TParent,
@@ -304,27 +308,22 @@ export type DirectiveResolverFn<
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  Role: ResolverTypeWrapper<Partial<Role>>;
   AuthInfo: ResolverTypeWrapper<
     Partial<Omit<AuthInfo, 'player'> & { player: ResolversTypes['Player'] }>
   >;
   String: ResolverTypeWrapper<Partial<Scalars['String']>>;
-  Query: ResolverTypeWrapper<{}>;
-  ID: ResolverTypeWrapper<Partial<Scalars['ID']>>;
-  Mutation: ResolverTypeWrapper<{}>;
+  DateTime: ResolverTypeWrapper<Partial<Scalars['DateTime']>>;
   DiceRoll: ResolverTypeWrapper<Partial<DiceRoll>>;
-  DieType: ResolverTypeWrapper<Partial<DieType>>;
+  ID: ResolverTypeWrapper<Partial<Scalars['ID']>>;
+  DiceRollContext: ResolverTypeWrapper<Partial<DiceRollContext>>;
+  DiceRollInput: ResolverTypeWrapper<Partial<DiceRollInput>>;
+  DiceRollVisibility: ResolverTypeWrapper<Partial<DiceRollVisibility>>;
   Die: ResolverTypeWrapper<Partial<Die>>;
   Int: ResolverTypeWrapper<Partial<Scalars['Int']>>;
-  DiceRollVisibility: ResolverTypeWrapper<Partial<DiceRollVisibility>>;
-  DiceRollInput: ResolverTypeWrapper<Partial<DiceRollInput>>;
-  DiceRollContext: ResolverTypeWrapper<Partial<DiceRollContext>>;
-  Subscription: ResolverTypeWrapper<{}>;
-  DateTime: ResolverTypeWrapper<Partial<Scalars['DateTime']>>;
-  World: ResolverTypeWrapper<WorldModel>;
-  Boolean: ResolverTypeWrapper<Partial<Scalars['Boolean']>>;
-  PlayerInfo: ResolversTypes['PlayerInWorld'] | ResolversTypes['Player'];
-  PlayerInWorld: ResolverTypeWrapper<Partial<PlayerInWorld>>;
+  DieType: ResolverTypeWrapper<Partial<DieType>>;
+  Message: ResolverTypeWrapper<Partial<Message>>;
+  MessageInput: ResolverTypeWrapper<Partial<MessageInput>>;
+  Mutation: ResolverTypeWrapper<{}>;
   Player: ResolverTypeWrapper<
     Partial<
       Omit<Player, 'worlds'> & {
@@ -332,8 +331,13 @@ export type ResolversTypes = {
       }
     >
   >;
-  Message: ResolverTypeWrapper<Partial<Message>>;
-  MessageInput: ResolverTypeWrapper<Partial<MessageInput>>;
+  PlayerInWorld: ResolverTypeWrapper<Partial<PlayerInWorld>>;
+  PlayerInfo: ResolversTypes['Player'] | ResolversTypes['PlayerInWorld'];
+  Query: ResolverTypeWrapper<{}>;
+  Role: ResolverTypeWrapper<Partial<Role>>;
+  Subscription: ResolverTypeWrapper<{}>;
+  World: ResolverTypeWrapper<WorldModel>;
+  Boolean: ResolverTypeWrapper<Partial<Scalars['Boolean']>>;
   WorldInput: ResolverTypeWrapper<Partial<WorldInput>>;
 };
 
@@ -343,36 +347,31 @@ export type ResolversParentTypes = {
     Omit<AuthInfo, 'player'> & { player: ResolversParentTypes['Player'] }
   >;
   String: Partial<Scalars['String']>;
-  Query: {};
-  ID: Partial<Scalars['ID']>;
-  Mutation: {};
+  DateTime: Partial<Scalars['DateTime']>;
   DiceRoll: Partial<DiceRoll>;
+  ID: Partial<Scalars['ID']>;
+  DiceRollContext: Partial<DiceRollContext>;
+  DiceRollInput: Partial<DiceRollInput>;
   Die: Partial<Die>;
   Int: Partial<Scalars['Int']>;
-  DiceRollInput: Partial<DiceRollInput>;
-  DiceRollContext: Partial<DiceRollContext>;
-  Subscription: {};
-  DateTime: Partial<Scalars['DateTime']>;
-  World: WorldModel;
-  Boolean: Partial<Scalars['Boolean']>;
-  PlayerInfo:
-    | ResolversParentTypes['PlayerInWorld']
-    | ResolversParentTypes['Player'];
-  PlayerInWorld: Partial<PlayerInWorld>;
+  Message: Partial<Message>;
+  MessageInput: Partial<MessageInput>;
+  Mutation: {};
   Player: Partial<
     Omit<Player, 'worlds'> & {
       worlds?: Maybe<Array<Maybe<ResolversParentTypes['World']>>>;
     }
   >;
-  Message: Partial<Message>;
-  MessageInput: Partial<MessageInput>;
+  PlayerInWorld: Partial<PlayerInWorld>;
+  PlayerInfo:
+    | ResolversParentTypes['Player']
+    | ResolversParentTypes['PlayerInWorld'];
+  Query: {};
+  Subscription: {};
+  World: WorldModel;
+  Boolean: Partial<Scalars['Boolean']>;
   WorldInput: Partial<WorldInput>;
 };
-
-export type RoleResolvers = EnumResolverSignature<
-  { GAMEMASTER?: any; USER?: any },
-  ResolversTypes['Role']
->;
 
 export type AuthInfoResolvers<
   ContextType = any,
@@ -383,27 +382,50 @@ export type AuthInfoResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type QueryResolvers<
+export interface DateTimeScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
+  name: 'DateTime';
+}
+
+export type DiceRollResolvers<
   ContextType = any,
-  ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query'],
+  ParentType extends ResolversParentTypes['DiceRoll'] = ResolversParentTypes['DiceRoll'],
 > = {
-  invitesToWorlds?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes['World']>>>,
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  roller?: Resolver<ResolversTypes['PlayerInWorld'], ParentType, ContextType>;
+  dice?: Resolver<Array<ResolversTypes['Die']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type DieResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Die'] = ResolversParentTypes['Die'],
+> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['DieType'], ParentType, ContextType>;
+  value?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type MessageResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Message'] = ResolversParentTypes['Message'],
+> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  author?: Resolver<ResolversTypes['PlayerInfo'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  component?: Resolver<
+    Maybe<ResolversTypes['String']>,
     ParentType,
     ContextType
   >;
-  me?: Resolver<Maybe<ResolversTypes['Player']>, ParentType, ContextType>;
-  world?: Resolver<
-    Maybe<ResolversTypes['World']>,
-    ParentType,
-    ContextType,
-    RequireFields<QueryWorldArgs, 'id'>
-  >;
-  worlds?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes['World']>>>,
+  text?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  rolls?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['ID']>>>,
     ParentType,
     ContextType
   >;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type MutationResolvers<
@@ -448,25 +470,73 @@ export type MutationResolvers<
   >;
 };
 
-export type DiceRollResolvers<
+export type PlayerResolvers<
   ContextType = any,
-  ParentType extends ResolversParentTypes['DiceRoll'] = ResolversParentTypes['DiceRoll'],
+  ParentType extends ResolversParentTypes['Player'] = ResolversParentTypes['Player'],
 > = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  roller?: Resolver<ResolversTypes['PlayerInWorld'], ParentType, ContextType>;
-  dice?: Resolver<Array<ResolversTypes['Die']>, ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  color?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  worlds?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['World']>>>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type DieResolvers<
+export type PlayerInWorldResolvers<
   ContextType = any,
-  ParentType extends ResolversParentTypes['Die'] = ResolversParentTypes['Die'],
+  ParentType extends ResolversParentTypes['PlayerInWorld'] = ResolversParentTypes['PlayerInWorld'],
 > = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  type?: Resolver<ResolversTypes['DieType'], ParentType, ContextType>;
-  value?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  color?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  role?: Resolver<ResolversTypes['Role'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
+
+export type PlayerInfoResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['PlayerInfo'] = ResolversParentTypes['PlayerInfo'],
+> = {
+  __resolveType: TypeResolveFn<
+    'Player' | 'PlayerInWorld',
+    ParentType,
+    ContextType
+  >;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  color?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+};
+
+export type QueryResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query'],
+> = {
+  invitesToWorlds?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['World']>>>,
+    ParentType,
+    ContextType
+  >;
+  me?: Resolver<Maybe<ResolversTypes['Player']>, ParentType, ContextType>;
+  world?: Resolver<
+    Maybe<ResolversTypes['World']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryWorldArgs, 'id'>
+  >;
+  worlds?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['World']>>>,
+    ParentType,
+    ContextType
+  >;
+};
+
+export type RoleResolvers = EnumResolverSignature<
+  { GAMEMASTER?: any; USER?: any },
+  ResolversTypes['Role']
+>;
 
 export type SubscriptionResolvers<
   ContextType = any,
@@ -487,11 +557,6 @@ export type SubscriptionResolvers<
     RequireFields<SubscriptionNewMessagesArgs, 'worldId'>
   >;
 };
-
-export interface DateTimeScalarConfig
-  extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
-  name: 'DateTime';
-}
 
 export type WorldResolvers<
   ContextType = any,
@@ -523,81 +588,20 @@ export type WorldResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type PlayerInfoResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['PlayerInfo'] = ResolversParentTypes['PlayerInfo'],
-> = {
-  __resolveType: TypeResolveFn<
-    'PlayerInWorld' | 'Player',
-    ParentType,
-    ContextType
-  >;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  color?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-};
-
-export type PlayerInWorldResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['PlayerInWorld'] = ResolversParentTypes['PlayerInWorld'],
-> = {
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  color?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  role?: Resolver<ResolversTypes['Role'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type PlayerResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['Player'] = ResolversParentTypes['Player'],
-> = {
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  color?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  worlds?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes['World']>>>,
-    ParentType,
-    ContextType
-  >;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type MessageResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['Message'] = ResolversParentTypes['Message'],
-> = {
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  author?: Resolver<ResolversTypes['PlayerInfo'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  component?: Resolver<
-    Maybe<ResolversTypes['String']>,
-    ParentType,
-    ContextType
-  >;
-  text?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  rolls?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes['ID']>>>,
-    ParentType,
-    ContextType
-  >;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
 export type Resolvers<ContextType = any> = {
-  Role?: RoleResolvers;
   AuthInfo?: AuthInfoResolvers<ContextType>;
-  Query?: QueryResolvers<ContextType>;
-  Mutation?: MutationResolvers<ContextType>;
+  DateTime?: GraphQLScalarType;
   DiceRoll?: DiceRollResolvers<ContextType>;
   Die?: DieResolvers<ContextType>;
-  Subscription?: SubscriptionResolvers<ContextType>;
-  DateTime?: GraphQLScalarType;
-  World?: WorldResolvers<ContextType>;
-  PlayerInfo?: PlayerInfoResolvers<ContextType>;
-  PlayerInWorld?: PlayerInWorldResolvers<ContextType>;
-  Player?: PlayerResolvers<ContextType>;
   Message?: MessageResolvers<ContextType>;
+  Mutation?: MutationResolvers<ContextType>;
+  Player?: PlayerResolvers<ContextType>;
+  PlayerInWorld?: PlayerInWorldResolvers<ContextType>;
+  PlayerInfo?: PlayerInfoResolvers<ContextType>;
+  Query?: QueryResolvers<ContextType>;
+  Role?: RoleResolvers;
+  Subscription?: SubscriptionResolvers<ContextType>;
+  World?: WorldResolvers<ContextType>;
 };
 
 /**

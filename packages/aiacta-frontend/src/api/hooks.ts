@@ -19,27 +19,65 @@ export type Scalars = {
   DateTime: any;
 };
 
-export enum Role {
-  Gamemaster = 'GAMEMASTER',
-  User = 'USER',
-}
-
 export type AuthInfo = {
   __typename?: 'AuthInfo';
   token: Scalars['String'];
   player: Player;
 };
 
-export type Query = {
-  __typename?: 'Query';
-  invitesToWorlds?: Maybe<Array<Maybe<World>>>;
-  me?: Maybe<Player>;
-  world?: Maybe<World>;
-  worlds?: Maybe<Array<Maybe<World>>>;
+export type DiceRoll = {
+  __typename?: 'DiceRoll';
+  id: Scalars['ID'];
+  roller: PlayerInWorld;
+  dice: Array<Die>;
 };
 
-export type QueryWorldArgs = {
+export type DiceRollContext = {
+  id?: Maybe<Scalars['ID']>;
+  type?: Maybe<Scalars['String']>;
+};
+
+export type DiceRollInput = {
+  formula: Scalars['String'];
+  context?: Maybe<DiceRollContext>;
+  visibility?: Maybe<DiceRollVisibility>;
+};
+
+export enum DiceRollVisibility {
+  Everybody = 'EVERYBODY',
+  GmOnly = 'GM_ONLY',
+  MyselfOnly = 'MYSELF_ONLY',
+}
+
+export type Die = {
+  __typename?: 'Die';
   id: Scalars['ID'];
+  type: DieType;
+  value: Scalars['Int'];
+};
+
+export enum DieType {
+  D4 = 'D4',
+  D6 = 'D6',
+  D8 = 'D8',
+  D10 = 'D10',
+  D12 = 'D12',
+  D20 = 'D20',
+}
+
+export type Message = {
+  __typename?: 'Message';
+  id: Scalars['ID'];
+  author: PlayerInfo;
+  createdAt: Scalars['DateTime'];
+  component?: Maybe<Scalars['String']>;
+  text?: Maybe<Scalars['String']>;
+  rolls?: Maybe<Array<Maybe<Scalars['ID']>>>;
+};
+
+export type MessageInput = {
+  component?: Maybe<Scalars['String']>;
+  text?: Maybe<Scalars['String']>;
 };
 
 export type Mutation = {
@@ -83,45 +121,44 @@ export type MutationSignUpArgs = {
   color?: Maybe<Scalars['String']>;
 };
 
-export type DiceRoll = {
-  __typename?: 'DiceRoll';
+export type Player = PlayerInfo & {
+  __typename?: 'Player';
   id: Scalars['ID'];
-  roller: PlayerInWorld;
-  dice: Array<Die>;
+  name: Scalars['String'];
+  color: Scalars['String'];
+  worlds?: Maybe<Array<Maybe<World>>>;
 };
 
-export enum DieType {
-  D4 = 'D4',
-  D6 = 'D6',
-  D8 = 'D8',
-  D10 = 'D10',
-  D12 = 'D12',
-  D20 = 'D20',
-}
-
-export type Die = {
-  __typename?: 'Die';
+export type PlayerInWorld = PlayerInfo & {
+  __typename?: 'PlayerInWorld';
   id: Scalars['ID'];
-  type: DieType;
-  value: Scalars['Int'];
+  name: Scalars['String'];
+  color: Scalars['String'];
+  role: Role;
 };
 
-export enum DiceRollVisibility {
-  Everybody = 'EVERYBODY',
-  GmOnly = 'GM_ONLY',
-  MyselfOnly = 'MYSELF_ONLY',
+export type PlayerInfo = {
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  color: Scalars['String'];
+};
+
+export type Query = {
+  __typename?: 'Query';
+  invitesToWorlds?: Maybe<Array<Maybe<World>>>;
+  me?: Maybe<Player>;
+  world?: Maybe<World>;
+  worlds?: Maybe<Array<Maybe<World>>>;
+};
+
+export type QueryWorldArgs = {
+  id: Scalars['ID'];
+};
+
+export enum Role {
+  Gamemaster = 'GAMEMASTER',
+  User = 'USER',
 }
-
-export type DiceRollInput = {
-  formula: Scalars['String'];
-  context?: Maybe<DiceRollContext>;
-  visibility?: Maybe<DiceRollVisibility>;
-};
-
-export type DiceRollContext = {
-  id?: Maybe<Scalars['ID']>;
-  type?: Maybe<Scalars['String']>;
-};
 
 export type Subscription = {
   __typename?: 'Subscription';
@@ -148,43 +185,6 @@ export type World = {
   isPasswordProtected: Scalars['Boolean'];
 };
 
-export type PlayerInfo = {
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  color: Scalars['String'];
-};
-
-export type PlayerInWorld = PlayerInfo & {
-  __typename?: 'PlayerInWorld';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  color: Scalars['String'];
-  role: Role;
-};
-
-export type Player = PlayerInfo & {
-  __typename?: 'Player';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  color: Scalars['String'];
-  worlds?: Maybe<Array<Maybe<World>>>;
-};
-
-export type Message = {
-  __typename?: 'Message';
-  id: Scalars['ID'];
-  author: PlayerInfo;
-  createdAt: Scalars['DateTime'];
-  component?: Maybe<Scalars['String']>;
-  text?: Maybe<Scalars['String']>;
-  rolls?: Maybe<Array<Maybe<Scalars['ID']>>>;
-};
-
-export type MessageInput = {
-  component?: Maybe<Scalars['String']>;
-  text?: Maybe<Scalars['String']>;
-};
-
 export type WorldInput = {
   name: Scalars['String'];
   inviteOnly: Scalars['Boolean'];
@@ -196,11 +196,11 @@ export type MessageDataFragment = { __typename?: 'Message' } & Pick<
   'id' | 'component' | 'text' | 'createdAt' | 'rolls'
 > & {
     author:
+      | ({ __typename?: 'Player' } & Pick<Player, 'id' | 'name' | 'color'>)
       | ({ __typename?: 'PlayerInWorld' } & Pick<
           PlayerInWorld,
           'id' | 'name' | 'color'
-        >)
-      | ({ __typename?: 'Player' } & Pick<Player, 'id' | 'name' | 'color'>);
+        >);
   };
 
 export type ChatMessagesQueryVariables = Exact<{
