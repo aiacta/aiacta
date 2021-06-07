@@ -14,6 +14,12 @@
     <div id="root"></div>
     <script>
       global = globalThis;
+      if (!window.process) {
+        window.process = {};
+      }
+      if (!window.process.cwd) {
+        window.process.cwd = () => {};
+      }
     </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>

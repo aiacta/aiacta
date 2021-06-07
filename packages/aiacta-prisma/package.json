@@ -11,14 +11,14 @@
     "db:seed": "prisma db seed --preview-feature"
   },
   "dependencies": {
-    "@prisma/client": "2.23.0",
+    "@prisma/client": "2.24.1",
     "encoding": "0.1.13",
-    "prisma": "2.23.0",
-    "supports-color": "9.0.0"
+    "prisma": "2.24.1",
+    "supports-color": "9.0.1"
   },
   "devDependencies": {
-    "@types/node": "14.17.0",
-    "ts-node": "9.1.1",
-    "typescript": "4.2.4"
+    "@types/node": "14.17.2",
+    "ts-node": "10.0.0",
+    "typescript": "4.3.2"
   }
 }
