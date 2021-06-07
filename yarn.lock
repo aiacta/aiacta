@@ -78,7 +78,7 @@ __metadata:
     three: 0.128.0
     typescript: 4.2.4
     urql: 2.0.3
-    vite: 2.2.4
+    vite: 2.3.6
   languageName: unknown
   linkType: soft
 
@@ -6300,12 +6300,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild@npm:^0.9.3":
-  version: 0.9.7
-  resolution: "esbuild@npm:0.9.7"
+"esbuild@npm:^0.12.5":
+  version: 0.12.6
+  resolution: "esbuild@npm:0.12.6"
   bin:
     esbuild: bin/esbuild
-  checksum: 78a45e561156d8ecedfdbccddb83486b14f892a2624c100ff4a5150353a416b85a881d298a11da3447d3a2655571237dc9049a011ca10f4fedded2ffaab397c9
+  checksum: 5303e77b84575ab4c71b381d797723f57208dd314c2d85e12b7f23fcd9edebf9e2be4bf2a7a23384205cd953990a4694b07dec00bbab55a6a729b5ca5bf8f0dd
   languageName: node
   linkType: hard
 
@@ -11800,7 +11800,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:8.3.0":
+"postcss@npm:8.3.0, postcss@npm:^8.2.10":
   version: 8.3.0
   resolution: "postcss@npm:8.3.0"
   dependencies:
@@ -15115,13 +15115,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:2.2.4":
-  version: 2.2.4
-  resolution: "vite@npm:2.2.4"
+"vite@npm:2.3.6":
+  version: 2.3.6
+  resolution: "vite@npm:2.3.6"
   dependencies:
-    esbuild: ^0.9.3
+    esbuild: ^0.12.5
     fsevents: ~2.3.1
-    postcss: ^8.2.1
+    postcss: ^8.2.10
     resolve: ^1.19.0
     rollup: ^2.38.5
   dependenciesMeta:
@@ -15129,7 +15129,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: f0eb18ccd94a65c8db6846c6da5b46297121fc3604dfb6a48bbbd3b96d9e3096b717bdfa7001dce0de6ca2e991da6da920bd01658824f9ab34f5904281ccacae
+  checksum: 94c32cd21c64ae872e5f22153036102459307c658ffb1f54d8cd38413d3a664f98a28d904c285055bc34b518cf5ba1e0164fda608157e49b9e544a0ca58c9918
   languageName: node
   linkType: hard
 

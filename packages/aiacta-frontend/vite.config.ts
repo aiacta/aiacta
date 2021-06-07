@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [reactRefresh(), reactIntl()],
   define: {
     'process.env.RUN_ENV': '"development"',
-    'window.process': '{cwd(){}}',
+    'process.cwd': '() => {}',
   },
   server: {
     proxy: {
