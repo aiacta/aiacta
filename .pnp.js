@@ -218,7 +218,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["bufferutil", "npm:4.0.3"],
             ["chalk", "npm:4.1.1"],
             ["dotenv", "npm:10.0.0"],
-            ["esbuild", "npm:0.12.1"],
+            ["esbuild", "npm:0.12.6"],
             ["events", "npm:3.3.0"],
             ["jsonwebtoken", "npm:8.5.1"],
             ["node-static", "npm:0.7.11"],
@@ -5154,7 +5154,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@yarnpkg/esbuild-plugin-pnp", "virtual:63eebbb418007677564199698764c53564ad2ebaf06fdbdfb8495e47718e22fc7299ea5bb9e702c8ae9308843869d6bbf707b68d0e8da13d395d9a64cf9a0749#npm:1.0.0-rc.2"],
             ["@types/esbuild", null],
-            ["esbuild", "npm:0.12.1"],
+            ["esbuild", "npm:0.12.6"],
             ["tslib", "npm:1.14.1"]
           ],
           "packagePeers": [
@@ -8364,13 +8364,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["esbuild", [
-        ["npm:0.12.1", {
-          "packageLocation": "./.yarn/unplugged/esbuild-npm-0.12.1-ce7e6881a2/node_modules/esbuild/",
-          "packageDependencies": [
-            ["esbuild", "npm:0.12.1"]
-          ],
-          "linkType": "HARD",
-        }],
         ["npm:0.12.6", {
           "packageLocation": "./.yarn/unplugged/esbuild-npm-0.12.6-e4b4e73503/node_modules/esbuild/",
           "packageDependencies": [
