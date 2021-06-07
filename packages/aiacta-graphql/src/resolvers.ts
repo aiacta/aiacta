@@ -29,6 +29,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  Blob: any;
   DateTime: any;
 };
 
@@ -78,6 +79,26 @@ export enum DieType {
   D20 = 'D20',
 }
 
+export type GridSettings = {
+  __typename?: 'GridSettings';
+  size?: Maybe<Scalars['Int']>;
+  offset: Point;
+};
+
+export type GridSettingsInput = {
+  size?: Maybe<Scalars['Int']>;
+  offset: PointInput;
+};
+
+export type Light = {
+  __typename?: 'Light';
+  position: Point;
+};
+
+export type LightInput = {
+  position: PointInput;
+};
+
 export type Message = {
   __typename?: 'Message';
   id: Scalars['ID'];
@@ -95,12 +116,17 @@ export type MessageInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createScene?: Maybe<Scene>;
   createWorld?: Maybe<World>;
   joinWorld?: Maybe<World>;
   login?: Maybe<AuthInfo>;
   rollDice?: Maybe<DiceRoll>;
   sendMessage?: Maybe<Message>;
   signUp?: Maybe<AuthInfo>;
+};
+
+export type MutationCreateSceneArgs = {
+  input: SceneInput;
 };
 
 export type MutationCreateWorldArgs = {
@@ -156,6 +182,17 @@ export type PlayerInfo = {
   color: Scalars['String'];
 };
 
+export type Point = {
+  __typename?: 'Point';
+  x: Scalars['Int'];
+  y: Scalars['Int'];
+};
+
+export type PointInput = {
+  x: Scalars['Int'];
+  y: Scalars['Int'];
+};
+
 export type Query = {
   __typename?: 'Query';
   invitesToWorlds?: Maybe<Array<Maybe<World>>>;
@@ -169,6 +206,30 @@ export type QueryWorldArgs = {
 };
 
 export { Role };
+
+export type Scene = {
+  __typename?: 'Scene';
+  id: Scalars['ID'];
+  world: World;
+  name: Scalars['String'];
+  walls?: Maybe<Array<Maybe<Wall>>>;
+  lights?: Maybe<Array<Maybe<Light>>>;
+  image?: Maybe<Scalars['Blob']>;
+  width: Scalars['Int'];
+  height: Scalars['Int'];
+  grid?: Maybe<GridSettings>;
+};
+
+export type SceneInput = {
+  worldId: Scalars['ID'];
+  name: Scalars['String'];
+  walls?: Maybe<Array<Maybe<WallInput>>>;
+  lights?: Maybe<Array<Maybe<LightInput>>>;
+  image?: Maybe<Scalars['Blob']>;
+  width: Scalars['Int'];
+  height: Scalars['Int'];
+  grid?: Maybe<GridSettingsInput>;
+};
 
 export type Subscription = {
   __typename?: 'Subscription';
@@ -184,15 +245,25 @@ export type SubscriptionNewMessagesArgs = {
   worldId: Scalars['ID'];
 };
 
+export type Wall = {
+  __typename?: 'Wall';
+  points: Array<Point>;
+};
+
+export type WallInput = {
+  points: Array<PointInput>;
+};
+
 export type World = {
   __typename?: 'World';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  players?: Maybe<Array<Maybe<PlayerInWorld>>>;
-  messages?: Maybe<Array<Maybe<Message>>>;
   creator?: Maybe<PlayerInWorld>;
+  id: Scalars['ID'];
   isListed: Scalars['Boolean'];
   isPasswordProtected: Scalars['Boolean'];
+  messages?: Maybe<Array<Maybe<Message>>>;
+  name: Scalars['String'];
+  players?: Maybe<Array<Maybe<PlayerInWorld>>>;
+  scenes?: Maybe<Array<Maybe<Scene>>>;
 };
 
 export type WorldInput = {
@@ -312,6 +383,7 @@ export type ResolversTypes = {
     Partial<Omit<AuthInfo, 'player'> & { player: ResolversTypes['Player'] }>
   >;
   String: ResolverTypeWrapper<Partial<Scalars['String']>>;
+  Blob: ResolverTypeWrapper<Partial<Scalars['Blob']>>;
   DateTime: ResolverTypeWrapper<Partial<Scalars['DateTime']>>;
   DiceRoll: ResolverTypeWrapper<Partial<DiceRoll>>;
   ID: ResolverTypeWrapper<Partial<Scalars['ID']>>;
@@ -321,6 +393,10 @@ export type ResolversTypes = {
   Die: ResolverTypeWrapper<Partial<Die>>;
   Int: ResolverTypeWrapper<Partial<Scalars['Int']>>;
   DieType: ResolverTypeWrapper<Partial<DieType>>;
+  GridSettings: ResolverTypeWrapper<Partial<GridSettings>>;
+  GridSettingsInput: ResolverTypeWrapper<Partial<GridSettingsInput>>;
+  Light: ResolverTypeWrapper<Partial<Light>>;
+  LightInput: ResolverTypeWrapper<Partial<LightInput>>;
   Message: ResolverTypeWrapper<Partial<Message>>;
   MessageInput: ResolverTypeWrapper<Partial<MessageInput>>;
   Mutation: ResolverTypeWrapper<{}>;
@@ -333,9 +409,17 @@ export type ResolversTypes = {
   >;
   PlayerInWorld: ResolverTypeWrapper<Partial<PlayerInWorld>>;
   PlayerInfo: ResolversTypes['Player'] | ResolversTypes['PlayerInWorld'];
+  Point: ResolverTypeWrapper<Partial<Point>>;
+  PointInput: ResolverTypeWrapper<Partial<PointInput>>;
   Query: ResolverTypeWrapper<{}>;
   Role: ResolverTypeWrapper<Partial<Role>>;
+  Scene: ResolverTypeWrapper<
+    Partial<Omit<Scene, 'world'> & { world: ResolversTypes['World'] }>
+  >;
+  SceneInput: ResolverTypeWrapper<Partial<SceneInput>>;
   Subscription: ResolverTypeWrapper<{}>;
+  Wall: ResolverTypeWrapper<Partial<Wall>>;
+  WallInput: ResolverTypeWrapper<Partial<WallInput>>;
   World: ResolverTypeWrapper<WorldModel>;
   Boolean: ResolverTypeWrapper<Partial<Scalars['Boolean']>>;
   WorldInput: ResolverTypeWrapper<Partial<WorldInput>>;
@@ -347,6 +431,7 @@ export type ResolversParentTypes = {
     Omit<AuthInfo, 'player'> & { player: ResolversParentTypes['Player'] }
   >;
   String: Partial<Scalars['String']>;
+  Blob: Partial<Scalars['Blob']>;
   DateTime: Partial<Scalars['DateTime']>;
   DiceRoll: Partial<DiceRoll>;
   ID: Partial<Scalars['ID']>;
@@ -354,6 +439,10 @@ export type ResolversParentTypes = {
   DiceRollInput: Partial<DiceRollInput>;
   Die: Partial<Die>;
   Int: Partial<Scalars['Int']>;
+  GridSettings: Partial<GridSettings>;
+  GridSettingsInput: Partial<GridSettingsInput>;
+  Light: Partial<Light>;
+  LightInput: Partial<LightInput>;
   Message: Partial<Message>;
   MessageInput: Partial<MessageInput>;
   Mutation: {};
@@ -366,8 +455,16 @@ export type ResolversParentTypes = {
   PlayerInfo:
     | ResolversParentTypes['Player']
     | ResolversParentTypes['PlayerInWorld'];
+  Point: Partial<Point>;
+  PointInput: Partial<PointInput>;
   Query: {};
+  Scene: Partial<
+    Omit<Scene, 'world'> & { world: ResolversParentTypes['World'] }
+  >;
+  SceneInput: Partial<SceneInput>;
   Subscription: {};
+  Wall: Partial<Wall>;
+  WallInput: Partial<WallInput>;
   World: WorldModel;
   Boolean: Partial<Scalars['Boolean']>;
   WorldInput: Partial<WorldInput>;
@@ -381,6 +478,11 @@ export type AuthInfoResolvers<
   player?: Resolver<ResolversTypes['Player'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
+
+export interface BlobScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['Blob'], any> {
+  name: 'Blob';
+}
 
 export interface DateTimeScalarConfig
   extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
@@ -404,6 +506,23 @@ export type DieResolvers<
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['DieType'], ParentType, ContextType>;
   value?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type GridSettingsResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['GridSettings'] = ResolversParentTypes['GridSettings'],
+> = {
+  size?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  offset?: Resolver<ResolversTypes['Point'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type LightResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Light'] = ResolversParentTypes['Light'],
+> = {
+  position?: Resolver<ResolversTypes['Point'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -432,6 +551,12 @@ export type MutationResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation'],
 > = {
+  createScene?: Resolver<
+    Maybe<ResolversTypes['Scene']>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateSceneArgs, 'input'>
+  >;
   createWorld?: Resolver<
     Maybe<ResolversTypes['World']>,
     ParentType,
@@ -510,6 +635,15 @@ export type PlayerInfoResolvers<
   color?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 };
 
+export type PointResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Point'] = ResolversParentTypes['Point'],
+> = {
+  x?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  y?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type QueryResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query'],
@@ -538,6 +672,34 @@ export type RoleResolvers = EnumResolverSignature<
   ResolversTypes['Role']
 >;
 
+export type SceneResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Scene'] = ResolversParentTypes['Scene'],
+> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  world?: Resolver<ResolversTypes['World'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  walls?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['Wall']>>>,
+    ParentType,
+    ContextType
+  >;
+  lights?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['Light']>>>,
+    ParentType,
+    ContextType
+  >;
+  image?: Resolver<Maybe<ResolversTypes['Blob']>, ParentType, ContextType>;
+  width?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  height?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  grid?: Resolver<
+    Maybe<ResolversTypes['GridSettings']>,
+    ParentType,
+    ContextType
+  >;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type SubscriptionResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription'],
@@ -558,14 +720,27 @@ export type SubscriptionResolvers<
   >;
 };
 
+export type WallResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Wall'] = ResolversParentTypes['Wall'],
+> = {
+  points?: Resolver<Array<ResolversTypes['Point']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type WorldResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['World'] = ResolversParentTypes['World'],
 > = {
+  creator?: Resolver<
+    Maybe<ResolversTypes['PlayerInWorld']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  players?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes['PlayerInWorld']>>>,
+  isListed?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  isPasswordProtected?: Resolver<
+    ResolversTypes['Boolean'],
     ParentType,
     ContextType
   >;
@@ -574,14 +749,14 @@ export type WorldResolvers<
     ParentType,
     ContextType
   >;
-  creator?: Resolver<
-    Maybe<ResolversTypes['PlayerInWorld']>,
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  players?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['PlayerInWorld']>>>,
     ParentType,
     ContextType
   >;
-  isListed?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  isPasswordProtected?: Resolver<
-    ResolversTypes['Boolean'],
+  scenes?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['Scene']>>>,
     ParentType,
     ContextType
   >;
@@ -590,17 +765,23 @@ export type WorldResolvers<
 
 export type Resolvers<ContextType = any> = {
   AuthInfo?: AuthInfoResolvers<ContextType>;
+  Blob?: GraphQLScalarType;
   DateTime?: GraphQLScalarType;
   DiceRoll?: DiceRollResolvers<ContextType>;
   Die?: DieResolvers<ContextType>;
+  GridSettings?: GridSettingsResolvers<ContextType>;
+  Light?: LightResolvers<ContextType>;
   Message?: MessageResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Player?: PlayerResolvers<ContextType>;
   PlayerInWorld?: PlayerInWorldResolvers<ContextType>;
   PlayerInfo?: PlayerInfoResolvers<ContextType>;
+  Point?: PointResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Role?: RoleResolvers;
+  Scene?: SceneResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
+  Wall?: WallResolvers<ContextType>;
   World?: WorldResolvers<ContextType>;
 };
 

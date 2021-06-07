@@ -5,6 +5,7 @@ export * from './Dice';
 export * from './LoginForm';
 export * from './NewWorldForm';
 export * from './Omnibox';
+export * from './Scene';
 export * from './SynchronizedFormattedRelativeTime';
 export * from './TextEditor';
 export * from './WorldsList';

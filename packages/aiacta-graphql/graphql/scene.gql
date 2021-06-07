@@ -1,0 +1,68 @@
+scalar Blob
+
+extend type World {
+  scenes: [Scene]
+}
+
+type Scene {
+  id: ID!
+  world: World!
+  name: String!
+  walls: [Wall]
+  lights: [Light]
+  image: Blob
+  width: Int!
+  height: Int!
+  grid: GridSettings
+}
+
+type Wall {
+  points: [Point!]!
+}
+
+type Light {
+  position: Point!
+}
+
+type Point {
+  x: Int!
+  y: Int!
+}
+
+type GridSettings {
+  size: Int
+  offset: Point!
+}
+
+input SceneInput {
+  worldId: ID!
+  name: String!
+  walls: [WallInput]
+  lights: [LightInput]
+  image: Blob
+  width: Int!
+  height: Int!
+  grid: GridSettingsInput
+}
+
+input WallInput {
+  points: [PointInput!]!
+}
+
+input LightInput {
+  position: PointInput!
+}
+
+input PointInput {
+  x: Int!
+  y: Int!
+}
+
+input GridSettingsInput {
+  size: Int
+  offset: PointInput!
+}
+
+extend type Mutation {
+  createScene(input: SceneInput!): Scene
+}

@@ -32,6 +32,7 @@ model World {
   playersInvited Player[]
   password       String?
   createdAt      DateTime        @default(now())
+  scenes         Scene[]
 }
 
 enum Role {
@@ -61,4 +62,20 @@ model ChatMessage {
   authorId  String
   createdAt DateTime @default(now())
   rolls     String[]
+}
+
+model Scene {
+  id          String   @id @default(cuid())
+  World       World    @relation(fields: [worldId], references: [id])
+  worldId     String
+  createdAt   DateTime @default(now())
+  name        String
+  image       Bytes?
+  width       Int
+  height      Int
+  walls       Json[]
+  lights      Json[]
+  gridSize    Int
+  gridOffsetX Int      @default(0)
+  gridOffsetY Int      @default(0)
 }

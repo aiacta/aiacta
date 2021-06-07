@@ -1,0 +1,29 @@
+fragment ListInfoScene on Scene {
+  id
+}
+
+mutation CreateScene(
+  $worldId: ID!
+  $name: String!
+  $width: Int!
+  $height: Int!
+  $grid: GridSettingsInput
+  $walls: [WallInput]
+  $lights: [LightInput]
+  $image: Blob
+) {
+  createScene(
+    input: {
+      worldId: $worldId
+      name: $name
+      width: $width
+      height: $height
+      grid: $grid
+      walls: $walls
+      lights: $lights
+      image: $image
+    }
+  ) {
+    ...ListInfoScene
+  }
+}

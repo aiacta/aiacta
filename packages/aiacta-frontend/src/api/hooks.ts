@@ -16,6 +16,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  Blob: any;
   DateTime: any;
 };
 
@@ -65,6 +66,26 @@ export enum DieType {
   D20 = 'D20',
 }
 
+export type GridSettings = {
+  __typename?: 'GridSettings';
+  size?: Maybe<Scalars['Int']>;
+  offset: Point;
+};
+
+export type GridSettingsInput = {
+  size?: Maybe<Scalars['Int']>;
+  offset: PointInput;
+};
+
+export type Light = {
+  __typename?: 'Light';
+  position: Point;
+};
+
+export type LightInput = {
+  position: PointInput;
+};
+
 export type Message = {
   __typename?: 'Message';
   id: Scalars['ID'];
@@ -82,12 +103,17 @@ export type MessageInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createScene?: Maybe<Scene>;
   createWorld?: Maybe<World>;
   joinWorld?: Maybe<World>;
   login?: Maybe<AuthInfo>;
   rollDice?: Maybe<DiceRoll>;
   sendMessage?: Maybe<Message>;
   signUp?: Maybe<AuthInfo>;
+};
+
+export type MutationCreateSceneArgs = {
+  input: SceneInput;
 };
 
 export type MutationCreateWorldArgs = {
@@ -143,6 +169,17 @@ export type PlayerInfo = {
   color: Scalars['String'];
 };
 
+export type Point = {
+  __typename?: 'Point';
+  x: Scalars['Int'];
+  y: Scalars['Int'];
+};
+
+export type PointInput = {
+  x: Scalars['Int'];
+  y: Scalars['Int'];
+};
+
 export type Query = {
   __typename?: 'Query';
   invitesToWorlds?: Maybe<Array<Maybe<World>>>;
@@ -160,6 +197,30 @@ export enum Role {
   User = 'USER',
 }
 
+export type Scene = {
+  __typename?: 'Scene';
+  id: Scalars['ID'];
+  world: World;
+  name: Scalars['String'];
+  walls?: Maybe<Array<Maybe<Wall>>>;
+  lights?: Maybe<Array<Maybe<Light>>>;
+  image?: Maybe<Scalars['Blob']>;
+  width: Scalars['Int'];
+  height: Scalars['Int'];
+  grid?: Maybe<GridSettings>;
+};
+
+export type SceneInput = {
+  worldId: Scalars['ID'];
+  name: Scalars['String'];
+  walls?: Maybe<Array<Maybe<WallInput>>>;
+  lights?: Maybe<Array<Maybe<LightInput>>>;
+  image?: Maybe<Scalars['Blob']>;
+  width: Scalars['Int'];
+  height: Scalars['Int'];
+  grid?: Maybe<GridSettingsInput>;
+};
+
 export type Subscription = {
   __typename?: 'Subscription';
   diceRolls: Array<Maybe<DiceRoll>>;
@@ -174,15 +235,25 @@ export type SubscriptionNewMessagesArgs = {
   worldId: Scalars['ID'];
 };
 
+export type Wall = {
+  __typename?: 'Wall';
+  points: Array<Point>;
+};
+
+export type WallInput = {
+  points: Array<PointInput>;
+};
+
 export type World = {
   __typename?: 'World';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  players?: Maybe<Array<Maybe<PlayerInWorld>>>;
-  messages?: Maybe<Array<Maybe<Message>>>;
   creator?: Maybe<PlayerInWorld>;
+  id: Scalars['ID'];
   isListed: Scalars['Boolean'];
   isPasswordProtected: Scalars['Boolean'];
+  messages?: Maybe<Array<Maybe<Message>>>;
+  name: Scalars['String'];
+  players?: Maybe<Array<Maybe<PlayerInWorld>>>;
+  scenes?: Maybe<Array<Maybe<Scene>>>;
 };
 
 export type WorldInput = {
@@ -295,6 +366,26 @@ export type MeQuery = { __typename?: 'Query' } & {
   me?: Maybe<{ __typename?: 'Player' } & Pick<Player, 'id' | 'name' | 'color'>>;
 };
 
+export type ListInfoSceneFragment = { __typename?: 'Scene' } & Pick<
+  Scene,
+  'id'
+>;
+
+export type CreateSceneMutationVariables = Exact<{
+  worldId: Scalars['ID'];
+  name: Scalars['String'];
+  width: Scalars['Int'];
+  height: Scalars['Int'];
+  grid?: Maybe<GridSettingsInput>;
+  walls?: Maybe<Array<Maybe<WallInput>> | Maybe<WallInput>>;
+  lights?: Maybe<Array<Maybe<LightInput>> | Maybe<LightInput>>;
+  image?: Maybe<Scalars['Blob']>;
+}>;
+
+export type CreateSceneMutation = { __typename?: 'Mutation' } & {
+  createScene?: Maybe<{ __typename?: 'Scene' } & ListInfoSceneFragment>;
+};
+
 export type ListInfoWorldFragment = { __typename?: 'World' } & Pick<
   World,
   'id' | 'name' | 'isListed' | 'isPasswordProtected'
@@ -363,6 +454,11 @@ export const MessageDataFragmentDoc = gql`
     }
     createdAt
     rolls
+  }
+`;
+export const ListInfoSceneFragmentDoc = gql`
+  fragment ListInfoScene on Scene {
+    id
   }
 `;
 export const ListInfoWorldFragmentDoc = gql`
@@ -528,6 +624,40 @@ export function useMeQuery(
   options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {},
 ) {
   return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
+}
+export const CreateSceneDocument = gql`
+  mutation CreateScene(
+    $worldId: ID!
+    $name: String!
+    $width: Int!
+    $height: Int!
+    $grid: GridSettingsInput
+    $walls: [WallInput]
+    $lights: [LightInput]
+    $image: Blob
+  ) {
+    createScene(
+      input: {
+        worldId: $worldId
+        name: $name
+        width: $width
+        height: $height
+        grid: $grid
+        walls: $walls
+        lights: $lights
+        image: $image
+      }
+    ) {
+      ...ListInfoScene
+    }
+  }
+  ${ListInfoSceneFragmentDoc}
+`;
+
+export function useCreateSceneMutation() {
+  return Urql.useMutation<CreateSceneMutation, CreateSceneMutationVariables>(
+    CreateSceneDocument,
+  );
 }
 export const AvailableWorldsDocument = gql`
   query AvailableWorlds {

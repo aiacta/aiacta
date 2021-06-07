@@ -130,6 +130,52 @@
       },
       {
         "kind": "OBJECT",
+        "name": "GridSettings",
+        "fields": [
+          {
+            "name": "size",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "offset",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Point",
+                "ofType": null
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "Light",
+        "fields": [
+          {
+            "name": "position",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Point",
+                "ofType": null
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "Message",
         "fields": [
           {
@@ -200,6 +246,26 @@
         "kind": "OBJECT",
         "name": "Mutation",
         "fields": [
+          {
+            "name": "createScene",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Scene",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
           {
             "name": "createWorld",
             "type": {
@@ -549,6 +615,35 @@
       },
       {
         "kind": "OBJECT",
+        "name": "Point",
+        "fields": [
+          {
+            "name": "x",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "y",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "Query",
         "fields": [
           {
@@ -601,6 +696,110 @@
                 "name": "World",
                 "ofType": null
               }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "Scene",
+        "fields": [
+          {
+            "name": "id",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "world",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "World",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "name",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "walls",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Wall",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "lights",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Light",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "image",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "width",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "height",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "grid",
+            "type": {
+              "kind": "OBJECT",
+              "name": "GridSettings",
+              "ofType": null
             },
             "args": []
           }
@@ -668,8 +867,42 @@
       },
       {
         "kind": "OBJECT",
+        "name": "Wall",
+        "fields": [
+          {
+            "name": "points",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "Point",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "World",
         "fields": [
+          {
+            "name": "creator",
+            "type": {
+              "kind": "OBJECT",
+              "name": "PlayerInWorld",
+              "ofType": null
+            },
+            "args": []
+          },
           {
             "name": "id",
             "type": {
@@ -677,6 +910,40 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "isListed",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "isPasswordProtected",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "messages",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Message",
+                "ofType": null
               }
             },
             "args": []
@@ -705,44 +972,13 @@
             "args": []
           },
           {
-            "name": "messages",
+            "name": "scenes",
             "type": {
               "kind": "LIST",
               "ofType": {
                 "kind": "OBJECT",
-                "name": "Message",
+                "name": "Scene",
                 "ofType": null
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "creator",
-            "type": {
-              "kind": "OBJECT",
-              "name": "PlayerInWorld",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "isListed",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "isPasswordProtected",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
               }
             },
             "args": []
