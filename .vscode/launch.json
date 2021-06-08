@@ -21,6 +21,17 @@
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
       "disableOptimisticBPs": true
+    },
+    {
+      "type": "node",
+      "name": "launch hub",
+      "request": "launch",
+      "runtimeArgs": ["-r", "./.pnp.js", "-r", "@swc-node/register"],
+      "args": ["${workspaceFolder}/packages/aiacta-hub/src/index.ts"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "disableOptimisticBPs": true
     }
   ]
 }

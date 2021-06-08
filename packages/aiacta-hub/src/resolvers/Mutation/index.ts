@@ -1,3 +1,4 @@
+import { MutationCreateSceneResolver } from './createScene';
 import { MutationCreateWorldResolver } from './createWorld';
 import { MutationJoinWorldResolver } from './joinWorld';
 import { MutationLoginResolver } from './login';
@@ -12,4 +13,5 @@ export const MutationResolvers = [
   MutationCreateWorldResolver,
   MutationJoinWorldResolver,
   MutationRollDiceResolver,
+  MutationCreateSceneResolver,
 ];

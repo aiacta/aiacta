@@ -25,11 +25,13 @@ createServer({
         }
       });
     } else {
-      const { query, variables } = JSON.parse(request.body ?? '{}');
+      const { query, variables, operationName } =
+        request.operations ?? JSON.parse(request.body ?? '{}');
       const result = await graphql.execute({
         request,
         document: query,
         variables,
+        operation: operationName,
       });
       response.writeHead(200);
       response.end(JSON.stringify(result));
@@ -71,8 +73,9 @@ createServer({
   const portColored = chalk.cyanBright(port);
   const ip = Object.values(networkInterfaces())
     .flat()
-    .filter((details) => details?.family === 'IPv4' && !details.internal)[0]
-    ?.address;
+    .filter(
+      (details) => details?.family === 'IPv4' && !details.internal,
+    )[0]?.address;
 
   console.clear();
   if (process.env.NODE_ENV === 'development') {

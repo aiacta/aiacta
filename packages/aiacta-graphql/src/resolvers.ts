@@ -31,6 +31,7 @@ export type Scalars = {
   Float: number;
   Blob: any;
   DateTime: any;
+  Upload: { createReadStream(): NodeJS.ReadStream; toBuffer(): Buffer };
 };
 
 export type AuthInfo = {
@@ -225,7 +226,7 @@ export type SceneInput = {
   name: Scalars['String'];
   walls?: Maybe<Array<Maybe<WallInput>>>;
   lights?: Maybe<Array<Maybe<LightInput>>>;
-  image?: Maybe<Scalars['Blob']>;
+  image?: Maybe<Scalars['Upload']>;
   width: Scalars['Int'];
   height: Scalars['Int'];
   grid?: Maybe<GridSettingsInput>;
@@ -418,6 +419,7 @@ export type ResolversTypes = {
   >;
   SceneInput: ResolverTypeWrapper<Partial<SceneInput>>;
   Subscription: ResolverTypeWrapper<{}>;
+  Upload: ResolverTypeWrapper<Partial<Scalars['Upload']>>;
   Wall: ResolverTypeWrapper<Partial<Wall>>;
   WallInput: ResolverTypeWrapper<Partial<WallInput>>;
   World: ResolverTypeWrapper<WorldModel>;
@@ -463,6 +465,7 @@ export type ResolversParentTypes = {
   >;
   SceneInput: Partial<SceneInput>;
   Subscription: {};
+  Upload: Partial<Scalars['Upload']>;
   Wall: Partial<Wall>;
   WallInput: Partial<WallInput>;
   World: WorldModel;
@@ -720,6 +723,11 @@ export type SubscriptionResolvers<
   >;
 };
 
+export interface UploadScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['Upload'], any> {
+  name: 'Upload';
+}
+
 export type WallResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Wall'] = ResolversParentTypes['Wall'],
@@ -781,6 +789,7 @@ export type Resolvers<ContextType = any> = {
   Role?: RoleResolvers;
   Scene?: SceneResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
+  Upload?: GraphQLScalarType;
   Wall?: WallResolvers<ContextType>;
   World?: WorldResolvers<ContextType>;
 };

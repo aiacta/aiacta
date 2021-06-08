@@ -10,7 +10,7 @@ mutation CreateScene(
   $grid: GridSettingsInput
   $walls: [WallInput]
   $lights: [LightInput]
-  $image: Blob
+  $image: Upload
 ) {
   createScene(
     input: {

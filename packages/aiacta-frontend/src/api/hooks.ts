@@ -18,6 +18,7 @@ export type Scalars = {
   Float: number;
   Blob: any;
   DateTime: any;
+  Upload: any;
 };
 
 export type AuthInfo = {
@@ -215,7 +216,7 @@ export type SceneInput = {
   name: Scalars['String'];
   walls?: Maybe<Array<Maybe<WallInput>>>;
   lights?: Maybe<Array<Maybe<LightInput>>>;
-  image?: Maybe<Scalars['Blob']>;
+  image?: Maybe<Scalars['Upload']>;
   width: Scalars['Int'];
   height: Scalars['Int'];
   grid?: Maybe<GridSettingsInput>;
@@ -379,7 +380,7 @@ export type CreateSceneMutationVariables = Exact<{
   grid?: Maybe<GridSettingsInput>;
   walls?: Maybe<Array<Maybe<WallInput>> | Maybe<WallInput>>;
   lights?: Maybe<Array<Maybe<LightInput>> | Maybe<LightInput>>;
-  image?: Maybe<Scalars['Blob']>;
+  image?: Maybe<Scalars['Upload']>;
 }>;
 
 export type CreateSceneMutation = { __typename?: 'Mutation' } & {
@@ -634,7 +635,7 @@ export const CreateSceneDocument = gql`
     $grid: GridSettingsInput
     $walls: [WallInput]
     $lights: [LightInput]
-    $image: Blob
+    $image: Upload
   ) {
     createScene(
       input: {

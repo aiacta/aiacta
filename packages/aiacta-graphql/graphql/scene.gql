@@ -1,4 +1,5 @@
 scalar Blob
+scalar Upload
 
 extend type World {
   scenes: [Scene]
@@ -39,7 +40,7 @@ input SceneInput {
   name: String!
   walls: [WallInput]
   lights: [LightInput]
-  image: Blob
+  image: Upload
   width: Int!
   height: Int!
   grid: GridSettingsInput

@@ -15,3 +15,5 @@ generates:
       mappers:
         World: '@aiacta/prisma#World'
       # Message: '@aiacta/prisma#ChatMessage'
+      scalars:
+        Upload: '{createReadStream():NodeJS.ReadStream;toBuffer():Buffer}'

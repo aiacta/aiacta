@@ -1,7 +1,8 @@
 import { devtoolsExchange } from '@urql/devtools';
+import { multipartFetchExchange } from '@urql/exchange-multipart-fetch';
 import * as React from 'react';
 import { useRecoilValue } from 'recoil';
-import { createClient, dedupExchange, fetchExchange, Provider } from 'urql';
+import { createClient, dedupExchange, Provider } from 'urql';
 import { isAuthenticatedAtom, useAuthExchange } from './auth';
 import { useCacheExchange } from './cache';
 import { useErrorExchange } from './error';
@@ -26,7 +27,7 @@ export function ApiProvider({ children }: { children: React.ReactNode }) {
         cacheExchange,
         errorExchange,
         authExchange,
-        fetchExchange,
+        multipartFetchExchange,
         subscriptionExchange,
       ],
     });

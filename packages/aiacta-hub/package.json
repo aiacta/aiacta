@@ -2,7 +2,7 @@
   "name": "@aiacta/hub",
   "version": "0.0.0",
   "scripts": {
-    "dev": "ts-node-dev --respawn ./src/index",
+    "dev": "ts-node-dev ./src/index",
     "build": "ts-node-dev ./bundle"
   },
   "dependencies": {
@@ -11,6 +11,7 @@
     "@aiacta/prisma": "workspace:*",
     "bcryptjs": "2.4.3",
     "bufferutil": "4.0.3",
+    "busboy": "0.3.1",
     "chalk": "4.1.1",
     "dotenv": "10.0.0",
     "events": "3.3.0",
@@ -22,6 +23,7 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "2.4.2",
+    "@types/busboy": "0.2.3",
     "@types/events": "3.0.0",
     "@types/jsonwebtoken": "8.5.1",
     "@types/node": "14.17.2",

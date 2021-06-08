@@ -143,6 +143,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@urql/devtools", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:2.0.3"],
             ["@urql/exchange-auth", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:0.1.3"],
             ["@urql/exchange-graphcache", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:4.1.3"],
+            ["@urql/exchange-multipart-fetch", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:0.1.12"],
             ["@vitejs/plugin-react-refresh", "npm:1.3.3"],
             ["cannon-es", "npm:0.17.1"],
             ["cypress", "npm:7.4.0"],
@@ -207,6 +208,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@aiacta/graphql", "workspace:packages/aiacta-graphql"],
             ["@aiacta/prisma", "workspace:packages/aiacta-prisma"],
             ["@types/bcryptjs", "npm:2.4.2"],
+            ["@types/busboy", "npm:0.2.3"],
             ["@types/events", "npm:3.0.0"],
             ["@types/jsonwebtoken", "npm:8.5.1"],
             ["@types/node", "npm:14.17.2"],
@@ -216,6 +218,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@yarnpkg/esbuild-plugin-pnp", "virtual:63eebbb418007677564199698764c53564ad2ebaf06fdbdfb8495e47718e22fc7299ea5bb9e702c8ae9308843869d6bbf707b68d0e8da13d395d9a64cf9a0749#npm:1.0.0-rc.5"],
             ["bcryptjs", "npm:2.4.3"],
             ["bufferutil", "npm:4.0.3"],
+            ["busboy", "npm:0.3.1"],
             ["chalk", "npm:4.1.1"],
             ["dotenv", "npm:10.0.0"],
             ["esbuild", "npm:0.12.6"],
@@ -4335,6 +4338,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@types/busboy", [
+        ["npm:0.2.3", {
+          "packageLocation": "./.yarn/cache/@types-busboy-npm-0.2.3-b3f65c4066-2f66c23ac8.zip/node_modules/@types/busboy/",
+          "packageDependencies": [
+            ["@types/busboy", "npm:0.2.3"],
+            ["@types/node", "npm:14.14.22"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@types/cookie", [
         ["npm:0.4.0", {
           "packageLocation": "./.yarn/cache/@types-cookie-npm-0.4.0-2e6e63f5fe-be9ef4172b.zip/node_modules/@types/cookie/",
@@ -5106,6 +5119,31 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@urql/exchange-graphcache", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:4.1.3"],
             ["@types/graphql", null],
             ["@urql/core", "virtual:f18bd281c8a5c2d184d96df6533739d7773c2b34a70d76cc5d45f8b61434cdf0b6f2519c3a2e056046ec6c77c45ddd362d0be0822b13367b90373a0372802002#npm:2.1.3"],
+            ["graphql", "npm:15.5.0"],
+            ["wonka", "npm:4.0.15"]
+          ],
+          "packagePeers": [
+            "@types/graphql",
+            "graphql"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@urql/exchange-multipart-fetch", [
+        ["npm:0.1.12", {
+          "packageLocation": "./.yarn/cache/@urql-exchange-multipart-fetch-npm-0.1.12-ddebc469b6-a44709aeae.zip/node_modules/@urql/exchange-multipart-fetch/",
+          "packageDependencies": [
+            ["@urql/exchange-multipart-fetch", "npm:0.1.12"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:0.1.12", {
+          "packageLocation": "./.yarn/$$virtual/@urql-exchange-multipart-fetch-virtual-4f82bb06df/0/cache/@urql-exchange-multipart-fetch-npm-0.1.12-ddebc469b6-a44709aeae.zip/node_modules/@urql/exchange-multipart-fetch/",
+          "packageDependencies": [
+            ["@urql/exchange-multipart-fetch", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:0.1.12"],
+            ["@types/graphql", null],
+            ["@urql/core", "virtual:790082a5f323e7d158091d11e8094c2b73dfde216a02dee2d73869abba4543c950708656ddf4ea1da43110991e81f35ba1bd3b4d92102c7f2c44a2ad64f861d3#npm:2.1.2"],
+            ["extract-files", "npm:8.1.0"],
             ["graphql", "npm:15.5.0"],
             ["wonka", "npm:4.0.15"]
           ],
@@ -9039,6 +9077,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["extract-files", [
+        ["npm:8.1.0", {
+          "packageLocation": "./.yarn/cache/extract-files-npm-8.1.0-2a3bdc0800-8d13a42a9a.zip/node_modules/extract-files/",
+          "packageDependencies": [
+            ["extract-files", "npm:8.1.0"]
+          ],
+          "linkType": "HARD",
+        }],
         ["npm:9.0.0", {
           "packageLocation": "./.yarn/cache/extract-files-npm-9.0.0-6ee13e6aab-021b107877.zip/node_modules/extract-files/",
           "packageDependencies": [
