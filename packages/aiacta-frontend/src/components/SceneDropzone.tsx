@@ -95,7 +95,7 @@ export function SceneDropzone() {
             size: vttScene.resolution.pixels_per_grid,
             offset: vttScene.resolution.map_origin,
           },
-          image: new Blob([vttScene.image]),
+          image: imageToFile(vttScene.image),
           walls: vttScene.line_of_sight.map((los) => ({
             points: los.map(transformPoint),
           })),
@@ -114,4 +114,20 @@ export function SceneDropzone() {
       {isActive && <div className={classes.active} />}
     </div>
   );
+}
+
+function imageToFile(data: string) {
+  const byteString = atob(data);
+  const ab = new ArrayBuffer(byteString.length);
+  const ib = new Uint8Array(ab);
+
+  for (let i = 0; i < byteString.length; ++i) {
+    ib[i] = byteString.charCodeAt(i);
+  }
+
+  const file = new File([ab], 'image.png', {
+    type: 'image/png',
+  });
+
+  return file;
 }
