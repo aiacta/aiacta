@@ -1,5 +1,32 @@
 fragment ListInfoScene on Scene {
   id
+  name
+}
+
+fragment DetailsScene on Scene {
+  ...ListInfoScene
+  image
+  width
+  height
+  grid {
+    size
+    offset {
+      x
+      y
+    }
+  }
+  walls {
+    points {
+      x
+      y
+    }
+  }
+  lights {
+    position {
+      x
+      y
+    }
+  }
 }
 
 mutation CreateScene(
@@ -25,5 +52,23 @@ mutation CreateScene(
     }
   ) {
     ...ListInfoScene
+  }
+}
+
+query ListScenes($worldId: ID!) {
+  world(id: $worldId) {
+    id
+    scenes {
+      ...ListInfoScene
+    }
+  }
+}
+
+query SceneDetails($worldId: ID!, $sceneId: ID!) {
+  world(id: $worldId) {
+    id
+    scene(id: $sceneId) {
+      ...DetailsScene
+    }
   }
 }

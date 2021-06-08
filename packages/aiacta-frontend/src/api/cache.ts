@@ -2,7 +2,11 @@ import { cacheExchange as urqlCacheExchange } from '@urql/exchange-graphcache';
 import * as React from 'react';
 import { useSetRecoilState } from 'recoil';
 import { isAuthenticatedAtom } from './auth';
-import { AvailableWorldsDocument, ChatMessagesDocument } from './hooks';
+import {
+  AvailableWorldsDocument,
+  ChatMessagesDocument,
+  ListScenesDocument,
+} from './hooks';
 import schema from './schema.json';
 
 export function useCacheExchange() {
@@ -12,6 +16,12 @@ export function useCacheExchange() {
     () =>
       urqlCacheExchange({
         schema: schema as any,
+        keys: {
+          GridSettings: () => null,
+          Point: () => null,
+          Wall: () => null,
+          Light: () => null,
+        },
         updates: {
           Mutation: {
             createWorld(result, _variables, cache) {
@@ -19,6 +29,15 @@ export function useCacheExchange() {
                 data.worlds.push(result.createWorld);
                 return data;
               });
+            },
+            createScene(result, variables, cache) {
+              cache.updateQuery(
+                { query: ListScenesDocument, variables },
+                (data) => {
+                  data.world.scenes.push(result.createScene);
+                  return data;
+                },
+              );
             },
             login(result) {
               if (result.login) {

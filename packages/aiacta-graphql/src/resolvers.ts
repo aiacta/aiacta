@@ -264,7 +264,12 @@ export type World = {
   messages?: Maybe<Array<Maybe<Message>>>;
   name: Scalars['String'];
   players?: Maybe<Array<Maybe<PlayerInWorld>>>;
+  scene?: Maybe<Scene>;
   scenes?: Maybe<Array<Maybe<Scene>>>;
+};
+
+export type WorldSceneArgs = {
+  id: Scalars['ID'];
 };
 
 export type WorldInput = {
@@ -762,6 +767,12 @@ export type WorldResolvers<
     Maybe<Array<Maybe<ResolversTypes['PlayerInWorld']>>>,
     ParentType,
     ContextType
+  >;
+  scene?: Resolver<
+    Maybe<ResolversTypes['Scene']>,
+    ParentType,
+    ContextType,
+    RequireFields<WorldSceneArgs, 'id'>
   >;
   scenes?: Resolver<
     Maybe<Array<Maybe<ResolversTypes['Scene']>>>,

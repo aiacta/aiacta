@@ -1,37 +1,17 @@
-import { MantineTheme, theming } from '@mantine/core';
+import { Badge, MantineTheme, theming } from '@mantine/core';
 import * as React from 'react';
 import { createUseStyles } from 'react-jss';
-import { useParams } from 'react-router-dom';
-import { useCreateSceneMutation } from '../api';
-import { useDropzone } from '../hooks';
-
-type Radian = number;
-type UniversalVTTPosition = { x: number; y: number };
-type UniversalVTTSceneDefinition = {
-  format: 0.2;
-  environment: { ambient_light: string };
-  image: string;
-  lights: {
-    position: UniversalVTTPosition;
-    color: string;
-    intensity: number;
-    range: number;
-    shadows: boolean;
-  }[];
-  line_of_sight: UniversalVTTPosition[][];
-  portals: {
-    position: UniversalVTTPosition;
-    bounds: UniversalVTTPosition[];
-    closed: boolean;
-    freestanding: boolean;
-    rotation: Radian;
-  }[];
-  resolution: {
-    map_origin: { x: number; y: number };
-    map_size: { x: number; y: number };
-    pixels_per_grid: number;
-  };
-};
+import {
+  Link,
+  Route,
+  Routes,
+  useLocation,
+  useParams,
+  useResolvedPath,
+} from 'react-router-dom';
+import { useListScenesQuery, useSceneDetailsQuery } from '../api';
+import { isTruthy, zIndices } from '../util';
+import { SceneDropzone } from './SceneDropzone';
 
 const useStyles = createUseStyles(
   (theme: MantineTheme) => ({
@@ -62,54 +42,53 @@ const useStyles = createUseStyles(
   { theming },
 );
 
-export function Scene() {
+export function Scenes() {
   const { worldId } = useParams();
-  const [, createScene] = useCreateSceneMutation();
-
-  const { isActive, getRootProps } = useDropzone({
-    onDrop: async (files) => {
-      // TODO for now only handle first file
-      const file = files[0];
-      const text = await file.text();
-      if (file.name.endsWith('dd2vtt')) {
-        // Handle Universal VTT file
-        const vttScene = JSON.parse(text) as UniversalVTTSceneDefinition;
-
-        const transformPoint = (p: { x: number; y: number }) => ({
-          x: Math.round(p.x * vttScene.resolution.pixels_per_grid),
-          y: Math.round(p.y * vttScene.resolution.pixels_per_grid),
-        });
-
-        await createScene({
-          worldId,
-          name: file.name.replace(/\.dd2vtt$/, '') || 'New Scene',
-          width:
-            vttScene.resolution.map_size.x *
-            vttScene.resolution.pixels_per_grid,
-          height:
-            vttScene.resolution.map_size.y *
-            vttScene.resolution.pixels_per_grid,
-          grid: {
-            size: vttScene.resolution.pixels_per_grid,
-            offset: vttScene.resolution.map_origin,
-          },
-          image: new Blob([vttScene.image]),
-          walls: vttScene.line_of_sight.map((los) => ({
-            points: los.map(transformPoint),
-          })),
-          lights: vttScene.lights.map((light) => ({
-            position: transformPoint(light.position),
-          })),
-        });
-      }
-    },
-  });
-
-  const classes = useStyles();
+  const [scenes] = useListScenesQuery({ variables: { worldId } });
 
   return (
-    <div {...getRootProps()} className={classes.container}>
-      {isActive && <div className={classes.active} />}
-    </div>
+    <>
+      <Routes>
+        <Route path="scene/:sceneId" element={<Scene />} />
+        <Route element={<SceneDropzone />} />
+      </Routes>
+      <div style={{ position: 'absolute', zIndex: zIndices.Hotbar }}>
+        {scenes.data?.world?.scenes?.filter(isTruthy).map((scene) => (
+          <SceneBadge key={scene.id} id={scene.id} name={scene.name} />
+        ))}
+      </div>
+    </>
   );
+}
+
+function SceneBadge({ id, name }: { id: string; name: string }) {
+  const to = `scene/${id}`;
+
+  const location = useLocation();
+  const path = useResolvedPath(to);
+
+  const isActive = location.pathname.startsWith(path.pathname);
+
+  return (
+    <Badge
+      key={id}
+      variant={isActive ? 'filled' : 'outline'}
+      component={Link}
+      to={to}
+      style={{ cursor: 'pointer' }}
+    >
+      {name}
+    </Badge>
+  );
+}
+
+function Scene() {
+  const classes = useStyles();
+
+  const { worldId, sceneId } = useParams();
+  const [scene] = useSceneDetailsQuery({ variables: { worldId, sceneId } });
+
+  console.log(scene);
+
+  return <div className={classes.container}></div>;
 }

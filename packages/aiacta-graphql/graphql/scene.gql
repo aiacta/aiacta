@@ -3,6 +3,7 @@ scalar Upload
 
 extend type World {
   scenes: [Scene]
+  scene(id: ID!): Scene
 }
 
 type Scene {

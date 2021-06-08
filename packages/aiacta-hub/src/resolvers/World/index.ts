@@ -2,6 +2,7 @@ import { WorldIsListedResolver } from './isListed';
 import { WorldIsPasswordProtectedResolver } from './isPasswordProtected';
 import { WorldMessagesResolver } from './messages';
 import { WorldPlayersResolver } from './players';
+import { WorldSceneResolver } from './scene';
 import { WorldScenesResolver } from './scenes';
 
 export const WorldResolvers = [
@@ -10,4 +11,5 @@ export const WorldResolvers = [
   WorldPlayersResolver,
   WorldMessagesResolver,
   WorldScenesResolver,
+  WorldSceneResolver,
 ];

@@ -254,7 +254,12 @@ export type World = {
   messages?: Maybe<Array<Maybe<Message>>>;
   name: Scalars['String'];
   players?: Maybe<Array<Maybe<PlayerInWorld>>>;
+  scene?: Maybe<Scene>;
   scenes?: Maybe<Array<Maybe<Scene>>>;
+};
+
+export type WorldSceneArgs = {
+  id: Scalars['ID'];
 };
 
 export type WorldInput = {
@@ -369,8 +374,37 @@ export type MeQuery = { __typename?: 'Query' } & {
 
 export type ListInfoSceneFragment = { __typename?: 'Scene' } & Pick<
   Scene,
-  'id'
+  'id' | 'name'
 >;
+
+export type DetailsSceneFragment = { __typename?: 'Scene' } & Pick<
+  Scene,
+  'image' | 'width' | 'height'
+> & {
+    grid?: Maybe<
+      { __typename?: 'GridSettings' } & Pick<GridSettings, 'size'> & {
+          offset: { __typename?: 'Point' } & Pick<Point, 'x' | 'y'>;
+        }
+    >;
+    walls?: Maybe<
+      Array<
+        Maybe<
+          { __typename?: 'Wall' } & {
+            points: Array<{ __typename?: 'Point' } & Pick<Point, 'x' | 'y'>>;
+          }
+        >
+      >
+    >;
+    lights?: Maybe<
+      Array<
+        Maybe<
+          { __typename?: 'Light' } & {
+            position: { __typename?: 'Point' } & Pick<Point, 'x' | 'y'>;
+          }
+        >
+      >
+    >;
+  } & ListInfoSceneFragment;
 
 export type CreateSceneMutationVariables = Exact<{
   worldId: Scalars['ID'];
@@ -385,6 +419,33 @@ export type CreateSceneMutationVariables = Exact<{
 
 export type CreateSceneMutation = { __typename?: 'Mutation' } & {
   createScene?: Maybe<{ __typename?: 'Scene' } & ListInfoSceneFragment>;
+};
+
+export type ListScenesQueryVariables = Exact<{
+  worldId: Scalars['ID'];
+}>;
+
+export type ListScenesQuery = { __typename?: 'Query' } & {
+  world?: Maybe<
+    { __typename?: 'World' } & Pick<World, 'id'> & {
+        scenes?: Maybe<
+          Array<Maybe<{ __typename?: 'Scene' } & ListInfoSceneFragment>>
+        >;
+      }
+  >;
+};
+
+export type SceneDetailsQueryVariables = Exact<{
+  worldId: Scalars['ID'];
+  sceneId: Scalars['ID'];
+}>;
+
+export type SceneDetailsQuery = { __typename?: 'Query' } & {
+  world?: Maybe<
+    { __typename?: 'World' } & Pick<World, 'id'> & {
+        scene?: Maybe<{ __typename?: 'Scene' } & DetailsSceneFragment>;
+      }
+  >;
 };
 
 export type ListInfoWorldFragment = { __typename?: 'World' } & Pick<
@@ -460,7 +521,36 @@ export const MessageDataFragmentDoc = gql`
 export const ListInfoSceneFragmentDoc = gql`
   fragment ListInfoScene on Scene {
     id
+    name
   }
+`;
+export const DetailsSceneFragmentDoc = gql`
+  fragment DetailsScene on Scene {
+    ...ListInfoScene
+    image
+    width
+    height
+    grid {
+      size
+      offset {
+        x
+        y
+      }
+    }
+    walls {
+      points {
+        x
+        y
+      }
+    }
+    lights {
+      position {
+        x
+        y
+      }
+    }
+  }
+  ${ListInfoSceneFragmentDoc}
 `;
 export const ListInfoWorldFragmentDoc = gql`
   fragment ListInfoWorld on World {
@@ -659,6 +749,46 @@ export function useCreateSceneMutation() {
   return Urql.useMutation<CreateSceneMutation, CreateSceneMutationVariables>(
     CreateSceneDocument,
   );
+}
+export const ListScenesDocument = gql`
+  query ListScenes($worldId: ID!) {
+    world(id: $worldId) {
+      id
+      scenes {
+        ...ListInfoScene
+      }
+    }
+  }
+  ${ListInfoSceneFragmentDoc}
+`;
+
+export function useListScenesQuery(
+  options: Omit<Urql.UseQueryArgs<ListScenesQueryVariables>, 'query'> = {},
+) {
+  return Urql.useQuery<ListScenesQuery>({
+    query: ListScenesDocument,
+    ...options,
+  });
+}
+export const SceneDetailsDocument = gql`
+  query SceneDetails($worldId: ID!, $sceneId: ID!) {
+    world(id: $worldId) {
+      id
+      scene(id: $sceneId) {
+        ...DetailsScene
+      }
+    }
+  }
+  ${DetailsSceneFragmentDoc}
+`;
+
+export function useSceneDetailsQuery(
+  options: Omit<Urql.UseQueryArgs<SceneDetailsQueryVariables>, 'query'> = {},
+) {
+  return Urql.useQuery<SceneDetailsQuery>({
+    query: SceneDetailsDocument,
+    ...options,
+  });
 }
 export const AvailableWorldsDocument = gql`
   query AvailableWorlds {

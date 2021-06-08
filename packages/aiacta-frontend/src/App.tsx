@@ -62,7 +62,7 @@ export function App() {
         <Route path="/" element={<WorldsPage />} />
         <Route path="/worlds/join/:worldId" element={<WorldsPage />} />
         <Route path="/worlds/new" element={<WorldsPage />} />
-        <Route path="/world/:worldId" element={<WorldPage />} />
+        <Route path="/world/:worldId/*" element={<WorldPage />} />
       </Routes>
       <Omnibox />
     </>

@@ -972,6 +972,26 @@
             "args": []
           },
           {
+            "name": "scene",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Scene",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "id",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
             "name": "scenes",
             "type": {
               "kind": "LIST",
