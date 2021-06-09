@@ -1,5 +1,6 @@
 import { useWindowEvent } from '@mantine/hooks';
 import * as React from 'react';
+import { isTruthy } from '../util';
 
 export function useDropzone<TElement extends HTMLElement = HTMLDivElement>({
   onDrop,
@@ -51,7 +52,8 @@ export function useDropzone<TElement extends HTMLElement = HTMLDivElement>({
 
         const files = [...evt.dataTransfer.items]
           .filter((item) => item.kind === 'file')
-          .map((d) => d.getAsFile());
+          .map((d) => d.getAsFile())
+          .filter(isTruthy);
 
         const maybePromise = onDrop(files);
 
