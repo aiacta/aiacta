@@ -2639,7 +2639,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@prisma/client@npm:*, @prisma/client@npm:2.24.1":
+"@prisma/client@npm:2.24.1":
   version: 2.24.1
   resolution: "@prisma/client@npm:2.24.1"
   dependencies:
