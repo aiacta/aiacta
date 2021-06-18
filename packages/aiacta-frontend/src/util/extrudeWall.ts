@@ -235,12 +235,9 @@ export function extrudeWall(wall: {
     }),
   );
 
-  console.log(faces);
-
-  // const uvs = vertices.flatMap(() => [0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1]);
-
   const geometry = new BufferGeometry();
   geometry.setAttribute('position', new Float32BufferAttribute(faces, 3));
+  // const uvs = vertices.flatMap(() => [0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1]);
   // geometry.setAttribute("uv", new Uint16Attribute(uvs, 2));
 
   return geometry;

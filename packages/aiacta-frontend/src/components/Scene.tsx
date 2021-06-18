@@ -16,8 +16,6 @@ export function Scene() {
     return <>Not found</>;
   }
 
-  console.log(scene.data?.world?.scene);
-
   const walls = [...(scene.data?.world?.scene.walls ?? [])];
 
   const mergedWalls: typeof walls = [];
@@ -48,8 +46,6 @@ export function Scene() {
     }
   }
 
-  console.log(mergedWalls);
-
   return (
     <Canvas
       style={{
@@ -61,7 +57,7 @@ export function Scene() {
         zIndex: zIndices.Canvas,
       }}
       // orthographic
-      camera={{ position: [0, 0, 50], zoom: 1, up: [0, 0, 1], far: 10000 }}
+      camera={{ position: [0, 0, 150], zoom: 1, up: [0, 0, 1], far: 10000 }}
     >
       <React.Suspense fallback={null}>
         <BackgroundImage buffer={scene.data?.world?.scene?.image?.data} />
@@ -95,13 +91,11 @@ function BackgroundImage({ buffer }: { buffer?: number[] }) {
   );
 }
 
-let idx = 0;
-
 function Wall({ points }: { points: { x: number; y: number }[] }) {
   const color = React.useMemo(
     () =>
       ['red', 'green', 'yellow', 'blue', 'purple', 'white', 'hotpink', 'brown'][
-        ++idx % 8
+        Math.floor(Math.random() * 8)
       ],
     [],
   );
