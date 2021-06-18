@@ -1,10 +1,12 @@
-import { Box, MapControls, Plane } from '@react-three/drei';
+import { MapControls, Plane } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import * as React from 'react';
 import { useParams } from 'react-router-dom';
 import { TextureLoader } from 'three';
 import { useSceneDetailsQuery } from '../api';
-import { zIndices } from '../util';
+import { extrudeWall, zIndices } from '../util';
+
+const mergeWalls = false;
 
 export function Scene() {
   const { worldId, sceneId } = useParams();
@@ -30,7 +32,7 @@ export function Scene() {
               wall.points.some((p2) => p1.x === p2.x && p1.y === p2.y),
             ),
           );
-          if (overlap) {
+          if (overlap && mergeWalls) {
             walls.splice(walls.indexOf(overlap), 1);
             wall.points.push(...overlap.points);
             wall.points = wall.points.filter(
@@ -106,17 +108,22 @@ function Wall({ points }: { points: { x: number; y: number }[] }) {
     'hotpink',
     'brown',
   ][++idx % 8];
+
+  const geometry = React.useMemo(
+    () =>
+      extrudeWall({
+        points: points.map((p) => ({ x: p.x - 1000, y: -p.y + 1000 })),
+        thickness: 10,
+        height: 100,
+      }),
+    [points],
+  );
+
   return (
     <>
-      {points.map((point, idx) => (
-        <Box
-          key={idx}
-          scale={[10, 10, 10]}
-          position={[point.x - 1000, -point.y + 1000, 0]}
-        >
-          <meshBasicMaterial color={color} />
-        </Box>
-      ))}
+      <mesh geometry={geometry}>
+        <meshBasicMaterial color={color} />
+      </mesh>
     </>
   );
 }
