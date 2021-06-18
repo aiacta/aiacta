@@ -98,16 +98,13 @@ function BackgroundImage({ buffer }: { buffer?: number[] }) {
 let idx = 0;
 
 function Wall({ points }: { points: { x: number; y: number }[] }) {
-  const color = [
-    'red',
-    'green',
-    'yellow',
-    'blue',
-    'purple',
-    'white',
-    'hotpink',
-    'brown',
-  ][++idx % 8];
+  const color = React.useMemo(
+    () =>
+      ['red', 'green', 'yellow', 'blue', 'purple', 'white', 'hotpink', 'brown'][
+        ++idx % 8
+      ],
+    [],
+  );
 
   const geometry = React.useMemo(
     () =>
