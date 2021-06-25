@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useParams } from 'react-router-dom';
 import { TextureLoader } from 'three';
 import { useSceneDetailsQuery } from '../api';
-import { extrudeWall, zIndices } from '../util';
+import { extrudeWall, isTruthy, zIndices } from '../util';
 
 const mergeWalls = false;
 
@@ -58,6 +58,7 @@ export function Scene() {
       }}
       // orthographic
       camera={{ position: [0, 0, 150], zoom: 1, up: [0, 0, 1], far: 10000 }}
+      shadows
     >
       <React.Suspense fallback={null}>
         <BackgroundImage buffer={scene.data?.world?.scene?.image?.data} />
@@ -66,6 +67,22 @@ export function Scene() {
             wall?.points && <Wall key={idx} points={wall?.points} />,
         )}
       </React.Suspense>
+      {scene.data.world.scene.lights
+        ?.filter(isTruthy)
+        .slice(0, 2)
+        .map((light, idx) => (
+          <pointLight
+            key={idx}
+            position={[light.position.x - 1000, -light.position.y + 1000, 30]}
+            castShadow
+            shadow-mapSize-width={1024}
+            shadow-mapSize-height={1024}
+            shadow-camera-top={-100}
+            shadow-camera-bottom={100}
+            shadow-camera-left={-100}
+            shadow-camera-right={100}
+          />
+        ))}
       <MapControls />
     </Canvas>
   );
@@ -85,8 +102,8 @@ function BackgroundImage({ buffer }: { buffer?: number[] }) {
   }, [buffer]);
 
   return (
-    <Plane scale={[2000, 2000, 1]}>
-      {texture && <meshBasicMaterial map={texture} />}
+    <Plane scale={[2000, 2000, 10]} receiveShadow>
+      {texture && <meshStandardMaterial map={texture} />}
     </Plane>
   );
 }
@@ -112,8 +129,8 @@ function Wall({ points }: { points: { x: number; y: number }[] }) {
 
   return (
     <>
-      <mesh geometry={geometry}>
-        <meshBasicMaterial color={color} />
+      <mesh geometry={geometry} position={[0, 0, -50]} castShadow receiveShadow>
+        <meshStandardMaterial color={color} />
       </mesh>
     </>
   );

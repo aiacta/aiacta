@@ -11,13 +11,12 @@ import { PhysicsProvider, usePhysics, usePhysicsApi } from './physics';
 const maxConcurrentRolls = 10;
 const debug = false;
 
-const RollContext =
-  React.createContext<{
-    shouldAwait: (date: string) => boolean;
-    hasRolled: (id: string) => boolean;
-    awaitRoll: (id: string) => Promise<void>;
-    finishRoll: (id: string) => void;
-  } | null>(null);
+const RollContext = React.createContext<{
+  shouldAwait: (date: string) => boolean;
+  hasRolled: (id: string) => boolean;
+  awaitRoll: (id: string) => Promise<void>;
+  finishRoll: (id: string) => void;
+} | null>(null);
 
 export function RollProvider({ children }: { children: React.ReactNode }) {
   const [api] = React.useState(() => {
