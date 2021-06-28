@@ -155,6 +155,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["history", "npm:5.0.0"],
             ["jest", "npm:26.6.3"],
             ["msw", "npm:0.29.0"],
+            ["playcanvas", "npm:1.43.1"],
             ["prettier", "npm:2.3.1"],
             ["react", "npm:17.0.2"],
             ["react-dom", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:17.0.2"],
@@ -14819,6 +14820,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/platform-npm-1.3.6-8c3cef9352-d4d10d5a55.zip/node_modules/platform/",
           "packageDependencies": [
             ["platform", "npm:1.3.6"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["playcanvas", [
+        ["npm:1.43.1", {
+          "packageLocation": "./.yarn/cache/playcanvas-npm-1.43.1-153c4882d5-7b0bf77d1c.zip/node_modules/playcanvas/",
+          "packageDependencies": [
+            ["playcanvas", "npm:1.43.1"]
           ],
           "linkType": "HARD",
         }]

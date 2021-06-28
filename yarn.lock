@@ -65,6 +65,7 @@ __metadata:
     history: 5.0.0
     jest: 26.6.3
     msw: 0.29.0
+    playcanvas: 1.43.1
     prettier: 2.3.1
     react: 17.0.2
     react-dom: 17.0.2
@@ -11945,6 +11946,13 @@ fsevents@~2.3.1:
   version: 1.3.6
   resolution: "platform@npm:1.3.6"
   checksum: d4d10d5a55476c6d369b03e02b31df50a4e7f1c565efabe707379b8a119709fb2a66dec090ab7fe520a30b767fe3791e3c4a5aba985918e51a17df45e469189f
+  languageName: node
+  linkType: hard
+
+"playcanvas@npm:1.43.1":
+  version: 1.43.1
+  resolution: "playcanvas@npm:1.43.1"
+  checksum: 7b0bf77d1c27b35a1e30b994e74c36dcea55b19fde6f2a86b15f358ce52eabc018e2d62e97404b432ced3cd8289465e07ed33ded7e342cb4d2e083b53dd71d23
   languageName: node
   linkType: hard
 

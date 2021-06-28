@@ -1,5 +1,3 @@
-import { BufferGeometry, Float32BufferAttribute } from 'three';
-
 export function extrudeWall(wall: {
   points: { x: number; y: number }[];
   thickness: number;
@@ -235,12 +233,13 @@ export function extrudeWall(wall: {
     }),
   );
 
-  const geometry = new BufferGeometry();
-  geometry.setAttribute('position', new Float32BufferAttribute(faces, 3));
-  // const uvs = vertices.flatMap(() => [0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1]);
-  // geometry.setAttribute("uv", new Uint16Attribute(uvs, 2));
-
-  return geometry;
+  return {
+    positions: faces,
+    indices: faces.map((_, i) => i),
+    uvs: Array.from({ length: faces.length / 3 }, (_, i) =>
+      i % 2 === 0 ? [0, 0] : [1, 1],
+    ).flat(),
+  };
 }
 
 function normalize(vector: [number, number]) {

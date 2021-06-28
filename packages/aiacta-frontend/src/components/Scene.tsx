@@ -1,9 +1,20 @@
-import { MapControls, Plane } from '@react-three/drei';
-import { Canvas } from '@react-three/fiber';
+import {
+  Application,
+  Asset,
+  BAKE_COLOR,
+  BasicMaterial,
+  Color,
+  createMesh,
+  Entity,
+  FILLMODE_FILL_WINDOW,
+  MeshInstance,
+  RESOLUTION_AUTO,
+  SHADOW_PCF3,
+  StandardMaterial,
+} from 'playcanvas';
 import * as React from 'react';
 import { useParams } from 'react-router-dom';
-import { TextureLoader } from 'three';
-import { useSceneDetailsQuery } from '../api';
+import { Maybe, useSceneDetailsQuery } from '../api';
 import { extrudeWall, isTruthy, zIndices } from '../util';
 
 const mergeWalls = false;
@@ -11,15 +22,102 @@ const mergeWalls = false;
 export function Scene() {
   const { worldId, sceneId } = useParams();
   const [scene] = useSceneDetailsQuery({ variables: { worldId, sceneId } });
+  const appRef = React.useRef<Application>();
+
+  const canvasRef = React.useRef<HTMLCanvasElement>(null);
+
+  React.useEffect(() => {
+    if (canvasRef.current && scene.data?.world?.scene) {
+      if (!appRef.current) {
+        const app = setupScene(canvasRef.current, scene.data?.world?.scene);
+        appRef.current = app;
+      }
+    }
+  }, [scene.data?.world?.scene]);
 
   if (!scene.data?.world?.scene) {
     return <>Not found</>;
   }
 
-  const walls = [...(scene.data?.world?.scene.walls ?? [])];
+  return (
+    <>
+      <canvas
+        style={{
+          position: 'absolute',
+          width: '100vw',
+          height: '100vh',
+          left: 0,
+          top: 0,
+          zIndex: zIndices.Canvas,
+        }}
+        ref={canvasRef}
+      />
+    </>
+  );
+}
 
-  const mergedWalls: typeof walls = [];
-  if (walls) {
+function setupScene(
+  canvas: HTMLCanvasElement,
+  scene: {
+    image?: Maybe<{ data: number[] }>;
+    lights?: Maybe<Maybe<{ position: { x: number; y: number } }>[]>;
+    walls?: Maybe<Maybe<{ points: { x: number; y: number }[] }>[]>;
+  },
+) {
+  const app = new Application(canvas, {});
+
+  // fill the available space at full resolution
+  app.setCanvasFillMode(FILLMODE_FILL_WINDOW);
+  app.setCanvasResolution(RESOLUTION_AUTO);
+
+  app.start();
+
+  // ensure canvas is resized when window changes size
+  window.addEventListener('resize', () => app.resizeCanvas());
+
+  // create camera entity
+  const camera = new Entity('camera');
+  camera.addComponent('camera', {
+    clearColor: new Color(0.1, 0.1, 0.1),
+    farClip: 5000,
+  });
+  app.root.addChild(camera);
+  camera.setPosition(0, 0, 3000);
+
+  /// SETUP BACKGROUND
+  if (scene.image?.data) {
+    const asset = new Asset('texture', 'texture', {
+      url: URL.createObjectURL(new Blob([Uint8Array.from(scene.image.data)])),
+    });
+    asset.ready((asset) => {
+      const material = new StandardMaterial();
+      material.diffuseMap = asset.resource;
+      material.update();
+      console.log('rdy');
+      ground.render!.material = material;
+    });
+    app.assets.load(asset);
+
+    const ground = new Entity('ground');
+    ground.addComponent('render', {
+      castShadows: false,
+      castShadowsLightmap: false,
+      receiveShadows: true,
+      lightmapped: true,
+      type: 'plane',
+      isStatic: true,
+    });
+    app.root.addChild(ground);
+    ground.setLocalEulerAngles(90, 0, 0);
+    ground.setLocalPosition(0, 0, 0);
+    ground.setLocalScale(2000, 2000, 2000);
+  }
+
+  /// SETUP WALLS
+  const walls = [...(scene.walls ?? [])];
+
+  const mergedWalls: typeof scene['walls'] = [];
+  if (scene.walls) {
     while (walls.length > 0) {
       const [wall] = walls.splice(0, 1);
       if (wall) {
@@ -46,92 +144,67 @@ export function Scene() {
     }
   }
 
-  return (
-    <Canvas
-      style={{
-        position: 'absolute',
-        width: '100vw',
-        height: '100vh',
-        left: 0,
-        top: 0,
-        zIndex: zIndices.Canvas,
-      }}
-      // orthographic
-      camera={{ position: [0, 0, 150], zoom: 1, up: [0, 0, 1], far: 10000 }}
-      shadows
-    >
-      <React.Suspense fallback={null}>
-        <BackgroundImage buffer={scene.data?.world?.scene?.image?.data} />
-        {mergedWalls?.map(
-          (wall, idx) =>
-            wall?.points && <Wall key={idx} points={wall?.points} />,
-        )}
-      </React.Suspense>
-      {scene.data.world.scene.lights
-        ?.filter(isTruthy)
-        .slice(0, 2)
-        .map((light, idx) => (
-          <pointLight
-            key={idx}
-            position={[light.position.x - 1000, -light.position.y + 1000, 30]}
-            castShadow
-            shadow-mapSize-width={1024}
-            shadow-mapSize-height={1024}
-            shadow-camera-top={-100}
-            shadow-camera-bottom={100}
-            shadow-camera-left={-100}
-            shadow-camera-right={100}
-          />
-        ))}
-      <MapControls />
-    </Canvas>
-  );
-}
+  mergedWalls.filter(isTruthy).forEach(({ points }) => {
+    const { positions } = extrudeWall({
+      points: points.map((p) => ({ x: p.x - 1000, y: -p.y + 1000 })),
+      thickness: 10,
+      height: 200,
+    });
 
-const textureLoader = new TextureLoader();
+    const mesh = createMesh(app.graphicsDevice, positions, {
+      // normals: calculateNormals(positions, indices),
+      // indices,
+    });
 
-function BackgroundImage({ buffer }: { buffer?: number[] }) {
-  const texture = React.useMemo(() => {
-    if (!buffer) {
-      return null;
-    }
+    console.log(mesh);
 
-    return textureLoader.load(
-      URL.createObjectURL(new Blob([Uint8Array.from(buffer)])),
-    );
-  }, [buffer]);
+    const material = new BasicMaterial();
+    material.color = Color.RED;
+    material.update();
+    const meshInstance = new MeshInstance(mesh, material);
 
-  return (
-    <Plane scale={[2000, 2000, 10]} receiveShadow>
-      {texture && <meshStandardMaterial map={texture} />}
-    </Plane>
-  );
-}
+    const wall = new Entity();
+    wall.addComponent('render', {
+      meshInstances: [meshInstance],
+      castShadows: false,
+      castShadowsLightmap: true,
+      receiveShadows: true,
+      lightmapped: true,
+      isStatic: true,
+    });
+    wall.setLocalEulerAngles(0, 0, 0);
+    wall.setLocalPosition(0, 0, 0);
+    app.root.addChild(wall);
 
-function Wall({ points }: { points: { x: number; y: number }[] }) {
-  const color = React.useMemo(
-    () =>
-      ['red', 'green', 'yellow', 'blue', 'purple', 'white', 'hotpink', 'brown'][
-        Math.floor(Math.random() * 8)
-      ],
-    [],
-  );
+    wall.render!.meshInstances[0].material = material;
+  });
 
-  const geometry = React.useMemo(
-    () =>
-      extrudeWall({
-        points: points.map((p) => ({ x: p.x - 1000, y: -p.y + 1000 })),
-        thickness: 10,
-        height: 100,
-      }),
-    [points],
-  );
+  scene.lights?.filter(isTruthy).forEach((light) => {
+    const le = new Entity();
+    le.addComponent('light', {
+      affectDynamic: false,
+      affectLightmapped: true,
+      bake: true,
+      castShadows: true,
+      normalOffsetBias: 0.05,
+      shadowBias: 0.2,
+      shadowDistance: 50,
+      shadowResolution: 512,
+      shadowType: SHADOW_PCF3,
+      color: Color.WHITE,
+      type: 'point',
+      range: 250,
+      isStatic: true,
+    });
+    le.setLocalPosition(light.position.x - 1000, -light.position.y + 1000, 50);
+    console.log(le);
+    app.root.addChild(le);
+  });
 
-  return (
-    <>
-      <mesh geometry={geometry} position={[0, 0, -50]} castShadow receiveShadow>
-        <meshStandardMaterial color={color} />
-      </mesh>
-    </>
-  );
+  app.scene.lightmapSizeMultiplier = 32;
+  app.scene.lightmapMode = BAKE_COLOR;
+  app.scene.lightmapMaxResolution = 2048;
+  app.lightmapper.bake(null, BAKE_COLOR);
+
+  return app;
 }
