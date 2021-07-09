@@ -1,10 +1,4 @@
-import {
-  Button,
-  ElementsGroup,
-  Modal,
-  PasswordInput,
-  Text,
-} from '@mantine/core';
+import { Button, Group, Modal, PasswordInput, Text } from '@mantine/core';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -68,11 +62,11 @@ export function JoinWorldForm({
             </Text>
           )}
 
-          <ElementsGroup style={{ marginTop: 25 }} position="right">
+          <Group style={{ marginTop: 25 }} position="right">
             <Button color="primary" type="submit">
               <FormattedMessage defaultMessage="Join world" />
             </Button>
-          </ElementsGroup>
+          </Group>
         </form>
       </Modal>
     </>

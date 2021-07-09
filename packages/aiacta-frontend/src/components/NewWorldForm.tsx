@@ -1,6 +1,6 @@
 import {
   Button,
-  ElementsGroup,
+  Group,
   LoadingOverlay,
   Modal,
   PasswordInput,
@@ -107,7 +107,7 @@ export function NewWorldForm({
           />
         )}
 
-        <ElementsGroup position="right" style={{ marginTop: 25 }}>
+        <Group position="right" style={{ marginTop: 25 }}>
           <Button
             color="primary"
             type="submit"
@@ -116,7 +116,7 @@ export function NewWorldForm({
             <LoadingOverlay visible={newWorld.fetching} />
             <FormattedMessage defaultMessage="Create world" />
           </Button>
-        </ElementsGroup>
+        </Group>
       </form>
     </Modal>
   );

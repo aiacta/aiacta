@@ -1,7 +1,7 @@
 import {
   Button,
   Container,
-  ElementsGroup,
+  Group,
   LoadingOverlay,
   Paper,
   PasswordInput,
@@ -111,7 +111,7 @@ export function LoginForm() {
             </Text>
           )}
 
-          <ElementsGroup position="apart" style={{ marginTop: 25 }}>
+          <Group position="apart" style={{ marginTop: 25 }}>
             <Button
               variant="link"
               color="gray"
@@ -158,7 +158,7 @@ export function LoginForm() {
                 <FormattedMessage defaultMessage="Sign In" />
               )}
             </Button>
-          </ElementsGroup>
+          </Group>
         </form>
       </Paper>
     </Container>

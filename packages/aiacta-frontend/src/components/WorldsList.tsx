@@ -1,7 +1,7 @@
 import {
   Button,
   Container,
-  ElementsGroup,
+  Group,
   LoadingOverlay,
   Paper,
   Text,
@@ -101,7 +101,7 @@ export function WorldsList() {
               </li>
             ))}
           </ul>
-          <ElementsGroup position="center">
+          <Group position="center">
             <Button
               size="xl"
               variant="outline"
@@ -110,7 +110,7 @@ export function WorldsList() {
             >
               <FormattedMessage defaultMessage="Create a new world" />
             </Button>
-          </ElementsGroup>
+          </Group>
         </Paper>
       </Container>
       <NewWorldForm opened={!!createWorld} onClose={() => navigate('/')} />
