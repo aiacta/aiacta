@@ -1,4 +1,11 @@
-import { Button, Container, Group, Paper, Text, Tooltip } from '@mantine/core';
+import {
+  Button,
+  Container,
+  Paper,
+  Text,
+  Textarea,
+  Tooltip,
+} from '@mantine/core';
 import { AnimatePresence, motion } from 'framer-motion';
 import * as React from 'react';
 import { MdAccessTime } from 'react-icons/md';
@@ -12,8 +19,8 @@ import {
 } from '../../api';
 import { isTruthy, zIndices } from '../../util';
 import { SynchronizedFormattedRelativeTime } from '../SynchronizedFormattedRelativeTime';
-import { TextDisplay, TextEditor, useTextEditorRef } from '../TextEditor';
 import { DiceRoll } from './DiceRoll';
+import { MessageText } from './MessageText';
 
 const useStyles = createUseStyles({
   container: {
@@ -116,13 +123,6 @@ function Message({
 }) {
   const classes = useStyles();
 
-  const renderedComponent = renderMessage({
-    component,
-    rolls,
-    text,
-    createdAt,
-  });
-
   return (
     <div key={id} className={classes.message}>
       <Text className={classes.from} size="xs">
@@ -142,12 +142,12 @@ function Message({
         animate={{ height: 'auto', scaleY: 1 }}
         className={classes.body}
       >
-        {renderedComponent ??
-          (text && (
-            <Text size="sm">
-              <TextDisplay value={text} />
-            </Text>
-          ))}
+        <RenderMessage
+          component={component}
+          rolls={rolls}
+          text={text}
+          createdAt={createdAt}
+        />
       </motion.div>
     </div>
   );
@@ -156,38 +156,46 @@ function Message({
 function MessageInput() {
   const { worldId } = useParams();
 
+  const [message, setMessage] = React.useState('');
   const [mutation, sendMessage] = useSendMessageMutation();
 
-  const editor = useTextEditorRef();
-
   return (
-    <Group spacing={0} position="left">
-      <TextEditor
-        ref={editor}
-        readOnly={mutation.fetching}
-        onPressEnter={(value) => {
-          sendMessage({ worldId, text: value }).then(() =>
-            editor.current.resetState(),
-          );
-        }}
-      />
-      <Button
-        style={{ marginLeft: 'auto', height: 'auto', alignSelf: 'stretch' }}
-        size="lg"
-        onClick={() =>
+    <Textarea
+      autosize
+      value={message}
+      onChange={({ currentTarget: { value } }) => setMessage(value)}
+      readOnly={mutation.fetching}
+      onKeyDown={(evt) => {
+        if (evt.key === 'Enter' && !(evt.shiftKey || evt.metaKey)) {
           sendMessage({
             worldId,
-            text: editor.current.getValue(),
-          }).then(() => editor.current.resetState())
+            text: message,
+          }).then(() => setMessage(''));
         }
-      >
-        <RiSendPlaneFill />
-      </Button>
-    </Group>
+      }}
+      rightSection={
+        <>
+          <Button
+            style={{ height: 'auto' }}
+            disabled={mutation.fetching}
+            onClick={() =>
+              sendMessage({
+                worldId,
+                text: message,
+              }).then(() => setMessage(''))
+            }
+          >
+            <RiSendPlaneFill />
+          </Button>
+        </>
+      }
+      rightSectionWidth={52}
+      styles={{ rightSection: { alignItems: 'stretch' } }}
+    />
   );
 }
 
-function renderMessage({
+function RenderMessage({
   component,
   text,
   createdAt,
@@ -209,5 +217,5 @@ function renderMessage({
       );
     }
   }
-  return null;
+  return <MessageText text={text ?? ''} />;
 }

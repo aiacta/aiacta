@@ -134,7 +134,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@react-three/drei", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:6.0.1"],
             ["@react-three/fiber", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:6.2.2"],
             ["@swc-node/jest", "npm:1.3.0"],
-            ["@types/draft-js", "npm:0.11.3"],
             ["@types/jest", "npm:26.0.23"],
             ["@types/node", "npm:14.17.2"],
             ["@types/react", "npm:17.0.9"],
@@ -147,7 +146,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@vitejs/plugin-react-refresh", "npm:1.3.3"],
             ["cannon-es", "npm:0.17.1"],
             ["cypress", "npm:7.4.0"],
-            ["draft-js", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:0.11.7"],
             ["framer-motion", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:4.1.17"],
             ["graphql", "npm:15.5.0"],
             ["graphql-tag", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:2.12.4"],
@@ -4367,17 +4365,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
-      ["@types/draft-js", [
-        ["npm:0.11.3", {
-          "packageLocation": "./.yarn/cache/@types-draft-js-npm-0.11.3-0c6f8bb8eb-fbe59715cf.zip/node_modules/@types/draft-js/",
-          "packageDependencies": [
-            ["@types/draft-js", "npm:0.11.3"],
-            ["@types/react", "npm:17.0.0"],
-            ["immutable", "npm:3.7.6"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
       ["@types/estree", [
         ["npm:0.0.47", {
           "packageLocation": "./.yarn/cache/@types-estree-npm-0.0.47-23d26080e6-28cba548c7.zip/node_modules/@types/estree/",
@@ -7479,15 +7466,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
-      ["core-js", [
-        ["npm:3.11.0", {
-          "packageLocation": "./.yarn/unplugged/core-js-npm-3.11.0-389b8c7dd2/node_modules/core-js/",
-          "packageDependencies": [
-            ["core-js", "npm:3.11.0"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
       ["core-util-is", [
         ["npm:1.0.2", {
           "packageLocation": "./.yarn/cache/core-util-is-npm-1.0.2-9fc2b94dc3-089015ee3c.zip/node_modules/core-util-is/",
@@ -8346,35 +8324,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
-      ["draft-js", [
-        ["npm:0.11.7", {
-          "packageLocation": "./.yarn/cache/draft-js-npm-0.11.7-ea66f83002-b16acd275d.zip/node_modules/draft-js/",
-          "packageDependencies": [
-            ["draft-js", "npm:0.11.7"]
-          ],
-          "linkType": "SOFT",
-        }],
-        ["virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:0.11.7", {
-          "packageLocation": "./.yarn/$$virtual/draft-js-virtual-3ef9440fba/0/cache/draft-js-npm-0.11.7-ea66f83002-b16acd275d.zip/node_modules/draft-js/",
-          "packageDependencies": [
-            ["draft-js", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:0.11.7"],
-            ["@types/react", "npm:17.0.9"],
-            ["@types/react-dom", "npm:17.0.6"],
-            ["fbjs", "npm:2.0.0"],
-            ["immutable", "npm:3.7.6"],
-            ["object-assign", "npm:4.1.1"],
-            ["react", "npm:17.0.2"],
-            ["react-dom", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:17.0.2"]
-          ],
-          "packagePeers": [
-            "@types/react-dom",
-            "@types/react",
-            "react-dom",
-            "react"
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
       ["duplexer3", [
         ["npm:0.1.4", {
           "packageLocation": "./.yarn/cache/duplexer3-npm-0.1.4-361a33d994-2a4ae463aa.zip/node_modules/duplexer3/",
@@ -9194,21 +9143,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["fbjs", [
-        ["npm:2.0.0", {
-          "packageLocation": "./.yarn/cache/fbjs-npm-2.0.0-2574cfbe40-8f88a34384.zip/node_modules/fbjs/",
-          "packageDependencies": [
-            ["fbjs", "npm:2.0.0"],
-            ["core-js", "npm:3.11.0"],
-            ["cross-fetch", "npm:3.1.0"],
-            ["fbjs-css-vars", "npm:1.0.2"],
-            ["loose-envify", "npm:1.4.0"],
-            ["object-assign", "npm:4.1.1"],
-            ["promise", "npm:7.3.1"],
-            ["setimmediate", "npm:1.0.5"],
-            ["ua-parser-js", "npm:0.7.24"]
-          ],
-          "linkType": "HARD",
-        }],
         ["npm:3.0.0", {
           "packageLocation": "./.yarn/cache/fbjs-npm-3.0.0-938b39511d-f112f440b2.zip/node_modules/fbjs/",
           "packageDependencies": [

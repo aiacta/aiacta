@@ -30,7 +30,6 @@ export default defineConfig({
             '@mantine/core',
             '@mantine/hooks',
             '@mantine/notifications',
-            'draft-js',
             'framer-motion',
             'react-error-boundary',
             'react-hook-form',

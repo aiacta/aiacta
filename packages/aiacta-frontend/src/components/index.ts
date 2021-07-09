@@ -8,5 +8,4 @@ export * from './Omnibox';
 export * from './Scene';
 export * from './Scenes';
 export * from './SynchronizedFormattedRelativeTime';
-export * from './TextEditor';
 export * from './WorldsList';

@@ -44,7 +44,6 @@ __metadata:
     "@react-three/drei": 6.0.1
     "@react-three/fiber": 6.2.2
     "@swc-node/jest": 1.3.0
-    "@types/draft-js": 0.11.3
     "@types/jest": 26.0.23
     "@types/node": 14.17.2
     "@types/react": 17.0.9
@@ -57,7 +56,6 @@ __metadata:
     "@vitejs/plugin-react-refresh": 1.3.3
     cannon-es: 0.17.1
     cypress: 7.4.0
-    draft-js: 0.11.7
     framer-motion: 4.1.17
     graphql: 15.5.0
     graphql-tag: 2.12.4
@@ -3032,16 +3030,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/draft-js@npm:0.11.3":
-  version: 0.11.3
-  resolution: "@types/draft-js@npm:0.11.3"
-  dependencies:
-    "@types/react": "*"
-    immutable: ~3.7.4
-  checksum: fbe59715cf43bb997e9b7f2148a9627b1496d02488ecdf12102f6c63159cfa921650129a25f9202ce70ca3401fcdd6456fe4795d1343ccc9bd20ba5bd6a5fb59
-  languageName: node
-  linkType: hard
-
 "@types/estree@npm:*":
   version: 0.0.47
   resolution: "@types/estree@npm:0.0.47"
@@ -5557,13 +5545,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-js@npm:^3.6.4":
-  version: 3.11.0
-  resolution: "core-js@npm:3.11.0"
-  checksum: e4fd7912c2092c7dc371ade028249071807cb3ebfe8466aed23d2b13bb8988b7d51e3ddd93149550fd1d9191bbeb2bc5a506526a12573452b7716205e44f7755
-  languageName: node
-  linkType: hard
-
 "core-util-is@npm:1.0.2, core-util-is@npm:~1.0.0":
   version: 1.0.2
   resolution: "core-util-is@npm:1.0.2"
@@ -6272,20 +6253,6 @@ __metadata:
   version: 8.2.0
   resolution: "dotenv@npm:8.2.0"
   checksum: 16cb89cbd7b98b053899b8aba8c5044c8fb61a2db8a81fe70360b75035fce5fed53bd7a34d772be717d0880c0321122a4c09423f518025e1b52d96791521b1a7
-  languageName: node
-  linkType: hard
-
-"draft-js@npm:0.11.7":
-  version: 0.11.7
-  resolution: "draft-js@npm:0.11.7"
-  dependencies:
-    fbjs: ^2.0.0
-    immutable: ~3.7.4
-    object-assign: ^4.1.1
-  peerDependencies:
-    react: ">=0.14.0"
-    react-dom: ">=0.14.0"
-  checksum: b16acd275dadd9c85014722cc3181b6827fab34d7f9b2ca8be8ba793f6f6436f18dff040912d75d3408ecda8004219050f2d4f5be02674decf659e1c6e1953e5
   languageName: node
   linkType: hard
 
@@ -7015,22 +6982,6 @@ __metadata:
   version: 1.0.2
   resolution: "fbjs-css-vars@npm:1.0.2"
   checksum: 2f0c717cc2502932102b67d9dbfa75eeed8e5b6a655e12badfac2557907e635337a0a29acca262d0027bef87a8f63b52d0a2b065012eeaee1f0016f749b37b9a
-  languageName: node
-  linkType: hard
-
-"fbjs@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "fbjs@npm:2.0.0"
-  dependencies:
-    core-js: ^3.6.4
-    cross-fetch: ^3.0.4
-    fbjs-css-vars: ^1.0.0
-    loose-envify: ^1.0.0
-    object-assign: ^4.1.0
-    promise: ^7.1.1
-    setimmediate: ^1.0.5
-    ua-parser-js: ^0.7.18
-  checksum: 8f88a343840e38f5851f24e28f52094d945406ae4239211d286fa5b17da3e14f21a4a975a6c8889afade0d6642b5e969d0d26d026915632884bdf4853cfbcde7
   languageName: node
   linkType: hard
 
@@ -8183,7 +8134,7 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"immutable@npm:~3.7.4, immutable@npm:~3.7.6":
+"immutable@npm:~3.7.6":
   version: 3.7.6
   resolution: "immutable@npm:3.7.6"
   checksum: 33fb106a330bae44cea58a2bc51c667850ea198396f329787718ab9ae70f6302734d0beb81e22de06876e38807f813a81bb09628e096ef89d9b5e06185edd16a
