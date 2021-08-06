@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { RollingContext } from './DiceRoll';
+import { RollingContext } from './RollingContext';
 
 export function RollResult({ value }: { value: number }) {
   const isRolling = React.useContext(RollingContext);

@@ -7,11 +7,20 @@ export const MutationSendMessageResolver: Resolvers<Context> = {
   Mutation: {
     sendMessage: async (
       _,
-      { worldId, input: { component, text } },
+      { worldId, input: { text } },
       { playerId, prisma, pubsub },
     ) => {
       if (!playerId) {
         throw new ForbiddenError('Cannot write message');
+      }
+
+      const playerInWorld = await prisma.playerInWorld.findUnique({
+        where: { playerId_worldId: { playerId, worldId } },
+        include: { player: true },
+      });
+
+      if (!playerInWorld) {
+        throw new ForbiddenError('Not logged in or invalid token');
       }
 
       const {
@@ -24,33 +33,13 @@ export const MutationSendMessageResolver: Resolvers<Context> = {
       switch (command) {
         case 'r':
         case 'roll': {
-          const playerInWorld = await prisma.playerInWorld.findUnique({
-            where: { playerId_worldId: { playerId, worldId } },
-            include: { player: true },
-          });
-
-          if (!playerInWorld) {
-            throw new ForbiddenError('Not logged in or invalid token');
-          }
-
-          const context = {}; // get from input def
-
-          const { result, rolledDice } = await rollDice(args, context);
-
-          const diceRoll = {
-            worldId,
-            id: uuid(),
-            roller: { ...playerInWorld.player, role: playerInWorld.role },
-            dice: rolledDice,
-            message: result.toChatMessage(true),
-          };
+          const diceRoll = await createRoll(args);
 
           const message = await prisma.chatMessage.create({
             data: {
               world: { connect: { id: worldId } },
               author: { connect: { id: playerId } },
-              component: 'DiceRoll',
-              text: result.toChatMessage(true),
+              text: diceRoll.message,
               rolls: [diceRoll.id],
             },
             include: {
@@ -58,19 +47,31 @@ export const MutationSendMessageResolver: Resolvers<Context> = {
             },
           });
 
-          pubsub.publish('rollDice', diceRoll);
           pubsub.publish('createMessage', message);
 
           return message;
         }
       }
 
+      // replace inline rolls
+      const rolls: string[] = [];
+      let substitutedText = text ?? '';
+      let match: RegExpMatchArray | null;
+      while ((match = substitutedText.match(/\[\[(?<inline>.*?)\]\]/))) {
+        const diceRoll = await createRoll(match.groups!.inline);
+        rolls.push(diceRoll.id);
+        substitutedText =
+          substitutedText?.substr(0, match.index) +
+          diceRoll.message +
+          substitutedText.substr((match.index ?? 0) + match[0].length);
+      }
+
       const message = await prisma.chatMessage.create({
         data: {
           world: { connect: { id: worldId } },
           author: { connect: { id: playerId } },
-          component,
-          text,
+          text: substitutedText,
+          rolls,
         },
         include: {
           author: true,
@@ -80,6 +81,24 @@ export const MutationSendMessageResolver: Resolvers<Context> = {
       pubsub.publish('createMessage', message);
 
       return message;
+
+      async function createRoll(formula: string) {
+        const context = {}; // get from input def
+
+        const { result, rolledDice } = await rollDice(formula, context);
+
+        const diceRoll = {
+          worldId,
+          id: uuid(),
+          roller: { ...playerInWorld!.player, role: playerInWorld!.role },
+          dice: rolledDice,
+          message: result.toChatMessage(true),
+        };
+
+        pubsub.publish('rollDice', diceRoll);
+
+        return diceRoll;
+      }
     },
   },
 };

@@ -105,13 +105,11 @@ export type Message = {
   id: Scalars['ID'];
   author: PlayerInfo;
   createdAt: Scalars['DateTime'];
-  component?: Maybe<Scalars['String']>;
   text?: Maybe<Scalars['String']>;
   rolls?: Maybe<Array<Maybe<Scalars['ID']>>>;
 };
 
 export type MessageInput = {
-  component?: Maybe<Scalars['String']>;
   text?: Maybe<Scalars['String']>;
 };
 
@@ -543,11 +541,6 @@ export type MessageResolvers<
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   author?: Resolver<ResolversTypes['PlayerInfo'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  component?: Resolver<
-    Maybe<ResolversTypes['String']>,
-    ParentType,
-    ContextType
-  >;
   text?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   rolls?: Resolver<
     Maybe<Array<Maybe<ResolversTypes['ID']>>>,

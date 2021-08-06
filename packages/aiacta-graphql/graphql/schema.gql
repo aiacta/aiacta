@@ -17,13 +17,11 @@ type Message {
   id: ID!
   author: PlayerInfo!
   createdAt: DateTime!
-  component: String
   text: String
   rolls: [ID]
 }
 
 input MessageInput {
-  component: String
   text: String
 }
 

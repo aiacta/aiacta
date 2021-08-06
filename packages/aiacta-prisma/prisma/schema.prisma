@@ -56,7 +56,6 @@ model ChatMessage {
   id        String   @id @default(cuid())
   world     World    @relation(fields: [worldId], references: [id])
   worldId   String
-  component String?
   text      String?
   author    Player   @relation(fields: [authorId], references: [id])
   authorId  String

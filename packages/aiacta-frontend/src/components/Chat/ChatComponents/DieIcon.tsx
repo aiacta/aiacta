@@ -1,7 +1,7 @@
 import { MantineTheme, theming } from '@mantine/core';
 import * as React from 'react';
 import { createUseStyles } from 'react-jss';
-import { RollingContext } from './DiceRoll';
+import { RollingContext } from './RollingContext';
 
 const useStyles = createUseStyles(
   (theme: MantineTheme) => ({
