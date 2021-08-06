@@ -185,6 +185,7 @@ export type Query = {
   __typename?: 'Query';
   invitesToWorlds?: Maybe<Array<Maybe<World>>>;
   me?: Maybe<Player>;
+  v?: Maybe<Scalars['Int']>;
   world?: Maybe<World>;
   worlds?: Maybe<Array<Maybe<World>>>;
 };
@@ -251,6 +252,7 @@ export type World = {
   id: Scalars['ID'];
   isListed: Scalars['Boolean'];
   isPasswordProtected: Scalars['Boolean'];
+  me?: Maybe<PlayerInWorld>;
   messages?: Maybe<Array<Maybe<Message>>>;
   name: Scalars['String'];
   players?: Maybe<Array<Maybe<PlayerInWorld>>>;
@@ -370,6 +372,20 @@ export type MeQueryVariables = Exact<{ [key: string]: never }>;
 
 export type MeQuery = { __typename?: 'Query' } & {
   me?: Maybe<{ __typename?: 'Player' } & Pick<Player, 'id' | 'name' | 'color'>>;
+};
+
+export type MeInWorldQueryVariables = Exact<{
+  worldId: Scalars['ID'];
+}>;
+
+export type MeInWorldQuery = { __typename?: 'Query' } & {
+  world?: Maybe<
+    { __typename?: 'World' } & Pick<World, 'id'> & {
+        me?: Maybe<
+          { __typename?: 'PlayerInWorld' } & Pick<PlayerInWorld, 'id' | 'role'>
+        >;
+      }
+  >;
 };
 
 export type ListInfoSceneFragment = { __typename?: 'Scene' } & Pick<
@@ -715,6 +731,26 @@ export function useMeQuery(
   options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {},
 ) {
   return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
+}
+export const MeInWorldDocument = gql`
+  query MeInWorld($worldId: ID!) {
+    world(id: $worldId) {
+      id
+      me {
+        id
+        role
+      }
+    }
+  }
+`;
+
+export function useMeInWorldQuery(
+  options: Omit<Urql.UseQueryArgs<MeInWorldQueryVariables>, 'query'> = {},
+) {
+  return Urql.useQuery<MeInWorldQuery>({
+    query: MeInWorldDocument,
+    ...options,
+  });
 }
 export const CreateSceneDocument = gql`
   mutation CreateScene(

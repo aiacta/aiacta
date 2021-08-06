@@ -1,26 +1,9 @@
 scalar DateTime
 
-type World {
-  id: ID!
-  name: String!
-  players: [PlayerInWorld]
-  messages: [Message]
-  creator: PlayerInWorld
-  isListed: Boolean!
-  isPasswordProtected: Boolean!
-}
-
 interface PlayerInfo {
   id: ID!
   name: String!
   color: String!
-}
-
-type PlayerInWorld implements PlayerInfo {
-  id: ID!
-  name: String!
-  color: String!
-  role: Role!
 }
 
 type Player implements PlayerInfo {
@@ -44,21 +27,11 @@ input MessageInput {
   text: String
 }
 
-input WorldInput {
-  name: String!
-  inviteOnly: Boolean!
-  password: String
-}
-
 type Query {
-  worlds: [World]
-  world(id: ID!): World
-  invitesToWorlds: [World]
+  v: Int
 }
 
 type Mutation {
-  createWorld(input: WorldInput!): World
-  joinWorld(worldId: ID!, password: String, joinKey: String): World
   sendMessage(worldId: ID!, input: MessageInput!): Message
 }
 

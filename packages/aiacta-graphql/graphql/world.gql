@@ -1,0 +1,34 @@
+type World {
+  id: ID!
+  name: String!
+  players: [PlayerInWorld]
+  messages: [Message]
+  creator: PlayerInWorld
+  isListed: Boolean!
+  isPasswordProtected: Boolean!
+  me: PlayerInWorld
+}
+
+type PlayerInWorld implements PlayerInfo {
+  id: ID!
+  name: String!
+  color: String!
+  role: Role!
+}
+
+input WorldInput {
+  name: String!
+  inviteOnly: Boolean!
+  password: String
+}
+
+extend type Query {
+  worlds: [World]
+  world(id: ID!): World
+  invitesToWorlds: [World]
+}
+
+extend type Mutation {
+  createWorld(input: WorldInput!): World
+  joinWorld(worldId: ID!, password: String, joinKey: String): World
+}

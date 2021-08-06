@@ -69,6 +69,9 @@ function reactIntl() {
         ...src.matchAll(
           /((?:React.createElement\(FormattedMessage,\s*{\s*)|(?:formatMessage\(\s*{\s*))(defaultMessage:\s*(["'`])((?:.|\s)+?)\3,?)/gm,
         ),
+        ...src.matchAll(
+          /((?:defineMessage\(\s*{\s*))(defaultMessage:\s*(["'`])((?:.|\s)+?)\3,?)/gm,
+        ),
       ];
       if (matches.length > 0) {
         const code = matches.reduce((code, match) => {

@@ -16,3 +16,13 @@ query Me {
     color
   }
 }
+
+query MeInWorld($worldId: ID!) {
+  world(id: $worldId) {
+    id
+    me {
+      id
+      role
+    }
+  }
+}

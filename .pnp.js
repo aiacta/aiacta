@@ -152,6 +152,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["graphql-ws", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:4.9.0"],
             ["history", "npm:5.0.0"],
             ["jest", "npm:26.6.3"],
+            ["match-sorter", "npm:6.3.0"],
             ["msw", "npm:0.29.0"],
             ["playcanvas", "npm:1.44.1"],
             ["prettier", "npm:2.3.1"],
@@ -13051,6 +13052,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["match-sorter", [
+        ["npm:6.3.0", {
+          "packageLocation": "./.yarn/cache/match-sorter-npm-6.3.0-21f074778f-ca6374d802.zip/node_modules/match-sorter/",
+          "packageDependencies": [
+            ["match-sorter", "npm:6.3.0"],
+            ["@babel/runtime", "npm:7.12.5"],
+            ["remove-accents", "npm:0.4.2"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["md5.js", [
         ["npm:1.3.5", {
           "packageLocation": "./.yarn/cache/md5.js-npm-1.3.5-130901125a-ca0b260ea2.zip/node_modules/md5.js/",
@@ -16148,6 +16160,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["remove", "npm:0.1.5"],
             ["seq", "npm:0.3.5"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["remove-accents", [
+        ["npm:0.4.2", {
+          "packageLocation": "./.yarn/cache/remove-accents-npm-0.4.2-7cb341092a-54fd27e4b0.zip/node_modules/remove-accents/",
+          "packageDependencies": [
+            ["remove-accents", "npm:0.4.2"]
           ],
           "linkType": "HARD",
         }]

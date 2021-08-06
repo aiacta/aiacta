@@ -668,6 +668,14 @@
             "args": []
           },
           {
+            "name": "v",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
             "name": "world",
             "type": {
               "kind": "OBJECT",
@@ -933,6 +941,15 @@
                 "kind": "SCALAR",
                 "name": "Any"
               }
+            },
+            "args": []
+          },
+          {
+            "name": "me",
+            "type": {
+              "kind": "OBJECT",
+              "name": "PlayerInWorld",
+              "ofType": null
             },
             "args": []
           },

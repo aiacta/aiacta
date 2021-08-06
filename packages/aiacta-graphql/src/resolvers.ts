@@ -198,6 +198,7 @@ export type Query = {
   __typename?: 'Query';
   invitesToWorlds?: Maybe<Array<Maybe<World>>>;
   me?: Maybe<Player>;
+  v?: Maybe<Scalars['Int']>;
   world?: Maybe<World>;
   worlds?: Maybe<Array<Maybe<World>>>;
 };
@@ -261,6 +262,7 @@ export type World = {
   id: Scalars['ID'];
   isListed: Scalars['Boolean'];
   isPasswordProtected: Scalars['Boolean'];
+  me?: Maybe<PlayerInWorld>;
   messages?: Maybe<Array<Maybe<Message>>>;
   name: Scalars['String'];
   players?: Maybe<Array<Maybe<PlayerInWorld>>>;
@@ -662,6 +664,7 @@ export type QueryResolvers<
     ContextType
   >;
   me?: Resolver<Maybe<ResolversTypes['Player']>, ParentType, ContextType>;
+  v?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   world?: Resolver<
     Maybe<ResolversTypes['World']>,
     ParentType,
@@ -754,6 +757,11 @@ export type WorldResolvers<
   isListed?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   isPasswordProtected?: Resolver<
     ResolversTypes['Boolean'],
+    ParentType,
+    ContextType
+  >;
+  me?: Resolver<
+    Maybe<ResolversTypes['PlayerInWorld']>,
     ParentType,
     ContextType
   >;
