@@ -17,7 +17,7 @@ model Player {
   worlds          PlayerInWorld[]
   worldsCreated   World[]         @relation("creator")
   worldsInvitedTo World[]
-  ChatMessage     ChatMessage[]
+  chatMessages    ChatMessage[]
 }
 
 model World {
@@ -60,12 +60,12 @@ model ChatMessage {
   author    Player   @relation(fields: [authorId], references: [id])
   authorId  String
   createdAt DateTime @default(now())
-  rolls     String[]
+  rolls     String[] // Ids
 }
 
 model Scene {
   id          String   @id @default(cuid())
-  World       World    @relation(fields: [worldId], references: [id])
+  world       World    @relation(fields: [worldId], references: [id])
   worldId     String
   createdAt   DateTime @default(now())
   name        String
