@@ -155,7 +155,9 @@ export function Omnibox() {
   useWindowEvent('keydown', (event) => {
     switch (event.key) {
       case 'k':
-        dispatch({ type: 'open' });
+        if (event.metaKey || event.ctrlKey) {
+          dispatch({ type: 'open' });
+        }
         break;
       case 'Escape':
         dispatch({ type: 'close' });
