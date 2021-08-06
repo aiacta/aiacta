@@ -3045,6 +3045,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/fs-extra@npm:^9.0.11":
+  version: 9.0.12
+  resolution: "@types/fs-extra@npm:9.0.12"
+  dependencies:
+    "@types/node": "*"
+  checksum: bb3cd95b9748301127e35a64cde9621d4bb7cd6edb1f1155a00e07eeafd92740e2cacca6f9e3e26ec7bedd76cafa8d9a6b3751478311b4294bb4127768489f47
+  languageName: node
+  linkType: hard
+
 "@types/graceful-fs@npm:^4.1.2":
   version: 4.1.4
   resolution: "@types/graceful-fs@npm:4.1.4"
@@ -3196,6 +3205,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/minimist@npm:^1.2.1":
+  version: 1.2.2
+  resolution: "@types/minimist@npm:1.2.2"
+  checksum: 8dd59cefa7be641b961ccfe65f6ff16aaa6735412f47d5c993543d4e92590465a0d728abc0dad36e4957d105a44357379adadbca4baaa2926427d4eb66d74d0d
+  languageName: node
+  linkType: hard
+
+"@types/node-fetch@npm:^2.5.10":
+  version: 2.5.12
+  resolution: "@types/node-fetch@npm:2.5.12"
+  dependencies:
+    "@types/node": "*"
+    form-data: ^3.0.0
+  checksum: f648728116a24b9b5abc117e08788ed859283548ed65d374dba333d4604a7e8d22934cb4dbe7d64498c5c7f04885d84a2dc11c9a4115d426c242e74fb2f2a6a6
+  languageName: node
+  linkType: hard
+
 "@types/node-static@npm:0.7.6":
   version: 0.7.6
   resolution: "@types/node-static@npm:0.7.6"
@@ -3224,6 +3250,13 @@ __metadata:
   version: 14.17.2
   resolution: "@types/node@npm:14.17.2"
   checksum: 7a2e90989ce2948d3cdfc1d15fb5f0439ea53971d81a466ad049922bb23ef38252f6639271ae5899670ab93d48ed62542ad687767e45ffa6fe902ce59f518e5b
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^16.0":
+  version: 16.4.13
+  resolution: "@types/node@npm:16.4.13"
+  checksum: 3e5f80c62a2fc459a4a87f22c62ae2f5c18ff7019d155b4711c3b079184fd1fb694f64cd85dddf473da13b9eba449e44394f5c2be4c4cbd62b5cb2184f6b81e0
   languageName: node
   linkType: hard
 
@@ -3853,6 +3886,7 @@ __metadata:
     ts-node: 10.0.0
     tslib: 2.2.0
     typescript: 4.3.2
+    zx: 2.0.0
   languageName: unknown
   linkType: soft
 
@@ -7226,6 +7260,17 @@ __metadata:
   version: 6.2.0
   resolution: "fs-capacitor@npm:6.2.0"
   checksum: 015a34427d7b83eb484d4d7514f0cfc6e6be66abc91f4da11f1171a195250b5ebb22894011b4f074cbad507b5d82486896371186158eb1ecefaa2156e7a6ff50
+  languageName: node
+  linkType: hard
+
+"fs-extra@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "fs-extra@npm:10.0.0"
+  dependencies:
+    graceful-fs: ^4.2.0
+    jsonfile: ^6.0.1
+    universalify: ^2.0.0
+  checksum: 84632d143fe3125b8c3c2b1fedbbdfcfb84fc3e087522b4e138cc07edf574619925713a6609f6d5e53ede2e31ab319c7d528ea4a4a770ba6622a16bf4447cd8b
   languageName: node
   linkType: hard
 
@@ -15996,5 +16041,24 @@ typescript@^4.0:
   version: 1.0.5
   resolution: "zwitch@npm:1.0.5"
   checksum: 5005166809cfe1f87a75aa8186a606414482c9c7fccff523a621a94ea4b22c7e60599c0cf47669df9946c4a1dea342ebf5d512cbeeacd567814382fee122a3a0
+  languageName: node
+  linkType: hard
+
+"zx@npm:2.0.0":
+  version: 2.0.0
+  resolution: "zx@npm:2.0.0"
+  dependencies:
+    "@types/fs-extra": ^9.0.11
+    "@types/minimist": ^1.2.1
+    "@types/node": ^16.0
+    "@types/node-fetch": ^2.5.10
+    chalk: ^4.1.1
+    fs-extra: ^10.0.0
+    minimist: ^1.2.5
+    node-fetch: ^2.6.1
+    which: ^2.0.2
+  bin:
+    zx: zx.mjs
+  checksum: 5859c0c4326350f52fbb750fdd35264ed4983158fa06e6628103314ec6424d8536f9ec9fbf2fda981bb7187781af7c068998e9daf7cd5fa1440a1fe56a568c1a
   languageName: node
   linkType: hard

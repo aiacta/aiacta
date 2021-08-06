@@ -85,7 +85,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prettier", "npm:2.3.1"],
             ["ts-node", "virtual:9b3f024da3d61c940b0dc7643504cce786076174e9baf4a8c86b00231fb8e2ca12d1dc30816d856764c1047012f9ac63eab01eaad31a9ce2482b9563f1e5ed79#npm:10.0.0"],
             ["tslib", "npm:2.2.0"],
-            ["typescript", "patch:typescript@npm%3A4.3.2#builtin<compat/typescript>::version=4.3.2&hash=ddfc1b"]
+            ["typescript", "patch:typescript@npm%3A4.3.2#builtin<compat/typescript>::version=4.3.2&hash=ddfc1b"],
+            ["zx", "npm:2.0.0"]
           ],
           "linkType": "SOFT",
         }]
@@ -4384,6 +4385,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@types/fs-extra", [
+        ["npm:9.0.12", {
+          "packageLocation": "./.yarn/cache/@types-fs-extra-npm-9.0.12-4d4efb3a94-bb3cd95b97.zip/node_modules/@types/fs-extra/",
+          "packageDependencies": [
+            ["@types/fs-extra", "npm:9.0.12"],
+            ["@types/node", "npm:14.14.22"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@types/graceful-fs", [
         ["npm:4.1.4", {
           "packageLocation": "./.yarn/cache/@types-graceful-fs-npm-4.1.4-6e2b33ed9f-acffaa4f4b.zip/node_modules/@types/graceful-fs/",
@@ -4560,6 +4571,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@types/minimist", [
+        ["npm:1.2.2", {
+          "packageLocation": "./.yarn/cache/@types-minimist-npm-1.2.2-a445de65da-8dd59cefa7.zip/node_modules/@types/minimist/",
+          "packageDependencies": [
+            ["@types/minimist", "npm:1.2.2"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@types/node", [
         ["npm:14.14.22", {
           "packageLocation": "./.yarn/cache/@types-node-npm-14.14.22-fe4ed4ddc2-e46e32685b.zip/node_modules/@types/node/",
@@ -4579,6 +4599,24 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-node-npm-14.17.2-7f40e5ab20-7a2e90989c.zip/node_modules/@types/node/",
           "packageDependencies": [
             ["@types/node", "npm:14.17.2"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:16.4.13", {
+          "packageLocation": "./.yarn/cache/@types-node-npm-16.4.13-3f9c176458-3e5f80c62a.zip/node_modules/@types/node/",
+          "packageDependencies": [
+            ["@types/node", "npm:16.4.13"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/node-fetch", [
+        ["npm:2.5.12", {
+          "packageLocation": "./.yarn/cache/@types-node-fetch-npm-2.5.12-e9530d4758-f648728116.zip/node_modules/@types/node-fetch/",
+          "packageDependencies": [
+            ["@types/node-fetch", "npm:2.5.12"],
+            ["@types/node", "npm:14.14.22"],
+            ["form-data", "npm:3.0.1"]
           ],
           "linkType": "HARD",
         }]
@@ -5499,7 +5537,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prettier", "npm:2.3.1"],
             ["ts-node", "virtual:9b3f024da3d61c940b0dc7643504cce786076174e9baf4a8c86b00231fb8e2ca12d1dc30816d856764c1047012f9ac63eab01eaad31a9ce2482b9563f1e5ed79#npm:10.0.0"],
             ["tslib", "npm:2.2.0"],
-            ["typescript", "patch:typescript@npm%3A4.3.2#builtin<compat/typescript>::version=4.3.2&hash=ddfc1b"]
+            ["typescript", "patch:typescript@npm%3A4.3.2#builtin<compat/typescript>::version=4.3.2&hash=ddfc1b"],
+            ["zx", "npm:2.0.0"]
           ],
           "linkType": "SOFT",
         }]
@@ -9427,6 +9466,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["fs-extra", [
+        ["npm:10.0.0", {
+          "packageLocation": "./.yarn/cache/fs-extra-npm-10.0.0-4f8c704115-84632d143f.zip/node_modules/fs-extra/",
+          "packageDependencies": [
+            ["fs-extra", "npm:10.0.0"],
+            ["graceful-fs", "npm:4.2.6"],
+            ["jsonfile", "npm:6.1.0"],
+            ["universalify", "npm:2.0.0"]
+          ],
+          "linkType": "HARD",
+        }],
         ["npm:9.1.0", {
           "packageLocation": "./.yarn/cache/fs-extra-npm-9.1.0-983c2ddb4c-e667d8df54.zip/node_modules/fs-extra/",
           "packageDependencies": [
@@ -19761,6 +19810,24 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/zwitch-npm-1.0.5-5911cef6ce-5005166809.zip/node_modules/zwitch/",
           "packageDependencies": [
             ["zwitch", "npm:1.0.5"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["zx", [
+        ["npm:2.0.0", {
+          "packageLocation": "./.yarn/cache/zx-npm-2.0.0-f623316583-5859c0c432.zip/node_modules/zx/",
+          "packageDependencies": [
+            ["zx", "npm:2.0.0"],
+            ["@types/fs-extra", "npm:9.0.12"],
+            ["@types/minimist", "npm:1.2.2"],
+            ["@types/node", "npm:16.4.13"],
+            ["@types/node-fetch", "npm:2.5.12"],
+            ["chalk", "npm:4.1.1"],
+            ["fs-extra", "npm:10.0.0"],
+            ["minimist", "npm:1.2.5"],
+            ["node-fetch", "npm:2.6.1"],
+            ["which", "npm:2.0.2"]
           ],
           "linkType": "HARD",
         }]
