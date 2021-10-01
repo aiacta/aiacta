@@ -262,8 +262,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["cypress", "npm:8.5.0"],
             ["next", "virtual:b56a1249c8160d5929e1170acd499c1f0b3b13affbf3ab9f47dfe1b21bc1c7287372342bb9af0a3139a04ec99c997e67bf1c45f99b82448029f9cfb34cef0b69#npm:11.1.2"],
             ["postcss", "npm:8.3.8"],
-            ["react", "npm:17.0.2"],
-            ["react-dom", "virtual:b56a1249c8160d5929e1170acd499c1f0b3b13affbf3ab9f47dfe1b21bc1c7287372342bb9af0a3139a04ec99c997e67bf1c45f99b82448029f9cfb34cef0b69#npm:17.0.2"],
+            ["react", "npm:18.0.0-alpha-7d38e4fd8-20210930"],
+            ["react-dom", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:18.0.0-alpha-7d38e4fd8-20210930"],
             ["tailwindcss", "virtual:b56a1249c8160d5929e1170acd499c1f0b3b13affbf3ab9f47dfe1b21bc1c7287372342bb9af0a3139a04ec99c997e67bf1c45f99b82448029f9cfb34cef0b69#npm:2.2.16"],
             ["typescript", "patch:typescript@npm%3A4.4.3#~builtin<compat/typescript>::version=4.4.3&hash=32657b"]
           ],
@@ -4114,8 +4114,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["css.escape", "npm:1.5.1"],
             ["data-uri-to-buffer", "npm:3.0.1"],
             ["platform", "npm:1.3.6"],
-            ["react", "npm:17.0.2"],
-            ["react-dom", "virtual:b56a1249c8160d5929e1170acd499c1f0b3b13affbf3ab9f47dfe1b21bc1c7287372342bb9af0a3139a04ec99c997e67bf1c45f99b82448029f9cfb34cef0b69#npm:17.0.2"],
+            ["react", "npm:18.0.0-alpha-7d38e4fd8-20210930"],
+            ["react-dom", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:18.0.0-alpha-7d38e4fd8-20210930"],
             ["shell-quote", "npm:1.7.2"],
             ["source-map", "npm:0.8.0-beta.0"],
             ["stacktrace-parser", "npm:0.1.10"],
@@ -13827,8 +13827,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["process", "npm:0.11.10"],
             ["querystring-es3", "npm:0.2.1"],
             ["raw-body", "npm:2.4.1"],
-            ["react", "npm:17.0.2"],
-            ["react-dom", "virtual:b56a1249c8160d5929e1170acd499c1f0b3b13affbf3ab9f47dfe1b21bc1c7287372342bb9af0a3139a04ec99c997e67bf1c45f99b82448029f9cfb34cef0b69#npm:17.0.2"],
+            ["react", "npm:18.0.0-alpha-7d38e4fd8-20210930"],
+            ["react-dom", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:18.0.0-alpha-7d38e4fd8-20210930"],
             ["react-is", "npm:17.0.2"],
             ["react-refresh", "npm:0.8.3"],
             ["sass", null],
@@ -15217,15 +15217,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["react", [
-        ["npm:17.0.2", {
-          "packageLocation": "./.yarn/cache/react-npm-17.0.2-99ba37d931-b254cc17ce.zip/node_modules/react/",
-          "packageDependencies": [
-            ["react", "npm:17.0.2"],
-            ["loose-envify", "npm:1.4.0"],
-            ["object-assign", "npm:4.1.1"]
-          ],
-          "linkType": "HARD",
-        }],
         ["npm:18.0.0-alpha-7d38e4fd8-20210930", {
           "packageLocation": "./.yarn/cache/react-npm-18.0.0-alpha-7d38e4fd8-20210930-e080ffba77-63976bf89e.zip/node_modules/react/",
           "packageDependencies": [
@@ -15269,13 +15260,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["react-dom", [
-        ["npm:17.0.2", {
-          "packageLocation": "./.yarn/cache/react-dom-npm-17.0.2-f551215af1-1c1eaa3bca.zip/node_modules/react-dom/",
-          "packageDependencies": [
-            ["react-dom", "npm:17.0.2"]
-          ],
-          "linkType": "SOFT",
-        }],
         ["npm:18.0.0-alpha-7d38e4fd8-20210930", {
           "packageLocation": "./.yarn/cache/react-dom-npm-18.0.0-alpha-7d38e4fd8-20210930-02f4fe278d-9c59285edb.zip/node_modules/react-dom/",
           "packageDependencies": [
@@ -15292,22 +15276,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["object-assign", "npm:4.1.1"],
             ["react", "npm:18.0.0-alpha-7d38e4fd8-20210930"],
             ["scheduler", "npm:0.21.0-alpha-7d38e4fd8-20210930"]
-          ],
-          "packagePeers": [
-            "@types/react",
-            "react"
-          ],
-          "linkType": "HARD",
-        }],
-        ["virtual:b56a1249c8160d5929e1170acd499c1f0b3b13affbf3ab9f47dfe1b21bc1c7287372342bb9af0a3139a04ec99c997e67bf1c45f99b82448029f9cfb34cef0b69#npm:17.0.2", {
-          "packageLocation": "./.yarn/__virtual__/react-dom-virtual-eac86d3c77/0/cache/react-dom-npm-17.0.2-f551215af1-1c1eaa3bca.zip/node_modules/react-dom/",
-          "packageDependencies": [
-            ["react-dom", "virtual:b56a1249c8160d5929e1170acd499c1f0b3b13affbf3ab9f47dfe1b21bc1c7287372342bb9af0a3139a04ec99c997e67bf1c45f99b82448029f9cfb34cef0b69#npm:17.0.2"],
-            ["@types/react", "npm:17.0.26"],
-            ["loose-envify", "npm:1.4.0"],
-            ["object-assign", "npm:4.1.1"],
-            ["react", "npm:17.0.2"],
-            ["scheduler", "npm:0.20.2"]
           ],
           "packagePeers": [
             "@types/react",
@@ -17096,7 +17064,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/react", "npm:17.0.26"],
             ["convert-source-map", "npm:1.7.0"],
             ["loader-utils", "npm:1.2.3"],
-            ["react", "npm:17.0.2"],
+            ["react", "npm:18.0.0-alpha-7d38e4fd8-20210930"],
             ["source-map", "npm:0.7.3"],
             ["string-hash", "npm:1.1.3"],
             ["stylis", "npm:3.5.4"],
@@ -18497,7 +18465,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["use-subscription", "virtual:f1461378fb286ced1786f6c2ccc6a6693b5977398e400af64c53073a3fa81da929280e6afd6f56379e726a5638e7fd79f0a700ef6e9414ad4d02352472506e4c#npm:1.5.1"],
             ["@types/react", "npm:17.0.26"],
             ["object-assign", "npm:4.1.1"],
-            ["react", "npm:17.0.2"]
+            ["react", "npm:18.0.0-alpha-7d38e4fd8-20210930"]
           ],
           "packagePeers": [
             "@types/react",

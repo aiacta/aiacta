@@ -165,8 +165,8 @@ __metadata:
     cypress: 8.5.0
     next: 11.1.2
     postcss: 8.3.8
-    react: 17.0.2
-    react-dom: 17.0.2
+    react: alpha
+    react-dom: alpha
     tailwindcss: 2.2.16
     typescript: 4.4.3
   languageName: unknown
@@ -12211,19 +12211,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:17.0.2":
-  version: 17.0.2
-  resolution: "react-dom@npm:17.0.2"
-  dependencies:
-    loose-envify: ^1.1.0
-    object-assign: ^4.1.1
-    scheduler: ^0.20.2
-  peerDependencies:
-    react: 17.0.2
-  checksum: 1c1eaa3bca7c7228d24b70932e3d7c99e70d1d04e13bb0843bbf321582bc25d7961d6b8a6978a58a598af2af496d1cedcfb1bf65f6b0960a0a8161cb8dab743c
-  languageName: node
-  linkType: hard
-
 "react-dom@npm:alpha":
   version: 18.0.0-alpha-7d38e4fd8-20210930
   resolution: "react-dom@npm:18.0.0-alpha-7d38e4fd8-20210930"
@@ -12453,16 +12440,6 @@ __metadata:
     react: ">=16.13"
     react-dom: ">=16.13"
   checksum: cbaf8896f14bb4b3259a39181b8cd26bf8291cda5f02729f6f977169145acfa1b727d9a99710f20329eb717bad189f599a1616e735053ff07f9ae0a0bd7fd206
-  languageName: node
-  linkType: hard
-
-"react@npm:17.0.2":
-  version: 17.0.2
-  resolution: "react@npm:17.0.2"
-  dependencies:
-    loose-envify: ^1.1.0
-    object-assign: ^4.1.1
-  checksum: b254cc17ce3011788330f7bbf383ab653c6848902d7936a87b09d835d091e3f295f7e9dd1597c6daac5dc80f90e778c8230218ba8ad599f74adcc11e33b9d61b
   languageName: node
   linkType: hard
 
