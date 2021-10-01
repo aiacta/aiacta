@@ -1,6 +1,8 @@
+/// <reference types="react/next" />
+/// <reference types="react-dom/next" />
+
 import * as React from 'react';
-import { StrictMode } from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom';
 import { App } from './App';
 import { Provider } from './Provider';
 
@@ -9,11 +11,10 @@ if (import.meta.env.DEV && useMocks) {
   import('./mocks').then(({ worker }) => worker.start());
 }
 
-render(
-  <StrictMode>
-    <Provider>
-      <App />
-    </Provider>
-  </StrictMode>,
-  document.querySelector('#root'),
+const root = createRoot(document.querySelector('#root')!);
+
+root.render(
+  <Provider>
+    <App />
+  </Provider>,
 );

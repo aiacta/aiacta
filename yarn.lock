@@ -66,8 +66,8 @@ __metadata:
     msw: 0.35.0
     playcanvas: 1.46.5
     prettier: 2.4.1
-    react: 17.0.2
-    react-dom: 17.0.2
+    react: alpha
+    react-dom: alpha
     react-error-boundary: 3.1.3
     react-hook-form: 7.16.2
     react-icons: 4.2.0
@@ -12224,6 +12224,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-dom@npm:alpha":
+  version: 18.0.0-alpha-7d38e4fd8-20210930
+  resolution: "react-dom@npm:18.0.0-alpha-7d38e4fd8-20210930"
+  dependencies:
+    loose-envify: ^1.1.0
+    object-assign: ^4.1.1
+    scheduler: 0.21.0-alpha-7d38e4fd8-20210930
+  peerDependencies:
+    react: 18.0.0-alpha-7d38e4fd8-20210930
+  checksum: 9c59285edb184402647ea0a90f6f329113847a0a81d132587873e30ff325826a658d0ce17633ca715b944673915b71a8d370756d63051d8a9aa44c0e55c927c8
+  languageName: node
+  linkType: hard
+
 "react-error-boundary@npm:3.1.3":
   version: 3.1.3
   resolution: "react-error-boundary@npm:3.1.3"
@@ -12450,6 +12463,16 @@ __metadata:
     loose-envify: ^1.1.0
     object-assign: ^4.1.1
   checksum: b254cc17ce3011788330f7bbf383ab653c6848902d7936a87b09d835d091e3f295f7e9dd1597c6daac5dc80f90e778c8230218ba8ad599f74adcc11e33b9d61b
+  languageName: node
+  linkType: hard
+
+"react@npm:alpha":
+  version: 18.0.0-alpha-7d38e4fd8-20210930
+  resolution: "react@npm:18.0.0-alpha-7d38e4fd8-20210930"
+  dependencies:
+    loose-envify: ^1.1.0
+    object-assign: ^4.1.1
+  checksum: 63976bf89ef1f829aeb8f9b0d3bed91cc1ba0d92642eeb913aa3e4c45521491bd32fd8de3985ec3fdcb622997d7092023a7a26cc30dd15ae88fdb7e136cbfd64
   languageName: node
   linkType: hard
 
@@ -13023,6 +13046,16 @@ __metadata:
   dependencies:
     xmlchars: ^2.2.0
   checksum: 5636b55cf15f7cf0baa73f2797bf992bdcf75d1b39d82c0aa4608555c774368f6ac321cb641fd5f3d3ceb87805122cd47540da6a7b5960fe0dbdb8f8c263f000
+  languageName: node
+  linkType: hard
+
+"scheduler@npm:0.21.0-alpha-7d38e4fd8-20210930":
+  version: 0.21.0-alpha-7d38e4fd8-20210930
+  resolution: "scheduler@npm:0.21.0-alpha-7d38e4fd8-20210930"
+  dependencies:
+    loose-envify: ^1.1.0
+    object-assign: ^4.1.1
+  checksum: 0b5c5fef63d2a60ab3a71d9837a6185688a91954a65d4a3c6e4f2253ef17d9b4df6d5c284c318a54cccec258f03a1eb01759409f24a75d2572cfff6382d58e78
   languageName: node
   linkType: hard
 

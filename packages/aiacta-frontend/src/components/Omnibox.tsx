@@ -137,8 +137,6 @@ export function Omnibox() {
       { open: false, selection: null, commandInput: '', options: [] },
     );
 
-  console.log(selection);
-
   const containerRef = React.useRef<HTMLDivElement>(
     null as any as HTMLDivElement,
   );
