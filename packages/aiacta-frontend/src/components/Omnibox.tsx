@@ -68,74 +68,73 @@ export function Omnibox() {
     variables: worldId ? { worldId } : undefined,
   });
 
-  const [{ open, selection, commandInput, options, error }, dispatch] =
-    React.useReducer(
-      (
-        state: {
-          open: boolean;
-          selection: number | null;
-          commandInput: string;
-          options: { id: string; label: string }[];
-          error?: string;
-        },
-        action:
-          | { type: 'open' | 'close' | 'select' }
-          | { type: 'type'; input: string },
-      ) => {
-        switch (action.type) {
-          case 'open':
-            return {
-              ...state,
-              open: true,
-              selection: null,
-              error: undefined,
-              commandInput: '',
-              options: [],
-            };
-          case 'close':
-            if (!state.open) {
-              return state;
-            }
-            return { ...state, open: false };
-          case 'select':
-            if (!state.open) {
-              return state;
-            }
-            if (state.selection === null && state.options.length === 0) {
-              return {
-                ...state,
-                error: formatMessage({ defaultMessage: 'No option selected' }),
-              };
-            }
-            {
-              const selectedOption = state.options[state.selection ?? 0];
-              console.log(selectedOption);
-            }
-            // TODO do magic?
-            return { ...state, open: false };
-          case 'type':
-            if (!state.open) {
-              return state;
-            }
-            return {
-              ...state,
-              error: undefined,
-              commandInput: action.input,
-              options: matchSorter(
-                tasks
-                  .filter((task) => task.condition(meInWorld.data))
-                  .map((task) => ({
-                    ...task,
-                    label: formatMessage(task.label),
-                  })),
-                action.input,
-                { keys: ['label'] },
-              ),
-            };
-        }
+  const [{ open, commandInput, options, error }, dispatch] = React.useReducer(
+    (
+      state: {
+        open: boolean;
+        selection: number | null;
+        commandInput: string;
+        options: { id: string; label: string }[];
+        error?: string;
       },
-      { open: false, selection: null, commandInput: '', options: [] },
-    );
+      action:
+        | { type: 'open' | 'close' | 'select' }
+        | { type: 'type'; input: string },
+    ) => {
+      switch (action.type) {
+        case 'open':
+          return {
+            ...state,
+            open: true,
+            selection: null,
+            error: undefined,
+            commandInput: '',
+            options: [],
+          };
+        case 'close':
+          if (!state.open) {
+            return state;
+          }
+          return { ...state, open: false };
+        case 'select':
+          if (!state.open) {
+            return state;
+          }
+          if (state.selection === null && state.options.length === 0) {
+            return {
+              ...state,
+              error: formatMessage({ defaultMessage: 'No option selected' }),
+            };
+          }
+          {
+            const selectedOption = state.options[state.selection ?? 0];
+            console.log(selectedOption);
+          }
+          // TODO do magic?
+          return { ...state, open: false };
+        case 'type':
+          if (!state.open) {
+            return state;
+          }
+          return {
+            ...state,
+            error: undefined,
+            commandInput: action.input,
+            options: matchSorter(
+              tasks
+                .filter((task) => task.condition(meInWorld.data))
+                .map((task) => ({
+                  ...task,
+                  label: formatMessage(task.label),
+                })),
+              action.input,
+              { keys: ['label'] },
+            ),
+          };
+      }
+    },
+    { open: false, selection: null, commandInput: '', options: [] },
+  );
 
   const containerRef = React.useRef<HTMLDivElement>(
     null as any as HTMLDivElement,
