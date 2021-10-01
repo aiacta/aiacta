@@ -57,7 +57,11 @@ createServer({
             } catch (err) {
               // all errors that could be thrown during the
               // execution of operations will be caught here
-              socket.close(1011, err.message);
+              if (err instanceof Error) {
+                socket.close(1011, err.message);
+              } else {
+                socket.close(1011, 'Unknown');
+              }
             }
           }),
       },
