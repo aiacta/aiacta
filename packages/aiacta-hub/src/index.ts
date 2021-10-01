@@ -66,7 +66,7 @@ createServer({
     );
 
     // notify server that the socket closed
-    socket.once('close', (code, reason) => closed(code, reason));
+    socket.once('close', (code, reason) => closed(code, reason.toString()));
   },
 }).then(([dispose, port]) => {
   disposeServer = dispose;

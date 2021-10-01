@@ -33,6 +33,7 @@ model World {
   password       String?
   createdAt      DateTime        @default(now())
   scenes         Scene[]
+  actors         Actor[]
 }
 
 enum Role {
@@ -77,4 +78,26 @@ model Scene {
   gridSize    Int
   gridOffsetX Int      @default(0)
   gridOffsetY Int      @default(0)
+  tokens      Token[]
+}
+
+model Actor {
+  id      String  @id @default(cuid())
+  world   World   @relation(fields: [worldId], references: [id])
+  worldId String
+  name    String
+  type    String
+  data    Json
+  token   Token?  @relation(fields: [tokenId], references: [id])
+  tokenId String?
+}
+
+model Token {
+  id        String  @id @default(cuid())
+  scene     Scene?  @relation(fields: [sceneId], references: [id])
+  sceneId   String?
+  actor     Actor?
+  actorId   String?
+  positionX Float   @default(0)
+  positionY Float   @default(0)
 }

@@ -1,0 +1,520 @@
+[
+  {
+    "name": "Path of the Berserker",
+    "shortName": "Berserker",
+    "source": "PHB",
+    "className": "Barbarian",
+    "classSource": "PHB",
+    "page": 49,
+    "srd": true,
+    "subclassFeatures": [
+      "Path of the Berserker|Barbarian||Berserker||3",
+      "Mindless Rage|Barbarian||Berserker||6",
+      "Intimidating Presence|Barbarian||Berserker||10",
+      "Retaliation|Barbarian||Berserker||14"
+    ]
+  },
+  {
+    "name": "College of Lore",
+    "shortName": "Lore",
+    "source": "PHB",
+    "className": "Bard",
+    "classSource": "PHB",
+    "page": 54,
+    "srd": true,
+    "additionalSpells": [
+      {
+        "name": "Additional Magical Secrets",
+        "prepared": {
+          "6": [
+            {
+              "choose": "level=0;1;2;3"
+            },
+            {
+              "choose": "level=0;1;2;3"
+            }
+          ]
+        }
+      }
+    ],
+    "subclassFeatures": [
+      "College of Lore|Bard||Lore||3",
+      "Additional Magical Secrets|Bard||Lore||6",
+      "Peerless Skill|Bard||Lore||14"
+    ]
+  },
+  {
+    "name": "Life Domain",
+    "shortName": "Life",
+    "source": "PHB",
+    "className": "Cleric",
+    "classSource": "PHB",
+    "page": 60,
+    "srd": true,
+    "additionalSpells": [
+      {
+        "prepared": {
+          "1": [
+            "bless",
+            "cure wounds"
+          ],
+          "3": [
+            "lesser restoration",
+            "spiritual weapon"
+          ],
+          "5": [
+            "beacon of hope",
+            "revivify"
+          ],
+          "7": [
+            "death ward",
+            "guardian of faith"
+          ],
+          "9": [
+            "mass cure wounds",
+            "raise dead"
+          ]
+        }
+      }
+    ],
+    "subclassFeatures": [
+      "Life Domain|Cleric||Life||1",
+      "Channel Divinity: Preserve Life|Cleric||Life||2",
+      "Blessed Healer|Cleric||Life||6",
+      "Divine Strike|Cleric||Life||8",
+      "Blessed Strikes|Cleric||Life||8|UAClassFeatureVariants",
+      "Blessed Strikes|Cleric||Life||8|TCE",
+      "Supreme Healing|Cleric||Life||17"
+    ]
+  },
+  {
+    "name": "Circle of the Land",
+    "shortName": "Land",
+    "source": "PHB",
+    "className": "Druid",
+    "classSource": "PHB",
+    "page": 68,
+    "srd": true,
+    "additionalSpells": [
+      {
+        "name": "Arctic",
+        "innate": {
+          "1": {
+            "_": [
+              {
+                "choose": "level=0|class=Druid"
+              }
+            ]
+          }
+        },
+        "prepared": {
+          "3": [
+            "hold person",
+            "spike growth"
+          ],
+          "5": [
+            "sleet storm",
+            "slow"
+          ],
+          "7": [
+            "freedom of movement",
+            "ice storm"
+          ],
+          "9": [
+            "commune with nature",
+            "cone of cold"
+          ]
+        }
+      },
+      {
+        "name": "Coast",
+        "innate": {
+          "1": {
+            "_": [
+              {
+                "choose": "level=0|class=Druid"
+              }
+            ]
+          }
+        },
+        "prepared": {
+          "3": [
+            "mirror image",
+            "misty step"
+          ],
+          "5": [
+            "water breathing",
+            "water walk"
+          ],
+          "7": [
+            "control water",
+            "freedom of movement"
+          ],
+          "9": [
+            "conjure elemental",
+            "scrying"
+          ]
+        }
+      },
+      {
+        "name": "Desert",
+        "innate": {
+          "1": {
+            "_": [
+              {
+                "choose": "level=0|class=Druid"
+              }
+            ]
+          }
+        },
+        "prepared": {
+          "3": [
+            "blur",
+            "silence"
+          ],
+          "5": [
+            "create food and water",
+            "protection from energy"
+          ],
+          "7": [
+            "blight",
+            "hallucinatory terrain"
+          ],
+          "9": [
+            "insect plague",
+            "wall of stone"
+          ]
+        }
+      },
+      {
+        "name": "Forest",
+        "innate": {
+          "1": {
+            "_": [
+              {
+                "choose": "level=0|class=Druid"
+              }
+            ]
+          }
+        },
+        "prepared": {
+          "3": [
+            "barkskin",
+            "spider climb"
+          ],
+          "5": [
+            "call lightning",
+            "plant growth"
+          ],
+          "7": [
+            "divination",
+            "freedom of movement"
+          ],
+          "9": [
+            "commune with nature",
+            "tree stride"
+          ]
+        }
+      },
+      {
+        "name": "Grassland",
+        "innate": {
+          "1": {
+            "_": [
+              {
+                "choose": "level=0|class=Druid"
+              }
+            ]
+          }
+        },
+        "prepared": {
+          "3": [
+            "invisibility",
+            "pass without trace"
+          ],
+          "5": [
+            "daylight",
+            "haste"
+          ],
+          "7": [
+            "divination",
+            "freedom of movement"
+          ],
+          "9": [
+            "dream",
+            "insect plague"
+          ]
+        }
+      },
+      {
+        "name": "Mountain",
+        "innate": {
+          "1": {
+            "_": [
+              {
+                "choose": "level=0|class=Druid"
+              }
+            ]
+          }
+        },
+        "prepared": {
+          "3": [
+            "spider climb",
+            "spike growth"
+          ],
+          "5": [
+            "lightning bolt",
+            "meld into stone"
+          ],
+          "7": [
+            "stone shape",
+            "stoneskin"
+          ],
+          "9": [
+            "passwall",
+            "wall of stone"
+          ]
+        }
+      },
+      {
+        "name": "Swamp",
+        "innate": {
+          "1": {
+            "_": [
+              {
+                "choose": "level=0|class=Druid"
+              }
+            ]
+          }
+        },
+        "prepared": {
+          "3": [
+            "darkness",
+            "Melf's acid arrow"
+          ],
+          "5": [
+            "water walk",
+            "stinking cloud"
+          ],
+          "7": [
+            "freedom of movement",
+            "locate creature"
+          ],
+          "9": [
+            "insect plague",
+            "scrying"
+          ]
+        }
+      },
+      {
+        "name": "Underdark",
+        "innate": {
+          "1": {
+            "_": [
+              {
+                "choose": "level=0|class=Druid"
+              }
+            ]
+          }
+        },
+        "prepared": {
+          "3": [
+            "spider climb",
+            "web"
+          ],
+          "5": [
+            "gaseous form",
+            "stinking cloud"
+          ],
+          "7": [
+            "greater invisibility",
+            "stone shape"
+          ],
+          "9": [
+            "cloudkill",
+            "insect plague"
+          ]
+        }
+      }
+    ],
+    "subclassFeatures": [
+      "Circle of the Land|Druid||Land||2",
+      "Land's Stride|Druid||Land||6",
+      "Nature's Ward|Druid||Land||10",
+      "Nature's Sanctuary|Druid||Land||14"
+    ]
+  },
+  {
+    "name": "Champion",
+    "shortName": "Champion",
+    "source": "PHB",
+    "className": "Fighter",
+    "classSource": "PHB",
+    "page": 72,
+    "srd": true,
+    "subclassFeatures": [
+      "Champion|Fighter||Champion||3",
+      "Remarkable Athlete|Fighter||Champion||7",
+      "Additional Fighting Style|Fighter||Champion||10",
+      "Superior Critical|Fighter||Champion||15",
+      "Survivor|Fighter||Champion||18"
+    ]
+  },
+  {
+    "name": "Way of the Open Hand",
+    "shortName": "Open Hand",
+    "source": "PHB",
+    "className": "Monk",
+    "classSource": "PHB",
+    "page": 79,
+    "srd": true,
+    "subclassFeatures": [
+      "Way of the Open Hand|Monk||Open Hand||3",
+      "Wholeness of Body|Monk||Open Hand||6",
+      "Tranquility|Monk||Open Hand||11",
+      "Quivering Palm|Monk||Open Hand||17"
+    ]
+  },
+  {
+    "name": "Oath of Devotion",
+    "shortName": "Devotion",
+    "source": "PHB",
+    "className": "Paladin",
+    "classSource": "PHB",
+    "page": 85,
+    "srd": true,
+    "additionalSpells": [
+      {
+        "prepared": {
+          "3": [
+            "protection from evil and good",
+            "sanctuary"
+          ],
+          "5": [
+            "lesser restoration",
+            "zone of truth"
+          ],
+          "9": [
+            "beacon of hope",
+            "dispel magic"
+          ],
+          "13": [
+            "freedom of movement",
+            "guardian of faith"
+          ],
+          "17": [
+            "commune",
+            "flame strike"
+          ]
+        }
+      }
+    ],
+    "subclassFeatures": [
+      "Oath of Devotion|Paladin||Devotion||3",
+      "Aura of Devotion|Paladin||Devotion||7",
+      "Purity of Spirit|Paladin||Devotion||15",
+      "Holy Nimbus|Paladin||Devotion||20"
+    ]
+  },
+  {
+    "name": "Hunter",
+    "shortName": "Hunter",
+    "source": "PHB",
+    "className": "Ranger",
+    "classSource": "PHB",
+    "page": 93,
+    "srd": true,
+    "subclassFeatures": [
+      "Hunter|Ranger||Hunter||3",
+      "Defensive Tactics|Ranger||Hunter||7",
+      "Multiattack|Ranger||Hunter||11",
+      "Superior Hunter's Defense|Ranger||Hunter||15"
+    ]
+  },
+  {
+    "name": "Thief",
+    "shortName": "Thief",
+    "source": "PHB",
+    "className": "Rogue",
+    "classSource": "PHB",
+    "page": 97,
+    "srd": true,
+    "subclassFeatures": [
+      "Thief|Rogue||Thief||3",
+      "Supreme Sneak|Rogue||Thief||9",
+      "Use Magic Device|Rogue||Thief||13",
+      "Thief's Reflexes|Rogue||Thief||17"
+    ]
+  },
+  {
+    "name": "Draconic Bloodline",
+    "shortName": "Draconic",
+    "source": "PHB",
+    "className": "Sorcerer",
+    "classSource": "PHB",
+    "page": 102,
+    "srd": true,
+    "subclassFeatures": [
+      "Draconic Bloodline|Sorcerer||Draconic||1",
+      "Elemental Affinity|Sorcerer||Draconic||6",
+      "Dragon Wings|Sorcerer||Draconic||14",
+      "Draconic Presence|Sorcerer||Draconic||18"
+    ]
+  },
+  {
+    "name": "The Fiend",
+    "shortName": "Fiend",
+    "source": "PHB",
+    "className": "Warlock",
+    "classSource": "PHB",
+    "page": 109,
+    "srd": true,
+    "additionalSpells": [
+      {
+        "expanded": {
+          "s1": [
+            "burning hands",
+            "command"
+          ],
+          "s2": [
+            "blindness/deafness",
+            "scorching ray"
+          ],
+          "s3": [
+            "fireball",
+            "stinking cloud"
+          ],
+          "s4": [
+            "fire shield",
+            "wall of fire"
+          ],
+          "s5": [
+            "flame strike",
+            "hallow"
+          ]
+        }
+      }
+    ],
+    "subclassFeatures": [
+      "The Fiend|Warlock||Fiend||1",
+      "Dark One's Own Luck|Warlock||Fiend||6",
+      "Fiendish Resilience|Warlock||Fiend||10",
+      "Hurl Through Hell|Warlock||Fiend||14"
+    ]
+  },
+  {
+    "name": "School of Evocation",
+    "shortName": "Evocation",
+    "source": "PHB",
+    "className": "Wizard",
+    "classSource": "PHB",
+    "page": 117,
+    "srd": true,
+    "subclassFeatures": [
+      "School of Evocation|Wizard||Evocation||2",
+      "Potent Cantrip|Wizard||Evocation||6",
+      "Empowered Evocation|Wizard||Evocation||10",
+      "Overchannel|Wizard||Evocation||14"
+    ]
+  }
+]
