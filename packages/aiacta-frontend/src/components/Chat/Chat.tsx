@@ -72,6 +72,10 @@ function Messages() {
 
   const { worldId } = useParams();
 
+  if (!worldId) {
+    throw new Error('Invalid entry');
+  }
+
   const [messages] = useChatMessagesQuery({ variables: { worldId } });
   useNewChatMessagesSubscription({ variables: { worldId } });
 
@@ -97,6 +101,10 @@ function Messages() {
 
 function MessageInput() {
   const { worldId } = useParams();
+
+  if (!worldId) {
+    throw new Error('Invalid entry');
+  }
 
   const [message, setMessage] = React.useState('');
   const [mutation, sendMessage] = useSendMessageMutation();

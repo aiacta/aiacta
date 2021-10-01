@@ -15,6 +15,11 @@ import { SceneDropzone } from './SceneDropzone';
 
 export function Scenes() {
   const { worldId } = useParams();
+
+  if (!worldId) {
+    throw new Error('Invalid entry');
+  }
+
   const [scenes] = useListScenesQuery({ variables: { worldId } });
 
   return (

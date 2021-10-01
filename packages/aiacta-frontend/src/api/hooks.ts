@@ -1,13 +1,15 @@
-import { gql } from 'urql';
 import * as Urql from 'urql';
+import { gql } from 'urql';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K];
 };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
-  { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
-  { [SubKey in K]: Maybe<T[SubKey]> };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]?: Maybe<T[SubKey]>;
+};
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]: Maybe<T[SubKey]>;
+};
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -23,15 +25,15 @@ export type Scalars = {
 
 export type AuthInfo = {
   __typename?: 'AuthInfo';
-  token: Scalars['String'];
   player: Player;
+  token: Scalars['String'];
 };
 
 export type DiceRoll = {
   __typename?: 'DiceRoll';
+  dice: Array<Die>;
   id: Scalars['ID'];
   roller: PlayerInWorld;
-  dice: Array<Die>;
 };
 
 export type DiceRollContext = {
@@ -40,8 +42,8 @@ export type DiceRollContext = {
 };
 
 export type DiceRollInput = {
-  formula: Scalars['String'];
   context?: Maybe<DiceRollContext>;
+  formula: Scalars['String'];
   visibility?: Maybe<DiceRollVisibility>;
 };
 
@@ -69,13 +71,13 @@ export enum DieType {
 
 export type GridSettings = {
   __typename?: 'GridSettings';
-  size?: Maybe<Scalars['Int']>;
   offset: Point;
+  size?: Maybe<Scalars['Int']>;
 };
 
 export type GridSettingsInput = {
-  size?: Maybe<Scalars['Int']>;
   offset: PointInput;
+  size?: Maybe<Scalars['Int']>;
 };
 
 export type Light = {
@@ -89,16 +91,14 @@ export type LightInput = {
 
 export type Message = {
   __typename?: 'Message';
-  id: Scalars['ID'];
   author: PlayerInfo;
   createdAt: Scalars['DateTime'];
-  component?: Maybe<Scalars['String']>;
-  text?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
   rolls?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  text?: Maybe<Scalars['String']>;
 };
 
 export type MessageInput = {
-  component?: Maybe<Scalars['String']>;
   text?: Maybe<Scalars['String']>;
 };
 
@@ -122,9 +122,9 @@ export type MutationCreateWorldArgs = {
 };
 
 export type MutationJoinWorldArgs = {
-  worldId: Scalars['ID'];
-  password?: Maybe<Scalars['String']>;
   joinKey?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']>;
+  worldId: Scalars['ID'];
 };
 
 export type MutationLoginArgs = {
@@ -133,41 +133,41 @@ export type MutationLoginArgs = {
 };
 
 export type MutationRollDiceArgs = {
-  worldId: Scalars['ID'];
   input: DiceRollInput;
+  worldId: Scalars['ID'];
 };
 
 export type MutationSendMessageArgs = {
-  worldId: Scalars['ID'];
   input: MessageInput;
+  worldId: Scalars['ID'];
 };
 
 export type MutationSignUpArgs = {
+  color?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   password: Scalars['String'];
-  color?: Maybe<Scalars['String']>;
 };
 
 export type Player = PlayerInfo & {
   __typename?: 'Player';
+  color: Scalars['String'];
   id: Scalars['ID'];
   name: Scalars['String'];
-  color: Scalars['String'];
   worlds?: Maybe<Array<Maybe<World>>>;
 };
 
 export type PlayerInWorld = PlayerInfo & {
   __typename?: 'PlayerInWorld';
+  color: Scalars['String'];
   id: Scalars['ID'];
   name: Scalars['String'];
-  color: Scalars['String'];
   role: Role;
 };
 
 export type PlayerInfo = {
+  color: Scalars['String'];
   id: Scalars['ID'];
   name: Scalars['String'];
-  color: Scalars['String'];
 };
 
 export type Point = {
@@ -201,26 +201,26 @@ export enum Role {
 
 export type Scene = {
   __typename?: 'Scene';
+  grid?: Maybe<GridSettings>;
+  height: Scalars['Int'];
   id: Scalars['ID'];
-  world: World;
+  image?: Maybe<Scalars['Blob']>;
+  lights?: Maybe<Array<Maybe<Light>>>;
   name: Scalars['String'];
   walls?: Maybe<Array<Maybe<Wall>>>;
-  lights?: Maybe<Array<Maybe<Light>>>;
-  image?: Maybe<Scalars['Blob']>;
   width: Scalars['Int'];
-  height: Scalars['Int'];
-  grid?: Maybe<GridSettings>;
+  world: World;
 };
 
 export type SceneInput = {
-  worldId: Scalars['ID'];
+  grid?: Maybe<GridSettingsInput>;
+  height: Scalars['Int'];
+  image?: Maybe<Scalars['Upload']>;
+  lights?: Maybe<Array<Maybe<LightInput>>>;
   name: Scalars['String'];
   walls?: Maybe<Array<Maybe<WallInput>>>;
-  lights?: Maybe<Array<Maybe<LightInput>>>;
-  image?: Maybe<Scalars['Upload']>;
   width: Scalars['Int'];
-  height: Scalars['Int'];
-  grid?: Maybe<GridSettingsInput>;
+  worldId: Scalars['ID'];
 };
 
 export type Subscription = {
@@ -265,53 +265,116 @@ export type WorldSceneArgs = {
 };
 
 export type WorldInput = {
-  name: Scalars['String'];
   inviteOnly: Scalars['Boolean'];
+  name: Scalars['String'];
   password?: Maybe<Scalars['String']>;
 };
 
-export type MessageDataFragment = { __typename?: 'Message' } & Pick<
-  Message,
-  'id' | 'component' | 'text' | 'createdAt' | 'rolls'
-> & {
-    author:
-      | ({ __typename?: 'Player' } & Pick<Player, 'id' | 'name' | 'color'>)
-      | ({ __typename?: 'PlayerInWorld' } & Pick<
-          PlayerInWorld,
-          'id' | 'name' | 'color'
-        >);
-  };
+export type MessageDataFragment = {
+  __typename?: 'Message';
+  id: string;
+  text?: string | null | undefined;
+  createdAt: any;
+  rolls?: Array<string | null | undefined> | null | undefined;
+  author:
+    | { __typename?: 'Player'; id: string; name: string; color: string }
+    | { __typename?: 'PlayerInWorld'; id: string; name: string; color: string };
+};
 
 export type ChatMessagesQueryVariables = Exact<{
   worldId: Scalars['ID'];
 }>;
 
-export type ChatMessagesQuery = { __typename?: 'Query' } & {
-  world?: Maybe<
-    { __typename?: 'World' } & Pick<World, 'id'> & {
-        messages?: Maybe<
-          Array<Maybe<{ __typename?: 'Message' } & MessageDataFragment>>
-        >;
+export type ChatMessagesQuery = {
+  __typename?: 'Query';
+  world?:
+    | {
+        __typename?: 'World';
+        id: string;
+        messages?:
+          | Array<
+              | {
+                  __typename?: 'Message';
+                  id: string;
+                  text?: string | null | undefined;
+                  createdAt: any;
+                  rolls?: Array<string | null | undefined> | null | undefined;
+                  author:
+                    | {
+                        __typename?: 'Player';
+                        id: string;
+                        name: string;
+                        color: string;
+                      }
+                    | {
+                        __typename?: 'PlayerInWorld';
+                        id: string;
+                        name: string;
+                        color: string;
+                      };
+                }
+              | null
+              | undefined
+            >
+          | null
+          | undefined;
       }
-  >;
+    | null
+    | undefined;
 };
 
 export type SendMessageMutationVariables = Exact<{
   worldId: Scalars['ID'];
   text?: Maybe<Scalars['String']>;
-  component?: Maybe<Scalars['String']>;
 }>;
 
-export type SendMessageMutation = { __typename?: 'Mutation' } & {
-  sendMessage?: Maybe<{ __typename?: 'Message' } & MessageDataFragment>;
+export type SendMessageMutation = {
+  __typename?: 'Mutation';
+  sendMessage?:
+    | {
+        __typename?: 'Message';
+        id: string;
+        text?: string | null | undefined;
+        createdAt: any;
+        rolls?: Array<string | null | undefined> | null | undefined;
+        author:
+          | { __typename?: 'Player'; id: string; name: string; color: string }
+          | {
+              __typename?: 'PlayerInWorld';
+              id: string;
+              name: string;
+              color: string;
+            };
+      }
+    | null
+    | undefined;
 };
 
 export type NewChatMessagesSubscriptionVariables = Exact<{
   worldId: Scalars['ID'];
 }>;
 
-export type NewChatMessagesSubscription = { __typename?: 'Subscription' } & {
-  newMessages: Array<Maybe<{ __typename?: 'Message' } & MessageDataFragment>>;
+export type NewChatMessagesSubscription = {
+  __typename?: 'Subscription';
+  newMessages: Array<
+    | {
+        __typename?: 'Message';
+        id: string;
+        text?: string | null | undefined;
+        createdAt: any;
+        rolls?: Array<string | null | undefined> | null | undefined;
+        author:
+          | { __typename?: 'Player'; id: string; name: string; color: string }
+          | {
+              __typename?: 'PlayerInWorld';
+              id: string;
+              name: string;
+              color: string;
+            };
+      }
+    | null
+    | undefined
+  >;
 };
 
 export type RollDiceMutationVariables = Exact<{
@@ -319,33 +382,48 @@ export type RollDiceMutationVariables = Exact<{
   formula: Scalars['String'];
 }>;
 
-export type RollDiceMutation = { __typename?: 'Mutation' } & {
-  rollDice?: Maybe<
-    { __typename?: 'DiceRoll' } & Pick<DiceRoll, 'id'> & {
-        dice: Array<
-          { __typename?: 'Die' } & Pick<Die, 'id' | 'type' | 'value'>
-        >;
+export type RollDiceMutation = {
+  __typename?: 'Mutation';
+  rollDice?:
+    | {
+        __typename?: 'DiceRoll';
+        id: string;
+        dice: Array<{
+          __typename?: 'Die';
+          id: string;
+          type: DieType;
+          value: number;
+        }>;
       }
-  >;
+    | null
+    | undefined;
 };
 
 export type DiceRollsSubscriptionVariables = Exact<{
   worldId: Scalars['ID'];
 }>;
 
-export type DiceRollsSubscription = { __typename?: 'Subscription' } & {
+export type DiceRollsSubscription = {
+  __typename?: 'Subscription';
   diceRolls: Array<
-    Maybe<
-      { __typename?: 'DiceRoll' } & Pick<DiceRoll, 'id'> & {
-          roller: { __typename?: 'PlayerInWorld' } & Pick<
-            PlayerInWorld,
-            'id' | 'name' | 'color'
-          >;
-          dice: Array<
-            { __typename?: 'Die' } & Pick<Die, 'id' | 'type' | 'value'>
-          >;
-        }
-    >
+    | {
+        __typename?: 'DiceRoll';
+        id: string;
+        roller: {
+          __typename?: 'PlayerInWorld';
+          id: string;
+          name: string;
+          color: string;
+        };
+        dice: Array<{
+          __typename?: 'Die';
+          id: string;
+          type: DieType;
+          value: number;
+        }>;
+      }
+    | null
+    | undefined
   >;
 };
 
@@ -354,8 +432,9 @@ export type LoginMutationVariables = Exact<{
   password: Scalars['String'];
 }>;
 
-export type LoginMutation = { __typename?: 'Mutation' } & {
-  login?: Maybe<{ __typename?: 'AuthInfo' } & Pick<AuthInfo, 'token'>>;
+export type LoginMutation = {
+  __typename?: 'Mutation';
+  login?: { __typename?: 'AuthInfo'; token: string } | null | undefined;
 };
 
 export type SignUpMutationVariables = Exact<{
@@ -364,63 +443,84 @@ export type SignUpMutationVariables = Exact<{
   color?: Maybe<Scalars['String']>;
 }>;
 
-export type SignUpMutation = { __typename?: 'Mutation' } & {
-  signUp?: Maybe<{ __typename?: 'AuthInfo' } & Pick<AuthInfo, 'token'>>;
+export type SignUpMutation = {
+  __typename?: 'Mutation';
+  signUp?: { __typename?: 'AuthInfo'; token: string } | null | undefined;
 };
 
 export type MeQueryVariables = Exact<{ [key: string]: never }>;
 
-export type MeQuery = { __typename?: 'Query' } & {
-  me?: Maybe<{ __typename?: 'Player' } & Pick<Player, 'id' | 'name' | 'color'>>;
+export type MeQuery = {
+  __typename?: 'Query';
+  me?:
+    | { __typename?: 'Player'; id: string; name: string; color: string }
+    | null
+    | undefined;
 };
 
 export type MeInWorldQueryVariables = Exact<{
   worldId: Scalars['ID'];
 }>;
 
-export type MeInWorldQuery = { __typename?: 'Query' } & {
-  world?: Maybe<
-    { __typename?: 'World' } & Pick<World, 'id'> & {
-        me?: Maybe<
-          { __typename?: 'PlayerInWorld' } & Pick<PlayerInWorld, 'id' | 'role'>
-        >;
+export type MeInWorldQuery = {
+  __typename?: 'Query';
+  world?:
+    | {
+        __typename?: 'World';
+        id: string;
+        me?:
+          | { __typename?: 'PlayerInWorld'; id: string; role: Role }
+          | null
+          | undefined;
       }
-  >;
+    | null
+    | undefined;
 };
 
-export type ListInfoSceneFragment = { __typename?: 'Scene' } & Pick<
-  Scene,
-  'id' | 'name'
->;
+export type ListInfoSceneFragment = {
+  __typename?: 'Scene';
+  id: string;
+  name: string;
+};
 
-export type DetailsSceneFragment = { __typename?: 'Scene' } & Pick<
-  Scene,
-  'image' | 'width' | 'height'
-> & {
-    grid?: Maybe<
-      { __typename?: 'GridSettings' } & Pick<GridSettings, 'size'> & {
-          offset: { __typename?: 'Point' } & Pick<Point, 'x' | 'y'>;
-        }
-    >;
-    walls?: Maybe<
-      Array<
-        Maybe<
-          { __typename?: 'Wall' } & {
-            points: Array<{ __typename?: 'Point' } & Pick<Point, 'x' | 'y'>>;
+export type DetailsSceneFragment = {
+  __typename?: 'Scene';
+  image?: any | null | undefined;
+  width: number;
+  height: number;
+  id: string;
+  name: string;
+  grid?:
+    | {
+        __typename?: 'GridSettings';
+        size?: number | null | undefined;
+        offset: { __typename?: 'Point'; x: number; y: number };
+      }
+    | null
+    | undefined;
+  walls?:
+    | Array<
+        | {
+            __typename?: 'Wall';
+            points: Array<{ __typename?: 'Point'; x: number; y: number }>;
           }
-        >
+        | null
+        | undefined
       >
-    >;
-    lights?: Maybe<
-      Array<
-        Maybe<
-          { __typename?: 'Light' } & {
-            position: { __typename?: 'Point' } & Pick<Point, 'x' | 'y'>;
+    | null
+    | undefined;
+  lights?:
+    | Array<
+        | {
+            __typename?: 'Light';
+            position: { __typename?: 'Point'; x: number; y: number };
           }
-        >
+        | null
+        | undefined
       >
-    >;
-  } & ListInfoSceneFragment;
+    | null
+    | undefined;
+};
 
 export type CreateSceneMutationVariables = Exact<{
   worldId: Scalars['ID'];
@@ -433,22 +533,35 @@ export type CreateSceneMutationVariables = Exact<{
   image?: Maybe<Scalars['Upload']>;
 }>;
 
-export type CreateSceneMutation = { __typename?: 'Mutation' } & {
-  createScene?: Maybe<{ __typename?: 'Scene' } & ListInfoSceneFragment>;
+export type CreateSceneMutation = {
+  __typename?: 'Mutation';
+  createScene?:
+    | { __typename?: 'Scene'; id: string; name: string }
+    | null
+    | undefined;
 };
 
 export type ListScenesQueryVariables = Exact<{
   worldId: Scalars['ID'];
 }>;
 
-export type ListScenesQuery = { __typename?: 'Query' } & {
-  world?: Maybe<
-    { __typename?: 'World' } & Pick<World, 'id'> & {
-        scenes?: Maybe<
-          Array<Maybe<{ __typename?: 'Scene' } & ListInfoSceneFragment>>
-        >;
+export type ListScenesQuery = {
+  __typename?: 'Query';
+  world?:
+    | {
+        __typename?: 'World';
+        id: string;
+        scenes?:
+          | Array<
+              | { __typename?: 'Scene'; id: string; name: string }
+              | null
+              | undefined
+            >
+          | null
+          | undefined;
       }
-  >;
+    | null
+    | undefined;
 };
 
 export type SceneDetailsQueryVariables = Exact<{
@@ -456,40 +569,124 @@ export type SceneDetailsQueryVariables = Exact<{
   sceneId: Scalars['ID'];
 }>;
 
-export type SceneDetailsQuery = { __typename?: 'Query' } & {
-  world?: Maybe<
-    { __typename?: 'World' } & Pick<World, 'id'> & {
-        scene?: Maybe<{ __typename?: 'Scene' } & DetailsSceneFragment>;
+export type SceneDetailsQuery = {
+  __typename?: 'Query';
+  world?:
+    | {
+        __typename?: 'World';
+        id: string;
+        scene?:
+          | {
+              __typename?: 'Scene';
+              image?: any | null | undefined;
+              width: number;
+              height: number;
+              id: string;
+              name: string;
+              grid?:
+                | {
+                    __typename?: 'GridSettings';
+                    size?: number | null | undefined;
+                    offset: { __typename?: 'Point'; x: number; y: number };
+                  }
+                | null
+                | undefined;
+              walls?:
+                | Array<
+                    | {
+                        __typename?: 'Wall';
+                        points: Array<{
+                          __typename?: 'Point';
+                          x: number;
+                          y: number;
+                        }>;
+                      }
+                    | null
+                    | undefined
+                  >
+                | null
+                | undefined;
+              lights?:
+                | Array<
+                    | {
+                        __typename?: 'Light';
+                        position: {
+                          __typename?: 'Point';
+                          x: number;
+                          y: number;
+                        };
+                      }
+                    | null
+                    | undefined
+                  >
+                | null
+                | undefined;
+            }
+          | null
+          | undefined;
       }
-  >;
+    | null
+    | undefined;
 };
 
-export type ListInfoWorldFragment = { __typename?: 'World' } & Pick<
-  World,
-  'id' | 'name' | 'isListed' | 'isPasswordProtected'
-> & {
-    creator?: Maybe<
-      { __typename?: 'PlayerInWorld' } & Pick<PlayerInWorld, 'id' | 'name'>
-    >;
-    players?: Maybe<
-      Array<Maybe<{ __typename?: 'PlayerInWorld' } & Pick<PlayerInWorld, 'id'>>>
-    >;
-  };
+export type ListInfoWorldFragment = {
+  __typename?: 'World';
+  id: string;
+  name: string;
+  isListed: boolean;
+  isPasswordProtected: boolean;
+  creator?:
+    | { __typename?: 'PlayerInWorld'; id: string; name: string }
+    | null
+    | undefined;
+  players?:
+    | Array<{ __typename?: 'PlayerInWorld'; id: string } | null | undefined>
+    | null
+    | undefined;
+};
 
 export type AvailableWorldsQueryVariables = Exact<{ [key: string]: never }>;
 
-export type AvailableWorldsQuery = { __typename?: 'Query' } & {
-  worlds?: Maybe<
-    Array<Maybe<{ __typename?: 'World' } & ListInfoWorldFragment>>
-  >;
+export type AvailableWorldsQuery = {
+  __typename?: 'Query';
+  worlds?:
+    | Array<
+        | {
+            __typename?: 'World';
+            id: string;
+            name: string;
+            isListed: boolean;
+            isPasswordProtected: boolean;
+            creator?:
+              | { __typename?: 'PlayerInWorld'; id: string; name: string }
+              | null
+              | undefined;
+            players?:
+              | Array<
+                  | { __typename?: 'PlayerInWorld'; id: string }
+                  | null
+                  | undefined
+                >
+              | null
+              | undefined;
+          }
+        | null
+        | undefined
+      >
+    | null
+    | undefined;
 };
 
 export type WorldToJoinQueryVariables = Exact<{
   worldId: Scalars['ID'];
 }>;
 
-export type WorldToJoinQuery = { __typename?: 'Query' } & {
-  world?: Maybe<{ __typename?: 'World' } & Pick<World, 'isPasswordProtected'>>;
+export type WorldToJoinQuery = {
+  __typename?: 'Query';
+  world?:
+    | { __typename?: 'World'; isPasswordProtected: boolean }
+    | null
+    | undefined;
 };
 
 export type CreateWorldMutationVariables = Exact<{
@@ -498,8 +695,28 @@ export type CreateWorldMutationVariables = Exact<{
   inviteOnly: Scalars['Boolean'];
 }>;
 
-export type CreateWorldMutation = { __typename?: 'Mutation' } & {
-  createWorld?: Maybe<{ __typename?: 'World' } & ListInfoWorldFragment>;
+export type CreateWorldMutation = {
+  __typename?: 'Mutation';
+  createWorld?:
+    | {
+        __typename?: 'World';
+        id: string;
+        name: string;
+        isListed: boolean;
+        isPasswordProtected: boolean;
+        creator?:
+          | { __typename?: 'PlayerInWorld'; id: string; name: string }
+          | null
+          | undefined;
+        players?:
+          | Array<
+              { __typename?: 'PlayerInWorld'; id: string } | null | undefined
+            >
+          | null
+          | undefined;
+      }
+    | null
+    | undefined;
 };
 
 export type JoinWorldMutationVariables = Exact<{
@@ -508,22 +725,26 @@ export type JoinWorldMutationVariables = Exact<{
   joinKey?: Maybe<Scalars['String']>;
 }>;
 
-export type JoinWorldMutation = { __typename?: 'Mutation' } & {
-  joinWorld?: Maybe<
-    { __typename?: 'World' } & Pick<World, 'id'> & {
-        players?: Maybe<
-          Array<
-            Maybe<{ __typename?: 'PlayerInWorld' } & Pick<PlayerInWorld, 'id'>>
-          >
-        >;
+export type JoinWorldMutation = {
+  __typename?: 'Mutation';
+  joinWorld?:
+    | {
+        __typename?: 'World';
+        id: string;
+        players?:
+          | Array<
+              { __typename?: 'PlayerInWorld'; id: string } | null | undefined
+            >
+          | null
+          | undefined;
       }
-  >;
+    | null
+    | undefined;
 };
 
 export const MessageDataFragmentDoc = gql`
   fragment MessageData on Message {
     id
-    component
     text
     author {
       id
@@ -604,11 +825,8 @@ export function useChatMessagesQuery(
   });
 }
 export const SendMessageDocument = gql`
-  mutation SendMessage($worldId: ID!, $text: String, $component: String) {
-    sendMessage(
-      worldId: $worldId
-      input: { text: $text, component: $component }
-    ) {
+  mutation SendMessage($worldId: ID!, $text: String) {
+    sendMessage(worldId: $worldId, input: { text: $text }) {
       ...MessageData
     }
   }

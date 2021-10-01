@@ -1,6 +1,5 @@
 fragment MessageData on Message {
   id
-  component
   text
   author {
     id
@@ -20,11 +19,8 @@ query ChatMessages($worldId: ID!) {
   }
 }
 
-mutation SendMessage($worldId: ID!, $text: String, $component: String) {
-  sendMessage(
-    worldId: $worldId
-    input: { text: $text, component: $component }
-  ) {
+mutation SendMessage($worldId: ID!, $text: String) {
+  sendMessage(worldId: $worldId, input: { text: $text }) {
     ...MessageData
   }
 }

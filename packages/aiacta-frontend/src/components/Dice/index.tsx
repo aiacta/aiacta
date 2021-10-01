@@ -92,6 +92,11 @@ export function useRollsStatus(ids: string[], date: string) {
 
 export function DiceBox() {
   const { worldId } = useParams();
+
+  if (!worldId) {
+    throw new Error('Invalid entry');
+  }
+
   const [rolls] = useDiceRollsSubscription({ variables: { worldId } });
   const ContextBridge = useContextBridge(RollContext);
 

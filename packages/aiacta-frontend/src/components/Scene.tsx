@@ -14,13 +14,18 @@ import {
 } from 'playcanvas';
 import * as React from 'react';
 import { useParams } from 'react-router-dom';
-import { Maybe, useSceneDetailsQuery } from '../api';
+import { useSceneDetailsQuery } from '../api';
 import { extrudeWall, isTruthy, zIndices } from '../util';
 
 const mergeWalls = false;
 
 export function Scene() {
   const { worldId, sceneId } = useParams();
+
+  if (!worldId || !sceneId) {
+    throw new Error('Invalid entry');
+  }
+
   const [scene] = useSceneDetailsQuery({ variables: { worldId, sceneId } });
   const appRef = React.useRef<Application>();
 
@@ -59,9 +64,13 @@ export function Scene() {
 function setupScene(
   canvas: HTMLCanvasElement,
   scene: {
-    image?: Maybe<{ data: number[] }>;
-    lights?: Maybe<Maybe<{ position: { x: number; y: number } }>[]>;
-    walls?: Maybe<Maybe<{ points: { x: number; y: number }[] }>[]>;
+    image?: { data: number[] } | null;
+    lights?:
+      | ({ position: { x: number; y: number } } | null | undefined)[]
+      | null;
+    walls?:
+      | ({ points: { x: number; y: number }[] } | null | undefined)[]
+      | null;
   },
 ) {
   const app = new Application(canvas, {});

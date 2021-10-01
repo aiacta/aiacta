@@ -15,7 +15,7 @@ export function JoinWorldForm({
 
   const [world] = useWorldToJoinQuery({
     pause: !worldId,
-    variables: { worldId },
+    variables: { worldId: worldId ?? '' },
   });
   const [joiningWorld, joinWorld] = useJoinWorldMutation();
 
@@ -25,7 +25,7 @@ export function JoinWorldForm({
 
   React.useEffect(() => {
     if (!world.fetching && world.data?.world?.isPasswordProtected === false) {
-      joinWorld({ worldId }).then(({ data }) => {
+      joinWorld({ worldId: worldId ?? '' }).then(({ data }) => {
         if (data?.joinWorld?.id) {
           navigate(`/world/${data.joinWorld.id}`);
         }
@@ -43,7 +43,7 @@ export function JoinWorldForm({
         <form
           onSubmit={(event) => {
             event.preventDefault();
-            joinWorld({ worldId, password }).then(({ data }) => {
+            joinWorld({ worldId: worldId ?? '', password }).then(({ data }) => {
               if (data?.joinWorld?.id) {
                 navigate(`/world/${data.joinWorld.id}`);
               }

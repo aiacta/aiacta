@@ -1,9 +1,8 @@
 import { MantineTheme, theming } from '@mantine/core';
 import * as React from 'react';
 import { createUseStyles } from 'react-jss';
-import { useParams } from 'react-router-dom';
 import { useCreateSceneMutation } from '../api';
-import { useDropzone } from '../hooks';
+import { useDropzone, useWorldId } from '../hooks';
 import { zIndices } from '../util';
 
 type Radian = number;
@@ -65,7 +64,12 @@ const useStyles = createUseStyles(
 );
 
 export function SceneDropzone() {
-  const { worldId } = useParams();
+  const worldId = useWorldId();
+
+  if (!worldId) {
+    throw new Error('Invalid entry');
+  }
+
   const [, createScene] = useCreateSceneMutation();
 
   const { isActive, getRootProps } = useDropzone({

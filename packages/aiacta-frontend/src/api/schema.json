@@ -15,17 +15,6 @@
         "name": "AuthInfo",
         "fields": [
           {
-            "name": "token",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
             "name": "player",
             "type": {
               "kind": "NON_NULL",
@@ -33,6 +22,17 @@
                 "kind": "OBJECT",
                 "name": "Player",
                 "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "token",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
               }
             },
             "args": []
@@ -44,6 +44,24 @@
         "kind": "OBJECT",
         "name": "DiceRoll",
         "fields": [
+          {
+            "name": "dice",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "Die",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "args": []
+          },
           {
             "name": "id",
             "type": {
@@ -63,24 +81,6 @@
                 "kind": "OBJECT",
                 "name": "PlayerInWorld",
                 "ofType": null
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "dice",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "LIST",
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "Die",
-                    "ofType": null
-                  }
-                }
               }
             },
             "args": []
@@ -133,14 +133,6 @@
         "name": "GridSettings",
         "fields": [
           {
-            "name": "size",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
             "name": "offset",
             "type": {
               "kind": "NON_NULL",
@@ -149,6 +141,14 @@
                 "name": "Point",
                 "ofType": null
               }
+            },
+            "args": []
+          },
+          {
+            "name": "size",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
             },
             "args": []
           }
@@ -179,17 +179,6 @@
         "name": "Message",
         "fields": [
           {
-            "name": "id",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
             "name": "author",
             "type": {
               "kind": "NON_NULL",
@@ -213,18 +202,13 @@
             "args": []
           },
           {
-            "name": "component",
+            "name": "id",
             "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "text",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
             },
             "args": []
           },
@@ -236,6 +220,14 @@
                 "kind": "SCALAR",
                 "name": "Any"
               }
+            },
+            "args": []
+          },
+          {
+            "name": "text",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
             },
             "args": []
           }
@@ -295,13 +287,10 @@
             },
             "args": [
               {
-                "name": "worldId",
+                "name": "joinKey",
                 "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
+                  "kind": "SCALAR",
+                  "name": "Any"
                 }
               },
               {
@@ -312,10 +301,13 @@
                 }
               },
               {
-                "name": "joinKey",
+                "name": "worldId",
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
                 }
               }
             ]
@@ -359,7 +351,7 @@
             },
             "args": [
               {
-                "name": "worldId",
+                "name": "input",
                 "type": {
                   "kind": "NON_NULL",
                   "ofType": {
@@ -369,7 +361,7 @@
                 }
               },
               {
-                "name": "input",
+                "name": "worldId",
                 "type": {
                   "kind": "NON_NULL",
                   "ofType": {
@@ -389,7 +381,7 @@
             },
             "args": [
               {
-                "name": "worldId",
+                "name": "input",
                 "type": {
                   "kind": "NON_NULL",
                   "ofType": {
@@ -399,7 +391,7 @@
                 }
               },
               {
-                "name": "input",
+                "name": "worldId",
                 "type": {
                   "kind": "NON_NULL",
                   "ofType": {
@@ -419,6 +411,13 @@
             },
             "args": [
               {
+                "name": "color",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
                 "name": "name",
                 "type": {
                   "kind": "NON_NULL",
@@ -437,13 +436,6 @@
                     "name": "Any"
                   }
                 }
-              },
-              {
-                "name": "color",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
               }
             ]
           }
@@ -454,6 +446,17 @@
         "kind": "OBJECT",
         "name": "Player",
         "fields": [
+          {
+            "name": "color",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
           {
             "name": "id",
             "type": {
@@ -467,17 +470,6 @@
           },
           {
             "name": "name",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "color",
             "type": {
               "kind": "NON_NULL",
               "ofType": {
@@ -512,6 +504,17 @@
         "name": "PlayerInWorld",
         "fields": [
           {
+            "name": "color",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
             "name": "id",
             "type": {
               "kind": "NON_NULL",
@@ -524,17 +527,6 @@
           },
           {
             "name": "name",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "color",
             "type": {
               "kind": "NON_NULL",
               "ofType": {
@@ -568,6 +560,17 @@
         "name": "PlayerInfo",
         "fields": [
           {
+            "name": "color",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
             "name": "id",
             "type": {
               "kind": "NON_NULL",
@@ -580,17 +583,6 @@
           },
           {
             "name": "name",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "color",
             "type": {
               "kind": "NON_NULL",
               "ofType": {
@@ -715,6 +707,26 @@
         "name": "Scene",
         "fields": [
           {
+            "name": "grid",
+            "type": {
+              "kind": "OBJECT",
+              "name": "GridSettings",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "height",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
             "name": "id",
             "type": {
               "kind": "NON_NULL",
@@ -726,12 +738,20 @@
             "args": []
           },
           {
-            "name": "world",
+            "name": "image",
             "type": {
-              "kind": "NON_NULL",
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "lights",
+            "type": {
+              "kind": "LIST",
               "ofType": {
                 "kind": "OBJECT",
-                "name": "World",
+                "name": "Light",
                 "ofType": null
               }
             },
@@ -761,26 +781,6 @@
             "args": []
           },
           {
-            "name": "lights",
-            "type": {
-              "kind": "LIST",
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "Light",
-                "ofType": null
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "image",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
             "name": "width",
             "type": {
               "kind": "NON_NULL",
@@ -792,22 +792,14 @@
             "args": []
           },
           {
-            "name": "height",
+            "name": "world",
             "type": {
               "kind": "NON_NULL",
               "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
+                "kind": "OBJECT",
+                "name": "World",
+                "ofType": null
               }
-            },
-            "args": []
-          },
-          {
-            "name": "grid",
-            "type": {
-              "kind": "OBJECT",
-              "name": "GridSettings",
-              "ofType": null
             },
             "args": []
           }
