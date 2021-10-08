@@ -104,7 +104,7 @@ function RenderMessage({
   const { isRolling } = useRollsStatus(rolls ?? [], createdAt);
 
   const mdx = React.useMemo(
-    () => <MDX children={text} components={components} />,
+    () => <MDX children={text ?? ''} components={components} />,
     [text],
   );
 

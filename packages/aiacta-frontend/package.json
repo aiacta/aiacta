@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && yarn i18n:extract && yarn i18n:compile",
-    "serve": "vite build && vite preview",
+    "serve": "vite preview",
     "test": "yarn test:cypress",
     "test:jest": "jest",
     "test:cypress": "cypress run",
@@ -18,7 +18,7 @@
     "@mantine/core": "2.5.1",
     "@mantine/hooks": "2.5.1",
     "@mantine/notifications": "2.5.1",
-    "@mdx-js/runtime": "2.0.0-next.9",
+    "@mdx-js/runtime": "2.0.0-ci.53",
     "@react-three/drei": "7.12.5",
     "@react-three/fiber": "7.0.7",
     "@urql/devtools": "2.0.3",
