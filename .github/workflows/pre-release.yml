@@ -65,10 +65,13 @@ jobs:
       - run: unzip aiacta.zip -d ./dist
       - name: 'Copy deployment'
         run: rsync -avz ./dist/ /media/hdd-1/aiacta/
+      - name: 'Setup env'
+        run: |
+          echo "PORT=4000\nDATABASE_URL=postgresql://aiacta:${{ secrets.PI_DATABASE_PASSWORD }}@localhost:3333/aiacta?schema=public\nGRAPHQL_SCHEMA=./graphql/**/*.gql\n" > /media/hdd-1/aiacta/.env
       - name: 'Run migrations'
         run: |
           export DATABASE_URL=postgresql://aiacta:${{ secrets.PI_DATABASE_PASSWORD }}@localhost:3333/aiacta
-          cd packages/aiacta-prisma && yarn dlx prisma migrate deploy
+          cd packages/aiacta-prisma && npx prisma migrate deploy
       # - name: 'Restart server'
       #   run: ssh ${{ secrets.PI_SSH_USER }}@${{ secrets.PI_SSH_HOST }} "sudo systemctl restart aiacta"
 

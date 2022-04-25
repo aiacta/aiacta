@@ -5,7 +5,7 @@ import {
   ServerResponse,
 } from 'http';
 import { Readable } from 'stream';
-import ws from 'ws';
+import * as ws from 'ws';
 
 const port = +(process.env.PORT ?? 8080);
 
@@ -20,7 +20,7 @@ export function createServer({
     },
     response: ServerResponse,
   ) => Promise<void>;
-  onSocket: (ws: ws, request: IncomingMessage) => void;
+  onSocket: (ws: ws.WebSocket, request: IncomingMessage) => void;
 }) {
   const wsServer = new ws.Server({ noServer: true });
   const server = createHttpServer(async (request, response) => {
@@ -41,7 +41,7 @@ export function createServer({
         let operations: any;
         let map: Record<string, string[]>;
         const uploads = new Map<string, Upload>();
-        const parser = new busboy({
+        const parser = busboy({
           headers: request.headers,
         });
         parser.on('field', (fieldName, fieldValue) => {
