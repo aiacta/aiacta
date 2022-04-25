@@ -57,7 +57,8 @@ jobs:
     steps:
       - name: Cleanup
         run: |
-          rm -rf "${{ github.workspace }}"
+          rm -rf ./* || true
+          rm -rf ./.??* || true
       - uses: actions/download-artifact@v2
         with:
           name: App
@@ -82,7 +83,8 @@ jobs:
     steps:
       - name: Cleanup
         run: |
-          rm -rf "${{ github.workspace }}"
+          rm -rf ./* || true
+          rm -rf ./.??* || true
       - uses: actions/download-artifact@v2
         with:
           name: Website
