@@ -55,6 +55,9 @@ jobs:
       url: 'https://play.aiacta.com'
 
     steps:
+      - name: Cleanup
+        run: |
+          rm -rf "${{ github.workspace }}"
       - uses: actions/download-artifact@v2
         with:
           name: App
@@ -64,7 +67,7 @@ jobs:
       - name: 'Run migrations'
         run: |
           export DATABASE_URL=postgresql://aiacta:${{ secrets.PI_DATABASE_PASSWORD }}@localhost:3333/aiacta
-          yarn workspace @aiacta/prisma prisma migrate deploy
+          cd packages/aiacta-prisma && yarn dlx prisma migrate deploy
       # - name: 'Restart server'
       #   run: ssh ${{ secrets.PI_SSH_USER }}@${{ secrets.PI_SSH_HOST }} "sudo systemctl restart aiacta"
 
@@ -77,12 +80,15 @@ jobs:
       url: 'https://www.aiacta.com'
 
     steps:
+      - name: Cleanup
+        run: |
+          rm -rf "${{ github.workspace }}"
       - uses: actions/download-artifact@v2
         with:
           name: Website
           path: public
       - name: 'Copy deployment'
-        run: rsync -avz --rsync-path="sudo rsync" ./public/ /var/www/aiacta.com/html/public/
+        run: sudo rsync -avz --rsync-path="sudo rsync" ./public/ /var/www/aiacta.com/html/public/
 
   lighthouse:
     runs-on: 'ubuntu-latest'
