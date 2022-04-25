@@ -14,8 +14,8 @@ export const MutationCreateSceneResolver: Resolvers<Context> = {
           gridSize: input.grid?.size ?? 50,
           gridOffsetX: input.grid?.offset.x,
           gridOffsetY: input.grid?.offset.y,
-          walls: input.walls,
-          lights: input.lights,
+          walls: input.walls!,
+          lights: input.lights!,
         },
       });
       return {

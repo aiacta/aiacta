@@ -67,7 +67,9 @@ jobs:
         run: rsync -avz ./dist/ /media/hdd-1/aiacta/
       - name: 'Setup env'
         run: |
-          echo "PORT=4000\nDATABASE_URL=postgresql://aiacta:${{ secrets.PI_DATABASE_PASSWORD }}@localhost:3333/aiacta?schema=public\nGRAPHQL_SCHEMA=./graphql/**/*.gql\n" > /media/hdd-1/aiacta/.env
+          echo "PORT=4000" > /media/hdd-1/aiacta/.env
+          echo "DATABASE_URL=postgresql://aiacta:${{ secrets.PI_DATABASE_PASSWORD }}@localhost:3333/aiacta?schema=public" >> /media/hdd-1/aiacta/.env
+          echo "GRAPHQL_SCHEMA=./graphql/**/*.gql" >> /media/hdd-1/aiacta/.env
       - name: 'Run migrations'
         run: |
           export DATABASE_URL=postgresql://aiacta:${{ secrets.PI_DATABASE_PASSWORD }}@localhost:3333/aiacta

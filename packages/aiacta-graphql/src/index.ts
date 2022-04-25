@@ -13,7 +13,7 @@ export { GraphQLScalarType } from 'graphql';
 export { Resolvers };
 
 const defaultResolvers: Resolvers = {
-  DateTime: GraphQLDateTime,
+  DateTime: GraphQLDateTime as any,
 };
 
 export function buildExecutableSchema<TContext>({
@@ -62,7 +62,7 @@ export function buildExecutableSchema<TContext>({
         return {
           document: parse(message.payload.query),
           schema,
-          contextValue: await context(ctx.extra.request),
+          contextValue: await context((ctx.extra as any).request),
           variableValues: message.payload.variables,
         };
       },
