@@ -5,7 +5,7 @@ import {
   ServerResponse,
 } from 'http';
 import { Readable } from 'stream';
-import { Server, WebSocket } from 'ws';
+import ws from 'ws';
 
 const port = +(process.env.PORT ?? 8080);
 
@@ -20,9 +20,9 @@ export function createServer({
     },
     response: ServerResponse,
   ) => Promise<void>;
-  onSocket: (ws: WebSocket, request: IncomingMessage) => void;
+  onSocket: (ws: ws.WebSocket, request: IncomingMessage) => void;
 }) {
-  const wsServer = new Server({ noServer: true });
+  const wsServer = new ws.Server({ noServer: true });
   const server = createHttpServer(async (request, response) => {
     if (request.headers['upgrade'] === 'websocket') {
       wsServer.handleUpgrade(request, request.socket, [] as any, (ws) =>
@@ -41,9 +41,7 @@ export function createServer({
         let operations: any;
         let map: Record<string, string[]>;
         const uploads = new Map<string, Upload>();
-        const parser = busboy({
-          headers: request.headers,
-        });
+        const parser = busboy({ headers: request.headers });
         parser.on('field', (fieldName, fieldValue) => {
           switch (fieldName) {
             case 'operations':
