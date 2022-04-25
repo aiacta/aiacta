@@ -22,7 +22,7 @@ export function createServer({
   ) => Promise<void>;
   onSocket: (ws: ws.WebSocket, request: IncomingMessage) => void;
 }) {
-  const wsServer = new ws.Server({ noServer: true });
+  const wsServer = new ws.WebSocketServer({ noServer: true });
   const server = createHttpServer(async (request, response) => {
     if (request.headers['upgrade'] === 'websocket') {
       wsServer.handleUpgrade(request, request.socket, [] as any, (ws) =>
