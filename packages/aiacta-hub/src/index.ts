@@ -1,5 +1,5 @@
 import { buildExecutableSchema } from '@aiacta/graphql';
-import chalk from 'chalk';
+import { cyan, cyanBright, green } from 'colorette';
 import 'dotenv/config';
 import { Server as StaticServer } from 'node-static';
 import { networkInterfaces } from 'os';
@@ -74,7 +74,7 @@ createServer({
   },
 }).then(([dispose, port]) => {
   disposeServer = dispose;
-  const portColored = chalk.cyanBright(port);
+  const portColored = cyanBright(port);
   const ip = Object.values(networkInterfaces())
     .flat()
     .filter(
@@ -83,25 +83,17 @@ createServer({
 
   console.clear();
   if (process.env.NODE_ENV === 'development') {
-    console.log(
-      `  ${chalk.cyan('aiacta')} ${chalk.green('dev server running at:')}`,
-    );
+    console.log(`  ${cyan('aiacta')} ${green('dev server running at:')}`);
     console.log('');
-    console.log(
-      `  > Local:    ${chalk.cyan(`http://localhost:${portColored}/`)}`,
-    );
-    console.log(
-      `              ${chalk.cyan(`ws://localhost:${portColored}/`)}`,
-    );
-    console.log(`  > Network:  ${chalk.cyan(`http://${ip}:${portColored}/`)}`);
-    console.log(`              ${chalk.cyan(`ws://${ip}:${portColored}/`)}`);
+    console.log(`  > Local:    ${cyan(`http://localhost:${portColored}/`)}`);
+    console.log(`              ${cyan(`ws://localhost:${portColored}/`)}`);
+    console.log(`  > Network:  ${cyan(`http://${ip}:${portColored}/`)}`);
+    console.log(`              ${cyan(`ws://${ip}:${portColored}/`)}`);
   } else {
-    console.log(
-      `  ${chalk.cyan('aiacta')} ${chalk.green('server running at:')}`,
-    );
+    console.log(`  ${cyan('aiacta')} ${green('server running at:')}`);
     console.log('');
-    console.log(`    ${chalk.cyan(`http://${ip}:${portColored}/`)}`);
-    console.log(`    ${chalk.cyan(`ws://${ip}:${portColored}/`)}`);
+    console.log(`    ${cyan(`http://${ip}:${portColored}/`)}`);
+    console.log(`    ${cyan(`ws://${ip}:${portColored}/`)}`);
   }
   console.log('');
 });

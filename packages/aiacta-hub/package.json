@@ -12,7 +12,7 @@
     "bcryptjs": "2.4.3",
     "bufferutil": "4.0.6",
     "busboy": "1.6.0",
-    "chalk": "5.0.1",
+    "colorette": "2.0.16",
     "dotenv": "16.0.0",
     "events": "3.3.0",
     "jsonwebtoken": "8.5.1",

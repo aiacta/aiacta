@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+import { green, red } from 'colorette';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 
@@ -41,9 +41,9 @@ function prettyChange(name: keyof typeof summaryDiff) {
   const diff = currentValue - baseReport!.summary[name];
   const trend = diff > 0 ? ' 📈' : diff < 0 ? ' 📉' : '   ';
 
-  return `${`${currentValue * 100}`.padStart(3, ' ')} (${chalk[
-    diff < 0 ? 'red' : 'green'
-  ](`${Math.round(diff * 100)}`.padStart(3, ' '))}${trend})`;
+  return `${`${currentValue * 100}`.padStart(3, ' ')} (${(diff < 0
+    ? red
+    : green)(`${Math.round(diff * 100)}`.padStart(3, ' '))}${trend})`;
 }
 
 function getReport(dir: string, page: string) {

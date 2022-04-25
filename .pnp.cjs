@@ -74,7 +74,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/node", "npm:17.0.26"],\
             ["@typescript-eslint/eslint-plugin", "virtual:9b3f024da3d61c940b0dc7643504cce786076174e9baf4a8c86b00231fb8e2ca12d1dc30816d856764c1047012f9ac63eab01eaad31a9ce2482b9563f1e5ed79#npm:5.20.0"],\
             ["@typescript-eslint/parser", "virtual:9b3f024da3d61c940b0dc7643504cce786076174e9baf4a8c86b00231fb8e2ca12d1dc30816d856764c1047012f9ac63eab01eaad31a9ce2482b9563f1e5ed79#npm:5.20.0"],\
-            ["chalk", "npm:5.0.1"],\
+            ["colorette", "npm:2.0.16"],\
             ["eslint", "npm:8.14.0"],\
             ["eslint-plugin-cypress", "virtual:9b3f024da3d61c940b0dc7643504cce786076174e9baf4a8c86b00231fb8e2ca12d1dc30816d856764c1047012f9ac63eab01eaad31a9ce2482b9563f1e5ed79#npm:2.12.1"],\
             ["jest", "virtual:9b3f024da3d61c940b0dc7643504cce786076174e9baf4a8c86b00231fb8e2ca12d1dc30816d856764c1047012f9ac63eab01eaad31a9ce2482b9563f1e5ed79#npm:27.5.1"],\
@@ -216,7 +216,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["bcryptjs", "npm:2.4.3"],\
             ["bufferutil", "npm:4.0.6"],\
             ["busboy", "npm:1.6.0"],\
-            ["chalk", "npm:5.0.1"],\
+            ["colorette", "npm:2.0.16"],\
             ["dotenv", "npm:16.0.0"],\
             ["esbuild", "npm:0.14.38"],\
             ["events", "npm:3.3.0"],\
@@ -6519,7 +6519,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/node", "npm:17.0.26"],\
             ["@typescript-eslint/eslint-plugin", "virtual:9b3f024da3d61c940b0dc7643504cce786076174e9baf4a8c86b00231fb8e2ca12d1dc30816d856764c1047012f9ac63eab01eaad31a9ce2482b9563f1e5ed79#npm:5.20.0"],\
             ["@typescript-eslint/parser", "virtual:9b3f024da3d61c940b0dc7643504cce786076174e9baf4a8c86b00231fb8e2ca12d1dc30816d856764c1047012f9ac63eab01eaad31a9ce2482b9563f1e5ed79#npm:5.20.0"],\
-            ["chalk", "npm:5.0.1"],\
+            ["colorette", "npm:2.0.16"],\
             ["eslint", "npm:8.14.0"],\
             ["eslint-plugin-cypress", "virtual:9b3f024da3d61c940b0dc7643504cce786076174e9baf4a8c86b00231fb8e2ca12d1dc30816d856764c1047012f9ac63eab01eaad31a9ce2482b9563f1e5ed79#npm:2.12.1"],\
             ["jest", "virtual:9b3f024da3d61c940b0dc7643504cce786076174e9baf4a8c86b00231fb8e2ca12d1dc30816d856764c1047012f9ac63eab01eaad31a9ce2482b9563f1e5ed79#npm:27.5.1"],\
