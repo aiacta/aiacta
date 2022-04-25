@@ -47,7 +47,7 @@ jobs:
             packages/aiacta-website/out/**/*
 
   deployment:
-    runs-on: 'ubuntu-latest'
+    runs-on: 'self-hosted'
     needs: [pre-release]
 
     environment:
@@ -55,28 +55,21 @@ jobs:
       url: 'https://play.aiacta.com'
 
     steps:
-      - name: 'Install SSH Key'
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.PI_SSH_PRIVATE_KEY }}
-          known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
-      - run: ssh-keyscan -H ${{ secrets.PI_SSH_HOST }} >> ~/.ssh/known_hosts
       - uses: actions/download-artifact@v2
         with:
           name: App
       - run: unzip aiacta.zip -d ./dist
       - name: 'Copy deployment'
-        run: rsync -avz ./dist/ ${{ secrets.PI_SSH_USER }}@${{ secrets.PI_SSH_HOST }}:/home/pi/aiacta/
+        run: rsync -avz ./dist/ /media/hdd-1/aiacta/
       - name: 'Run migrations'
         run: |
-          ssh -L 3333:localhost:5432 -N -T ${{ secrets.PI_SSH_USER }}@${{ secrets.PI_SSH_HOST }} &
           export DATABASE_URL=postgresql://aiacta:${{ secrets.PI_DATABASE_PASSWORD }}@localhost:3333/aiacta
-          cd packages/aiacta-prisma && npx prisma migrate deploy
-      - name: 'Restart server'
-        run: ssh ${{ secrets.PI_SSH_USER }}@${{ secrets.PI_SSH_HOST }} "sudo systemctl restart aiacta"
+          yarn workspace @aiacta/prisma prisma migrate deploy
+      # - name: 'Restart server'
+      #   run: ssh ${{ secrets.PI_SSH_USER }}@${{ secrets.PI_SSH_HOST }} "sudo systemctl restart aiacta"
 
   deployment-website:
-    runs-on: 'ubuntu-latest'
+    runs-on: 'self-hosted'
     needs: [pre-release]
 
     environment:
@@ -84,18 +77,12 @@ jobs:
       url: 'https://www.aiacta.com'
 
     steps:
-      - name: 'Install SSH Key'
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.PI_SSH_PRIVATE_KEY }}
-          known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
-      - run: ssh-keyscan -H ${{ secrets.PI_SSH_HOST }} >> ~/.ssh/known_hosts
       - uses: actions/download-artifact@v2
         with:
           name: Website
           path: public
       - name: 'Copy deployment'
-        run: rsync -avz --rsync-path="sudo rsync" ./public/ ${{ secrets.PI_SSH_USER }}@${{ secrets.PI_SSH_HOST }}:/var/www/aiacta.com/html/public/
+        run: rsync -avz --rsync-path="sudo rsync" ./public/ /var/www/aiacta.com/html/public/
 
   lighthouse:
     runs-on: 'ubuntu-latest'
