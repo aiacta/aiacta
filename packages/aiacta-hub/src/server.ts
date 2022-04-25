@@ -5,7 +5,7 @@ import {
   ServerResponse,
 } from 'http';
 import { Readable } from 'stream';
-import ws from 'ws';
+import ws, { WebSocketServer } from 'ws';
 
 const port = +(process.env.PORT ?? 8080);
 
@@ -22,7 +22,7 @@ export function createServer({
   ) => Promise<void>;
   onSocket: (ws: ws.WebSocket, request: IncomingMessage) => void;
 }) {
-  const wsServer = new ws.WebSocketServer({ noServer: true });
+  const wsServer = new WebSocketServer({ noServer: true });
   const server = createHttpServer(async (request, response) => {
     if (request.headers['upgrade'] === 'websocket') {
       wsServer.handleUpgrade(request, request.socket, [] as any, (ws) =>
