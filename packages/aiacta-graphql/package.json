@@ -7,22 +7,22 @@
   },
   "dependencies": {
     "@aiacta/prisma": "workspace:*",
-    "@graphql-tools/graphql-file-loader": "7.1.0",
-    "@graphql-tools/load": "7.3.2",
-    "@graphql-tools/merge": "8.1.2",
-    "@graphql-tools/schema": "8.2.0",
-    "@graphql-tools/utils": "8.2.4",
-    "graphql": "15.6.0",
+    "@graphql-tools/graphql-file-loader": "7.3.3",
+    "@graphql-tools/load": "7.4.1",
+    "@graphql-tools/merge": "8.2.1",
+    "@graphql-tools/schema": "8.3.1",
+    "@graphql-tools/utils": "8.5.3",
+    "graphql": "16.0.1",
     "graphql-iso-date": "3.6.1",
-    "graphql-ws": "5.5.0"
+    "graphql-ws": "5.5.5"
   },
   "devDependencies": {
     "@graphql-codegen/add": "3.1.0",
-    "@graphql-codegen/cli": "2.2.0",
-    "@graphql-codegen/typescript": "2.2.2",
-    "@graphql-codegen/typescript-resolvers": "2.2.1",
+    "@graphql-codegen/cli": "2.3.0",
+    "@graphql-codegen/typescript": "2.4.1",
+    "@graphql-codegen/typescript-resolvers": "2.4.2",
     "@types/graphql-iso-date": "3.4.0",
-    "@types/node": "16.10.2",
-    "prettier": "2.4.1"
+    "@types/node": "16.11.10",
+    "prettier": "2.5.0"
   }
 }
