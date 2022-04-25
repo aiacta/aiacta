@@ -55,7 +55,7 @@ export function WorldsList() {
   return (
     <>
       <Container size="sm">
-        <Paper padding="sm" shadow="sm" className={classes.container}>
+        <Paper p="sm" shadow="sm" className={classes.container}>
           <LoadingOverlay visible={availableWorlds.fetching} />
           <ul className={classes.worlds}>
             {availableWorlds.data?.worlds?.filter(isTruthy).map((world) => (
@@ -82,7 +82,7 @@ export function WorldsList() {
                   (player) => player?.id === me.data?.me?.id,
                 ) ? (
                   <Button
-                    variant="link"
+                    variant="subtle"
                     component={Link}
                     to={`/world/${world.id}`}
                   >
@@ -90,7 +90,7 @@ export function WorldsList() {
                   </Button>
                 ) : (
                   <Button
-                    variant="link"
+                    variant="subtle"
                     component={Link}
                     to={`/worlds/join/${world.id}`}
                   >

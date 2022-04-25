@@ -1,8 +1,8 @@
 {
   "name": "@aiacta/prisma",
   "version": "0.0.0",
-  "main": "prisma/index.js",
-  "types": "prisma/index.d.ts",
+  "main": "prisma/generated/output/index.js",
+  "types": "prisma/generated/output/index.d.ts",
   "scripts": {
     "prisma": "prisma",
     "build": "prisma generate",

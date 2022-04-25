@@ -44,7 +44,7 @@ export function LoginForm() {
 
   return (
     <Container size="xs">
-      <Paper padding="sm" shadow="sm" style={{ marginTop: '20vh' }}>
+      <Paper p="sm" shadow="sm" style={{ marginTop: '20vh' }}>
         <form
           id={mode}
           onSubmit={form.onSubmit((values) => {
@@ -93,7 +93,7 @@ export function LoginForm() {
               required
               label={<FormattedMessage defaultMessage="Color" />}
               value={form.values.color}
-              onChange={(event) =>
+              onChange={(event: any) =>
                 form.setFieldValue('color', event.currentTarget.value)
               }
               onFocus={() => form.setFieldError('color', false)}
@@ -113,7 +113,7 @@ export function LoginForm() {
 
           <Group position="apart" style={{ marginTop: 25 }}>
             <Button
-              variant="link"
+              variant="subtle"
               color="gray"
               onClick={() => setMode(mode === 'signin' ? 'signup' : 'signin')}
             >
@@ -125,7 +125,7 @@ export function LoginForm() {
             </Button>
             {mode === 'signup' && (
               <Button
-                variant="link"
+                variant="subtle"
                 color="gray"
                 onClick={() =>
                   signIn({ name: 'Test Account', password: 'test' }).then(

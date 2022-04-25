@@ -1,6 +1,5 @@
-import { MantineTheme, theming } from '@mantine/core';
+import { Box } from '@mantine/core';
 import * as React from 'react';
-import { createUseStyles } from 'react-jss';
 import { useCreateSceneMutation } from '../api';
 import { useDropzone, useWorldId } from '../hooks';
 import { zIndices } from '../util';
@@ -32,36 +31,6 @@ type UniversalVTTSceneDefinition = {
     pixels_per_grid: number;
   };
 };
-
-const useStyles = createUseStyles(
-  (theme: MantineTheme) => ({
-    container: {
-      position: 'absolute',
-      left: 0,
-      top: 0,
-      width: '100vw',
-      height: '100vh',
-      zIndex: zIndices.Dropzone,
-    },
-    active: {
-      position: 'absolute',
-      left: 0,
-      top: 0,
-      width: 'calc(100vw - 16px)',
-      height: 'calc(100vh - 16px)',
-      border: `4px dashed ${
-        theme.colorScheme === 'dark'
-          ? theme.colors.dark[2]
-          : theme.colors.dark[1]
-      }`,
-      borderRadius: theme.radius.md,
-      boxSizing: 'border-box',
-      pointerEvents: 'none',
-      margin: '8px',
-    },
-  }),
-  { theming },
-);
 
 export function SceneDropzone() {
   const worldId = useWorldId();
@@ -111,12 +80,39 @@ export function SceneDropzone() {
     },
   });
 
-  const classes = useStyles();
-
   return (
-    <div {...getRootProps()} className={classes.container}>
-      {isActive && <div className={classes.active} />}
-    </div>
+    <Box
+      {...getRootProps()}
+      sx={{
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        width: '100vw',
+        height: '100vh',
+        zIndex: zIndices.Dropzone,
+      }}
+    >
+      {isActive && (
+        <Box
+          sx={(theme) => ({
+            position: 'absolute',
+            left: 0,
+            top: 0,
+            width: 'calc(100vw - 16px)',
+            height: 'calc(100vh - 16px)',
+            border: `4px dashed ${
+              theme.colorScheme === 'dark'
+                ? theme.colors.dark[2]
+                : theme.colors.dark[1]
+            }`,
+            borderRadius: theme.radius.md,
+            boxSizing: 'border-box',
+            pointerEvents: 'none',
+            margin: '8px',
+          })}
+        />
+      )}
+    </Box>
   );
 }
 

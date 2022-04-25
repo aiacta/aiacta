@@ -1,64 +1,66 @@
-import { MantineTheme, theming } from '@mantine/core';
+import { Box } from '@mantine/core';
+import { BoxSx } from '@mantine/core/lib/components/Box/use-sx/use-sx';
 import * as React from 'react';
-import { createUseStyles } from 'react-jss';
 import { RollingContext } from './RollingContext';
 
-const useStyles = createUseStyles(
-  (theme: MantineTheme) => ({
-    die: {
-      height: '1.6em',
-      marginBottom: -6,
-      '& text': {
-        fill: theme.colorScheme === 'dark' ? theme.black : theme.colors.gray[2],
-        stroke: 'none',
-      },
+export function DieIcon({
+  faces,
+  value,
+  critical,
+  dropped,
+}: {
+  faces: number;
+  value: number;
+  critical?: boolean;
+  dropped?: boolean;
+}) {
+  // const classes = useStyles();
+
+  const isRolling = React.useContext(RollingContext);
+
+  const dieStyles: BoxSx = (theme) => ({
+    height: '1.6em',
+    marginBottom: -6,
+    '& text': {
+      fill: theme.colorScheme === 'dark' ? theme.black : theme.colors.gray[2],
+      stroke: 'none',
     },
-    face: {
-      fill:
-        theme.colorScheme === 'dark'
-          ? theme.colors.gray[2]
-          : theme.colors.dark[5],
-      stroke: theme.colorScheme === 'dark' ? theme.black : theme.colors.dark[2],
-    },
-    shade: {
-      fill:
-        theme.colorScheme === 'dark'
-          ? theme.colors.gray[5]
-          : theme.colors.dark[6],
-    },
-    dropped: {
-      filter: 'blur(1px)',
-      opacity: 0.5,
-    },
-    critical: {
-      '& $face': {
-        fill:
-          theme.colorScheme === 'dark'
-            ? theme.colors.green[3]
-            : theme.colors.green[5],
-      },
-      '& $shade': {
-        fill:
-          theme.colorScheme === 'dark'
-            ? theme.colors.green[6]
-            : theme.colors.green[7],
-      },
-    },
-    failure: {
-      '& $face': {
-        fill:
-          theme.colorScheme === 'dark'
-            ? theme.colors.red[3]
-            : theme.colors.red[5],
-      },
-      '& $shade': {
-        fill:
-          theme.colorScheme === 'dark'
-            ? theme.colors.red[4]
-            : theme.colors.red[6],
-      },
-    },
-    rolling: {
+    ...(!isRolling &&
+      dropped && {
+        filter: 'blur(1px)',
+        opacity: 0.5,
+      }),
+    ...(!isRolling &&
+      critical && {
+        '& $face': {
+          fill:
+            theme.colorScheme === 'dark'
+              ? theme.colors.green[3]
+              : theme.colors.green[5],
+        },
+        '& $shade': {
+          fill:
+            theme.colorScheme === 'dark'
+              ? theme.colors.green[6]
+              : theme.colors.green[7],
+        },
+      }),
+    ...(!isRolling &&
+      value === 1 && {
+        '& $face': {
+          fill:
+            theme.colorScheme === 'dark'
+              ? theme.colors.red[3]
+              : theme.colors.red[5],
+        },
+        '& $shade': {
+          fill:
+            theme.colorScheme === 'dark'
+              ? theme.colors.red[4]
+              : theme.colors.red[6],
+        },
+      }),
+    ...(isRolling && {
       filter: 'blur(2px)',
       animation: '.6s linear infinite $roll',
       '& text': {
@@ -73,50 +75,33 @@ const useStyles = createUseStyles(
             ? theme.colors.gray[2]
             : theme.colors.dark[5],
       },
-    },
-    '@keyframes roll': {
-      from: { transform: 'rotate(0deg)' },
-      to: { transform: 'rotate(360deg)' },
-    },
-  }),
-  { theming },
-);
-
-export function DieIcon({
-  faces,
-  value,
-  critical,
-  dropped,
-}: {
-  faces: number;
-  value: number;
-  critical?: boolean;
-  dropped?: boolean;
-}) {
-  const classes = useStyles();
-
-  const isRolling = React.useContext(RollingContext);
-
-  const className = [
-    classes.die,
-    !isRolling && dropped && classes.dropped,
-    !isRolling && critical && classes.critical,
-    !isRolling && value === 1 && classes.failure,
-    isRolling && classes.rolling,
-  ]
-    .filter(Boolean)
-    .join(' ');
+      '@keyframes roll': {
+        from: { transform: 'rotate(0deg)' },
+        to: { transform: 'rotate(360deg)' },
+      },
+    }),
+  });
 
   switch (faces) {
     case 4: {
       return (
-        <svg className={className} viewBox="-1 -1 52 52">
-          <path
+        <Box component="svg" sx={dieStyles} viewBox="-1 -1 52 52">
+          <Box
+            component="path"
             d="M 0,50 l 25,-50 l 25,50 Z"
             stroke="#000"
             fill="#fff"
             strokeLinejoin="bevel"
-            className={classes.face}
+            sx={(theme) => ({
+              fill:
+                theme.colorScheme === 'dark'
+                  ? theme.colors.gray[2]
+                  : theme.colors.dark[5],
+              stroke:
+                theme.colorScheme === 'dark'
+                  ? theme.black
+                  : theme.colors.dark[2],
+            })}
           />
           <text
             x="25"
@@ -127,18 +112,28 @@ export function DieIcon({
           >
             {value}
           </text>
-        </svg>
+        </Box>
       );
     }
     case 6: {
       return (
-        <svg className={className} viewBox="-1 -1 52 52">
-          <path
+        <Box component="svg" sx={dieStyles} viewBox="-1 -1 52 52">
+          <Box
+            component="path"
             d="M 2.5,2.5 l 45,0 l 0,45 l -45,0 Z"
             stroke="#000"
             fill="#fff"
             strokeLinejoin="bevel"
-            className={classes.face}
+            sx={(theme) => ({
+              fill:
+                theme.colorScheme === 'dark'
+                  ? theme.colors.gray[2]
+                  : theme.colors.dark[5],
+              stroke:
+                theme.colorScheme === 'dark'
+                  ? theme.black
+                  : theme.colors.dark[2],
+            })}
           />
           <text
             x="25"
@@ -149,25 +144,41 @@ export function DieIcon({
           >
             {value}
           </text>
-        </svg>
+        </Box>
       );
     }
     case 8: {
       return (
-        <svg className={className} viewBox="-1 -1 52 52">
-          <path
+        <Box component="svg" sx={dieStyles} viewBox="-1 -1 52 52">
+          <Box
+            component="path"
             d="M 0,35 l 2,-20 l 23,-15 l 23,15 l 2,20 l -25,15 l -25,-15 Z"
             stroke="#000"
             fill="#fff"
             strokeLinejoin="bevel"
-            className={classes.shade}
+            sx={(theme) => ({
+              fill:
+                theme.colorScheme === 'dark'
+                  ? theme.colors.gray[5]
+                  : theme.colors.dark[6],
+            })}
           />
-          <path
+          <Box
+            component="path"
             d="M 0,35 l 25,-35 l 25,35 Z"
             stroke="#000"
             fill="#fff"
             strokeLinejoin="bevel"
-            className={classes.face}
+            sx={(theme) => ({
+              fill:
+                theme.colorScheme === 'dark'
+                  ? theme.colors.gray[2]
+                  : theme.colors.dark[5],
+              stroke:
+                theme.colorScheme === 'dark'
+                  ? theme.black
+                  : theme.colors.dark[2],
+            })}
           />
           <text
             x="25"
@@ -178,25 +189,41 @@ export function DieIcon({
           >
             {value}
           </text>
-        </svg>
+        </Box>
       );
     }
     case 10: {
       return (
-        <svg className={className} viewBox="-1 -1 52 52">
-          <path
+        <Box component="svg" sx={dieStyles} viewBox="-1 -1 52 52">
+          <Box
+            component="path"
             d="M 7,35 l -7,-3 l 25,-32 l 25,32 l -7,3 Z l -7,-3 l 0,6 l 7,-3 l 36,0 l 7,-3 l 0,6 l -7,-3 Z l -7,3 l 25,12 l 0,-15 l 18,0 l 7,3 l -25,12 l 0,-15 Z"
             stroke="#000"
             fill="#fff"
             strokeLinejoin="bevel"
-            className={classes.shade}
+            sx={(theme) => ({
+              fill:
+                theme.colorScheme === 'dark'
+                  ? theme.colors.gray[5]
+                  : theme.colors.dark[6],
+            })}
           />
-          <path
+          <Box
+            component="path"
             d="M 7,35 l 18,-35 l 18,35 l -18,3 Z"
             stroke="#000"
             fill="#fff"
             strokeLinejoin="bevel"
-            className={classes.face}
+            sx={(theme) => ({
+              fill:
+                theme.colorScheme === 'dark'
+                  ? theme.colors.gray[2]
+                  : theme.colors.dark[5],
+              stroke:
+                theme.colorScheme === 'dark'
+                  ? theme.black
+                  : theme.colors.dark[2],
+            })}
           />
           <text
             x="25"
@@ -207,7 +234,7 @@ export function DieIcon({
           >
             {value}
           </text>
-        </svg>
+        </Box>
       );
     }
     case 12: {
@@ -244,20 +271,36 @@ export function DieIcon({
           ' Z',
       );
       return (
-        <svg className={className} viewBox="-1 -1 52 52">
-          <path
+        <Box component="svg" sx={dieStyles} viewBox="-1 -1 52 52">
+          <Box
+            component="path"
             d={`${shades.join(' ')}`}
             stroke="#000"
             fill="#fff"
             strokeLinejoin="bevel"
-            className={classes.shade}
+            sx={(theme) => ({
+              fill:
+                theme.colorScheme === 'dark'
+                  ? theme.colors.gray[5]
+                  : theme.colors.dark[6],
+            })}
           />
-          <path
+          <Box
+            component="path"
             d={`M ${points.join(' L ')} Z`}
             stroke="#000"
             fill="#fff"
             strokeLinejoin="bevel"
-            className={classes.face}
+            sx={(theme) => ({
+              fill:
+                theme.colorScheme === 'dark'
+                  ? theme.colors.gray[2]
+                  : theme.colors.dark[5],
+              stroke:
+                theme.colorScheme === 'dark'
+                  ? theme.black
+                  : theme.colors.dark[2],
+            })}
           />
           <text
             x="25"
@@ -268,7 +311,7 @@ export function DieIcon({
           >
             {value}
           </text>
-        </svg>
+        </Box>
       );
     }
     case 20: {
@@ -309,20 +352,36 @@ export function DieIcon({
         ),
       ];
       return (
-        <svg className={className} viewBox="-1 -1 52 52">
-          <path
+        <Box component="svg" sx={dieStyles} viewBox="-1 -1 52 52">
+          <Box
+            component="path"
             d={`${shades.join(' ')}`}
             stroke="#000"
             fill="#fff"
             strokeLinejoin="bevel"
-            className={classes.shade}
+            sx={(theme) => ({
+              fill:
+                theme.colorScheme === 'dark'
+                  ? theme.colors.gray[5]
+                  : theme.colors.dark[6],
+            })}
           />
-          <path
+          <Box
+            component="path"
             d={`M ${points.join(' L ')} Z`}
             stroke="#000"
             fill="#fff"
             strokeLinejoin="bevel"
-            className={classes.face}
+            sx={(theme) => ({
+              fill:
+                theme.colorScheme === 'dark'
+                  ? theme.colors.gray[2]
+                  : theme.colors.dark[5],
+              stroke:
+                theme.colorScheme === 'dark'
+                  ? theme.black
+                  : theme.colors.dark[2],
+            })}
           />
           <text
             x="25"
@@ -333,7 +392,7 @@ export function DieIcon({
           >
             {value}
           </text>
-        </svg>
+        </Box>
       );
     }
   }

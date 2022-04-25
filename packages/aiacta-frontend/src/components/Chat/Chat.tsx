@@ -1,8 +1,7 @@
-import { Button, Container, Paper, Textarea } from '@mantine/core';
+import { Box, Button, Container, Paper, Textarea } from '@mantine/core';
 import { AnimatePresence } from 'framer-motion';
 import * as React from 'react';
 import { RiSendPlaneFill } from 'react-icons/ri';
-import { createUseStyles } from 'react-jss';
 import { useParams } from 'react-router-dom';
 import {
   useChatMessagesQuery,
@@ -12,54 +11,20 @@ import {
 import { isTruthy, zIndices } from '../../util';
 import { ChatMessage } from './ChatMessage';
 
-const useStyles = createUseStyles({
-  container: {
-    position: 'fixed',
-    left: 0,
-    bottom: 0,
-    width: '100%',
-    zIndex: zIndices.Chat,
-  },
-  messages: {
-    flex: '1 1 auto',
-    display: 'flex',
-    flexDirection: 'column-reverse',
-    overflowX: 'hidden',
-    overflowY: 'auto',
-    maxHeight: '50vh',
-    paddingRight: 5,
-    '&::-webkit-scrollbar': {
-      width: 5,
-    },
-    '&::-webkit-scrollbar-thumb': {
-      backgroundColor: 'rgba(73,125,189, 0.2)',
-    },
-  },
-  message: {
-    display: 'grid',
-    gridTemplateAreas: `"from time" "body body"`,
-    gridTemplateColumns: '1fr auto',
-    marginBottom: 10,
-  },
-  from: {
-    gridArea: 'from',
-  },
-  time: {
-    gridArea: 'time',
-    color: '#97969B',
-  },
-  body: {
-    gridArea: 'body',
-    transformOrigin: 'top center',
-  },
-});
-
 export function Chat() {
-  const classes = useStyles();
-
   return (
-    <Container className={classes.container} padding={0} size={320}>
-      <Paper padding="xs">
+    <Container
+      size={320}
+      sx={{
+        position: 'fixed',
+        left: 0,
+        bottom: 0,
+        width: '100%',
+        zIndex: zIndices.Chat,
+      }}
+      p={0}
+    >
+      <Paper p="xs">
         <Messages />
         <MessageInput />
       </Paper>
@@ -68,8 +33,6 @@ export function Chat() {
 }
 
 function Messages() {
-  const classes = useStyles();
-
   const { worldId } = useParams();
 
   if (!worldId) {
@@ -80,7 +43,23 @@ function Messages() {
   useNewChatMessagesSubscription({ variables: { worldId } });
 
   return (
-    <div className={classes.messages}>
+    <Box
+      sx={{
+        flex: '1 1 auto',
+        display: 'flex',
+        flexDirection: 'column-reverse',
+        overflowX: 'hidden',
+        overflowY: 'auto',
+        maxHeight: '50vh',
+        paddingRight: 5,
+        '&::-webkit-scrollbar': {
+          width: 5,
+        },
+        '&::-webkit-scrollbar-thumb': {
+          backgroundColor: 'rgba(73,125,189, 0.2)',
+        },
+      }}
+    >
       {messages.fetching ? null : (
         <AnimatePresence initial={false}>
           {messages.data?.world?.messages?.filter(isTruthy).map((msg) => (
@@ -95,7 +74,7 @@ function Messages() {
           ))}
         </AnimatePresence>
       )}
-    </div>
+    </Box>
   );
 }
 

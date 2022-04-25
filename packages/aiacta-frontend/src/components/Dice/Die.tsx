@@ -111,7 +111,7 @@ export function Die({
 
   return (
     <mesh
-      ref={ref}
+      // ref={ref}
       name={type}
       geometry={geometry}
       castShadow
@@ -119,7 +119,7 @@ export function Die({
       position={[1000, 0, 0]}
     >
       <shaderMaterial
-        attachArray="material"
+        attach="material"
         fragmentShader={fragmentNoImageShader}
         vertexShader={vertexNoImageShader}
         uniforms={uniforms}
@@ -127,7 +127,7 @@ export function Die({
       {textureMaps.map((texture) => (
         <shaderMaterial
           key={texture.uuid}
-          attachArray="material"
+          attach="material"
           fragmentShader={fragmentShader}
           vertexShader={vertexShader}
           uniforms={{
@@ -137,7 +137,7 @@ export function Die({
         />
       ))}
       <positionalAudio
-        ref={audioRef}
+        // ref={audioRef}
         buffer={sound}
         args={[new AudioListener()]}
         autoplay={false}

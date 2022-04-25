@@ -34,7 +34,7 @@ export function ColorInput({
   elementRef,
   ...inputProps
 }: InputWrapperBaseProps &
-  InputProps & {
+  InputProps<any> & {
     id?: string;
     value?: string;
     elementRef?: React.ForwardedRef<HTMLInputElement>;
