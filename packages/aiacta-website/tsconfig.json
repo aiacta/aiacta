@@ -6,7 +6,8 @@
     "jsx": "preserve",
     "lib": ["ES2020", "DOM"],
     "types": ["cypress"],
-    "allowJs": true
+    "allowJs": true,
+    "incremental": true
   },
   "include": ["./pages", "./components", "next-env.d.ts", "cypress"],
   "exclude": ["node_modules"]
