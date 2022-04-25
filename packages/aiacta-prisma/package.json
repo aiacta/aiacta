@@ -5,10 +5,10 @@
   "types": "prisma/generated/output/index.d.ts",
   "scripts": {
     "prisma": "pnpify prisma",
-    "build": "prisma generate",
-    "generate": "prisma generate",
-    "db:push": "prisma db push --accept-data-loss",
-    "db:seed": "prisma db seed"
+    "build": "pnpify prisma generate",
+    "generate": "pnpify prisma generate",
+    "db:push": "pnpify prisma db push --accept-data-loss",
+    "db:seed": "pnpify prisma db seed"
   },
   "dependencies": {
     "@prisma/client": "^3.12.0",
