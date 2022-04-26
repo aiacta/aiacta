@@ -1,10 +1,23 @@
 import react from '@vitejs/plugin-react';
-import { createHash } from 'crypto';
-import { defineConfig, Plugin } from 'vite';
+import { defineConfig } from 'vite';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), reactIntl()],
+  plugins: [
+    react({
+      babel: {
+        plugins: [
+          [
+            'formatjs',
+            {
+              idInterpolationPattern: '[sha512:contenthash:base64:6]',
+              ast: true,
+            },
+          ],
+        ],
+      },
+    }),
+  ],
   define: {
     'process.env.RUN_ENV': '"development"',
   },
@@ -29,7 +42,9 @@ export default defineConfig({
           ui: [
             '@mantine/core',
             '@mantine/hooks',
+            '@mantine/form',
             '@mantine/notifications',
+            '@mantine/spotlight',
             'framer-motion',
             'react-error-boundary',
             'react-hook-form',
@@ -56,43 +71,3 @@ export default defineConfig({
     },
   },
 });
-
-function reactIntl() {
-  let isProduction = false;
-  return {
-    name: 'vite-plugin-react-intl',
-    configResolved(config) {
-      isProduction = config.isProduction;
-    },
-    transform(src) {
-      const matches = [
-        ...src.matchAll(
-          /((?:React.createElement\(FormattedMessage,\s*{\s*)|(?:formatMessage\(\s*{\s*))(defaultMessage:\s*(["'`])((?:.|\s)+?)\3,?)/gm,
-        ),
-        ...src.matchAll(
-          /((?:defineMessage\(\s*{\s*))(defaultMessage:\s*(["'`])((?:.|\s)+?)\3,?)/gm,
-        ),
-      ];
-      if (matches.length > 0) {
-        const code = matches.reduce((code, match) => {
-          const hash = createHash('sha512');
-          hash.update(match[4]);
-          return code
-            .split(match[0])
-            .join(
-              match[0]
-                .replace(
-                  match[1],
-                  match[1] + `id: "${hash.digest('base64').substr(0, 6)}", `,
-                )
-                .replace(match[2], isProduction ? '' : match[2]),
-            );
-        }, src);
-        return {
-          code,
-        };
-      }
-      return;
-    },
-  } as Plugin;
-}

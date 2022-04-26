@@ -7,7 +7,7 @@ export function useSpotlightActions(actions: SpotlightAction[]) {
   useEffect(() => {
     registerActions(actions);
     return () => {
-      removeActions(['create-character']);
+      removeActions(actions.map((action) => action.id!).filter(Boolean));
     };
   }, []);
 }

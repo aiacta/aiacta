@@ -143,6 +143,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@urql/exchange-graphcache", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:4.3.6"],\
             ["@urql/exchange-multipart-fetch", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:0.1.14"],\
             ["@vitejs/plugin-react", "npm:1.3.1"],\
+            ["babel-plugin-formatjs", "npm:10.3.19"],\
             ["cannon-es", "npm:0.19.0"],\
             ["cypress", "npm:9.5.4"],\
             ["framer-motion", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:6.3.1"],\
@@ -860,6 +861,20 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@babel/plugin-syntax-jsx", "npm:7.16.7"]\
           ],\
           "linkType": "SOFT"\
+        }],\
+        ["virtual:10e75d5fd50e02096fc5c00178a6a2ad729ff3eff1c1b422b26b01988431cc9957b2e1f8a6089dca7cb1170c5e50131768347e0fbc6f8fd8edb4ed30e7b3f750#npm:7.16.7", {\
+          "packageLocation": "./.yarn/__virtual__/@babel-plugin-syntax-jsx-virtual-2665eaf7a5/0/cache/@babel-plugin-syntax-jsx-npm-7.16.7-06e2646d53-cd9b0e53c5.zip/node_modules/@babel/plugin-syntax-jsx/",\
+          "packageDependencies": [\
+            ["@babel/plugin-syntax-jsx", "virtual:10e75d5fd50e02096fc5c00178a6a2ad729ff3eff1c1b422b26b01988431cc9957b2e1f8a6089dca7cb1170c5e50131768347e0fbc6f8fd8edb4ed30e7b3f750#npm:7.16.7"],\
+            ["@babel/core", "npm:7.17.9"],\
+            ["@babel/helper-plugin-utils", "npm:7.16.7"],\
+            ["@types/babel__core", "npm:7.1.19"]\
+          ],\
+          "packagePeers": [\
+            "@babel/core",\
+            "@types/babel__core"\
+          ],\
+          "linkType": "HARD"\
         }],\
         ["virtual:4a899fbd206c74a692643569a6d340d6c9da2c1177fcb5eb938260ee82af71c69346a8340c8e249fc9c7b24173816ed4d3e4fd03f673faa9eb3f84c9c2c61fbb#npm:7.16.7", {\
           "packageLocation": "./.yarn/__virtual__/@babel-plugin-syntax-jsx-virtual-50f76dfede/0/cache/@babel-plugin-syntax-jsx-npm-7.16.7-06e2646d53-cd9b0e53c5.zip/node_modules/@babel/plugin-syntax-jsx/",\
@@ -5176,6 +5191,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@types/babel__helper-plugin-utils", [\
+        ["npm:7.10.0", {\
+          "packageLocation": "./.yarn/cache/@types-babel__helper-plugin-utils-npm-7.10.0-7426dac29d-5a5fce5e89.zip/node_modules/@types/babel__helper-plugin-utils/",\
+          "packageDependencies": [\
+            ["@types/babel__helper-plugin-utils", "npm:7.10.0"],\
+            ["@types/babel__core", "npm:7.1.19"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@types/babel__template", [\
         ["npm:7.4.1", {\
           "packageLocation": "./.yarn/cache/@types-babel__template-npm-7.4.1-fe1db49e53-649fe8b42c.zip/node_modules/@types/babel__template/",\
@@ -6989,6 +7014,25 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["babel-plugin-dynamic-import-node", "npm:2.3.3"],\
             ["object.assign", "npm:4.1.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["babel-plugin-formatjs", [\
+        ["npm:10.3.19", {\
+          "packageLocation": "./.yarn/cache/babel-plugin-formatjs-npm-10.3.19-10e75d5fd5-080c93ba74.zip/node_modules/babel-plugin-formatjs/",\
+          "packageDependencies": [\
+            ["babel-plugin-formatjs", "npm:10.3.19"],\
+            ["@babel/core", "npm:7.17.9"],\
+            ["@babel/helper-plugin-utils", "npm:7.16.7"],\
+            ["@babel/plugin-syntax-jsx", "virtual:10e75d5fd50e02096fc5c00178a6a2ad729ff3eff1c1b422b26b01988431cc9957b2e1f8a6089dca7cb1170c5e50131768347e0fbc6f8fd8edb4ed30e7b3f750#npm:7.16.7"],\
+            ["@babel/traverse", "npm:7.17.9"],\
+            ["@babel/types", "npm:7.17.0"],\
+            ["@formatjs/icu-messageformat-parser", "npm:2.0.19"],\
+            ["@formatjs/ts-transformer", "virtual:3dd529dabde697210534a4f032e0ef181c50eae342dd9bcf5fbabf865654288d5934fb546c71773253d623e0138c7e977cf3e2258e1fbde9e16bc89deb91ef9c#npm:3.9.3"],\
+            ["@types/babel__core", "npm:7.1.19"],\
+            ["@types/babel__helper-plugin-utils", "npm:7.10.0"],\
+            ["tslib", "npm:2.4.0"]\
           ],\
           "linkType": "HARD"\
         }]\

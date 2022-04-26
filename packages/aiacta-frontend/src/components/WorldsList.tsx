@@ -9,9 +9,10 @@ import {
 } from '@mantine/core';
 import { BiLock } from 'react-icons/bi';
 import { GiWorld } from 'react-icons/gi';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Link, useMatch, useNavigate } from 'react-router-dom';
 import { useAvailableWorldsQuery, useMeQuery } from '../api';
+import { useSpotlightActions } from '../hooks';
 import { isTruthy } from '../util';
 import { JoinWorldForm } from './JoinWorldForm';
 import { NewWorldForm } from './NewWorldForm';
@@ -23,6 +24,35 @@ export function WorldsList() {
   const createWorld = useMatch('/worlds/new');
   const joinWorld = useMatch('/worlds/join/:worldId');
   const navigate = useNavigate();
+
+  const { formatMessage } = useIntl();
+
+  useSpotlightActions([
+    {
+      id: 'create-world',
+      title: formatMessage({ defaultMessage: 'Create a world' }),
+      onTrigger: () => {
+        navigate('/worlds/new');
+      },
+      description: 'Create a new world from scratch',
+    },
+    ...(availableWorlds.data?.worlds
+      ?.filter(isTruthy)
+      .filter((world) =>
+        world.players?.some((player) => player?.id === me.data?.me?.id),
+      )
+      .map((world) => ({
+        id: `open-world-${world.id}`,
+        title: formatMessage(
+          { defaultMessage: 'Open world {world}' },
+          { world: world.name },
+        ),
+        onTrigger: () => {
+          navigate(`/world/${world.id}`);
+        },
+        description: 'Open this world',
+      })) ?? []),
+  ]);
 
   return (
     <>
@@ -88,7 +118,7 @@ export function WorldsList() {
                     component={Link}
                     to={`/world/${world.id}`}
                   >
-                    <FormattedMessage defaultMessage="Open world" />
+                    <FormattedMessage defaultMessage="Goto world" />
                   </Button>
                 ) : (
                   <Button
