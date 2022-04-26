@@ -1,5 +1,5 @@
 import { Box, Button, Container, Paper, Textarea } from '@mantine/core';
-import * as React from 'react';
+import { useState } from 'react';
 import { RiSendPlaneFill } from 'react-icons/ri';
 import { useParams } from 'react-router-dom';
 import {
@@ -84,7 +84,7 @@ function MessageInput() {
     throw new Error('Invalid entry');
   }
 
-  const [message, setMessage] = React.useState('');
+  const [message, setMessage] = useState('');
   const [mutation, sendMessage] = useSendMessageMutation();
 
   return (

@@ -1,5 +1,5 @@
 import { cacheExchange as urqlCacheExchange } from '@urql/exchange-graphcache';
-import * as React from 'react';
+import { useMemo } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { isAuthenticatedAtom } from './auth';
 import {
@@ -12,7 +12,7 @@ import schema from './schema.json';
 export function useCacheExchange() {
   const setAuthenticated = useSetRecoilState(isAuthenticatedAtom);
 
-  return React.useMemo(
+  return useMemo(
     () =>
       urqlCacheExchange({
         schema: schema as any,

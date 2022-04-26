@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { FormattedDate, FormattedMessage, useIntl } from 'react-intl';
 
 const updateHandler = new Set<() => void>();
@@ -13,7 +13,7 @@ export function SynchronizedFormattedRelativeTime({
 }) {
   const { locale } = useIntl();
 
-  const relativeTime = React.useMemo(
+  const relativeTime = useMemo(
     () => new Intl.RelativeTimeFormat(locale),
     [locale],
   );
@@ -21,8 +21,8 @@ export function SynchronizedFormattedRelativeTime({
   const secondsDiff = (new Date(value).getTime() - Date.now()) / 1000;
   const inPast = secondsDiff < 0;
 
-  const [, setToggle] = React.useState(false);
-  React.useEffect(() => {
+  const [, setToggle] = useState(false);
+  useEffect(() => {
     updateHandler.add(triggerUpdate);
     return () => {
       updateHandler.delete(triggerUpdate);

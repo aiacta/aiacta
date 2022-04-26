@@ -12,7 +12,7 @@ import {
   SHADOW_PCF3,
   StandardMaterial,
 } from 'playcanvas';
-import * as React from 'react';
+import { useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSceneDetailsQuery } from '../api';
 import { extrudeWall, isTruthy, zIndices } from '../util';
@@ -27,11 +27,11 @@ export function Scene() {
   }
 
   const [scene] = useSceneDetailsQuery({ variables: { worldId, sceneId } });
-  const appRef = React.useRef<Application>();
+  const appRef = useRef<Application>();
 
-  const canvasRef = React.useRef<HTMLCanvasElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (canvasRef.current && scene.data?.world?.scene) {
       if (!appRef.current) {
         const app = setupScene(canvasRef.current, scene.data?.world?.scene);

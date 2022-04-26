@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useMemo } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { errorExchange as urqlErrorExchange } from 'urql';
 import { isAuthenticatedAtom } from './auth';
@@ -6,7 +6,7 @@ import { isAuthenticatedAtom } from './auth';
 export function useErrorExchange() {
   const setAuthenticated = useSetRecoilState(isAuthenticatedAtom);
 
-  return React.useMemo(
+  return useMemo(
     () =>
       urqlErrorExchange({
         onError: (error) => {

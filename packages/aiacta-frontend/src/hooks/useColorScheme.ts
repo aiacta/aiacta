@@ -1,5 +1,5 @@
 import { useColorScheme as useQueryColorScheme } from '@mantine/hooks';
-import * as React from 'react';
+import { useRef } from 'react';
 import { atom, SetterOrUpdater, useRecoilState } from 'recoil';
 
 const colorSchemeAtom = atom<'light' | 'dark' | null>({
@@ -11,7 +11,7 @@ export function useColorScheme() {
   const colorScheme = useQueryColorScheme();
 
   const [appColorScheme, setAppColorScheme] = useRecoilState(colorSchemeAtom);
-  const colorRef = React.useRef(appColorScheme ?? colorScheme);
+  const colorRef = useRef(appColorScheme ?? colorScheme);
   colorRef.current = appColorScheme ?? colorScheme;
 
   return [

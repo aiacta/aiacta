@@ -1,5 +1,4 @@
 import { ActionIcon } from '@mantine/core';
-import * as React from 'react';
 import { FiMoon, FiSun } from 'react-icons/fi';
 import { useColorScheme } from '../hooks';
 

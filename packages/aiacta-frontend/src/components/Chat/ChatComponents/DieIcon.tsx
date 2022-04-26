@@ -1,6 +1,6 @@
 import { Box } from '@mantine/core';
 import { BoxSx } from '@mantine/core/lib/components/Box/use-sx/use-sx';
-import * as React from 'react';
+import { useContext } from 'react';
 import { RollingContext } from './RollingContext';
 
 export function DieIcon({
@@ -14,7 +14,7 @@ export function DieIcon({
   critical?: boolean;
   dropped?: boolean;
 }) {
-  const isRolling = React.useContext(RollingContext);
+  const isRolling = useContext(RollingContext);
 
   const dieStyles: BoxSx = (theme) => ({
     height: '1.6em',

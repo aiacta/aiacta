@@ -1,7 +1,6 @@
 /// <reference types="react/next" />
 /// <reference types="react-dom/next" />
 
-import * as React from 'react';
 import { createRoot } from 'react-dom/client';
 import { App } from './App';
 import { Provider } from './Provider';

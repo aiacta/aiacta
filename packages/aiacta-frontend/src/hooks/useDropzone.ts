@@ -1,5 +1,5 @@
 import { useWindowEvent } from '@mantine/hooks';
-import * as React from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { isTruthy } from '../util';
 
 export function useDropzone<TElement extends HTMLElement = HTMLDivElement>({
@@ -7,9 +7,9 @@ export function useDropzone<TElement extends HTMLElement = HTMLDivElement>({
 }: {
   onDrop: (files: File[]) => void | Promise<void>;
 }) {
-  const rootRef = React.useRef<TElement | null>(null);
-  const [isActive, setActive] = React.useState(false);
-  const [isProcessing, setProcessing] = React.useState(false);
+  const rootRef = useRef<TElement | null>(null);
+  const [isActive, setActive] = useState(false);
+  const [isProcessing, setProcessing] = useState(false);
 
   useWindowEvent('dragover', (evt) => {
     evt.preventDefault();
@@ -21,7 +21,7 @@ export function useDropzone<TElement extends HTMLElement = HTMLDivElement>({
     evt.preventDefault();
   });
 
-  const getRootProps = React.useCallback(
+  const getRootProps = useCallback(
     () => ({
       ref: rootRef,
       onDragEnter: (evt: React.DragEvent<TElement>) => {

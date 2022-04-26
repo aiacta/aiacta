@@ -1,5 +1,4 @@
 import { Badge } from '@mantine/core';
-import * as React from 'react';
 import {
   Link,
   Route,

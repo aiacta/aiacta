@@ -1,6 +1,5 @@
 import { Global } from '@mantine/core';
 import { useWindowEvent } from '@mantine/hooks';
-import * as React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { isAuthenticatedAtom } from './api';

@@ -6,7 +6,7 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { useId } from '@mantine/hooks';
-import * as React from 'react';
+import { useState } from 'react';
 
 export function ColorInput({
   label,
@@ -23,7 +23,7 @@ export function ColorInput({
   onChange?: (color: string) => void;
   onFocus?: (evt: React.FocusEvent<HTMLInputElement>) => void;
 }) {
-  const [value, setValue] = React.useState('#ffffff');
+  const [value, setValue] = useState('#ffffff');
   const htmlId = useId(id);
 
   const uncontrolled = {

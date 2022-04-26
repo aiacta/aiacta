@@ -1,5 +1,5 @@
 import { MantineProvider } from '@mantine/core';
-import * as React from 'react';
+import { useEffect, useState } from 'react';
 import { IntlProvider } from 'react-intl';
 import { JssProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
@@ -39,16 +39,16 @@ function ThemeProvider({ children }: { children: React.ReactNode }) {
 
 function useMessages() {
   if (import.meta.env.PROD) {
-    const [messages, setMessages] = React.useState(undefined);
-    React.useEffect(() => {
+    const [messages, setMessages] = useState(undefined);
+    useEffect(() => {
       fetch('/lang/en.json')
         .then((resp) => resp.json())
         .then((msg) => setMessages(msg));
     }, []);
     return messages;
   } else {
-    const [messages] = React.useState(undefined);
-    React.useEffect(() => {
+    const [messages] = useState(undefined);
+    useEffect(() => {
       // noop
     }, []);
     return messages;

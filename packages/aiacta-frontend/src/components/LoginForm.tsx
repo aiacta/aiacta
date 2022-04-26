@@ -10,7 +10,7 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import * as React from 'react';
+import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useLoginMutation, useSignUpMutation } from '../api';
 import { ColorInput } from './ColorInput';
@@ -18,7 +18,7 @@ import { ColorInput } from './ColorInput';
 export function LoginForm() {
   const { formatMessage } = useIntl();
 
-  const [mode, setMode] = React.useState('signup' as 'signup' | 'signin');
+  const [mode, setMode] = useState('signup' as 'signup' | 'signin');
 
   const theme = useMantineTheme();
   const colors = Object.keys(theme.colors).filter((c) => c !== 'dark');

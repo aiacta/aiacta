@@ -1,6 +1,6 @@
 import { Box, Text, Tooltip } from '@mantine/core';
 import MDX from '@mdx-js/runtime';
-import * as React from 'react';
+import { useMemo } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { MdAccessTime } from 'react-icons/md';
 import { useRollsStatus } from '../Dice';
@@ -62,7 +62,7 @@ function RenderMessage({
 }) {
   const { isRolling } = useRollsStatus(rolls ?? [], createdAt);
 
-  const mdx = React.useMemo(
+  const mdx = useMemo(
     () => <MDX children={text ?? ''} components={components} />,
     [text],
   );

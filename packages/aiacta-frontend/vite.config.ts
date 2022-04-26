@@ -1,10 +1,10 @@
-import reactRefresh from '@vitejs/plugin-react-refresh';
+import react from '@vitejs/plugin-react';
 import { createHash } from 'crypto';
 import { defineConfig, Plugin } from 'vite';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [reactRefresh(), reactIntl()],
+  plugins: [react(), reactIntl()],
   define: {
     'process.env.RUN_ENV': '"development"',
   },

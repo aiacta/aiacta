@@ -6,7 +6,6 @@ import {
   Paper,
   Text,
 } from '@mantine/core';
-import * as React from 'react';
 import { BiLock } from 'react-icons/bi';
 import { GiWorld } from 'react-icons/gi';
 import { FormattedMessage } from 'react-intl';

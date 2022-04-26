@@ -9,7 +9,6 @@ import {
   TextInput,
 } from '@mantine/core';
 import { useForm } from '@mantine/hooks';
-import * as React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 import { useCreateWorldMutation } from '../api';

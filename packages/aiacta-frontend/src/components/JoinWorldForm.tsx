@@ -1,5 +1,5 @@
 import { Button, Group, Modal, PasswordInput, Text } from '@mantine/core';
-import * as React from 'react';
+import { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useJoinWorldMutation, useWorldToJoinQuery } from '../api';
@@ -19,11 +19,11 @@ export function JoinWorldForm({
   });
   const [joiningWorld, joinWorld] = useJoinWorldMutation();
 
-  const [password, setPassword] = React.useState('');
+  const [password, setPassword] = useState('');
 
   const navigate = useNavigate();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!world.fetching && world.data?.world?.isPasswordProtected === false) {
       joinWorld({ worldId: worldId ?? '' }).then(({ data }) => {
         if (data?.joinWorld?.id) {

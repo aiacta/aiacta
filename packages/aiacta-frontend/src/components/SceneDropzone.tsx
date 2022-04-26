@@ -1,5 +1,4 @@
 import { Box } from '@mantine/core';
-import * as React from 'react';
 import { useCreateSceneMutation } from '../api';
 import { useDropzone, useWorldId } from '../hooks';
 import { zIndices } from '../util';

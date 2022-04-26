@@ -1,5 +1,5 @@
 import { authExchange as urqlAuthExchange } from '@urql/exchange-auth';
-import * as React from 'react';
+import { useMemo } from 'react';
 import { atom, useSetRecoilState } from 'recoil';
 import { makeOperation } from 'urql';
 
@@ -17,7 +17,7 @@ export const isAuthenticatedAtom = atom({
 export function useAuthExchange() {
   const setAuthenticated = useSetRecoilState(isAuthenticatedAtom);
 
-  return React.useMemo(
+  return useMemo(
     () =>
       urqlAuthExchange<AuthState>({
         addAuthToOperation: ({ authState, operation }) => {
