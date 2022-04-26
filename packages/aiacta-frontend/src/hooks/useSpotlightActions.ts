@@ -9,5 +9,5 @@ export function useSpotlightActions(actions: SpotlightAction[]) {
     return () => {
       removeActions(actions.map((action) => action.id!).filter(Boolean));
     };
-  }, []);
+  }, [actions.map((action) => action.id).join('-')]);
 }
