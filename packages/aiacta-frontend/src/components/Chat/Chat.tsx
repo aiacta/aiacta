@@ -1,5 +1,4 @@
 import { Box, Button, Container, Paper, Textarea } from '@mantine/core';
-import { AnimatePresence } from 'framer-motion';
 import * as React from 'react';
 import { RiSendPlaneFill } from 'react-icons/ri';
 import { useParams } from 'react-router-dom';
@@ -60,20 +59,20 @@ function Messages() {
         },
       }}
     >
-      {messages.fetching ? null : (
-        <AnimatePresence initial={false}>
-          {messages.data?.world?.messages?.filter(isTruthy).map((msg) => (
-            <ChatMessage
-              key={msg.id}
-              id={msg.id}
-              author={msg.author}
-              createdAt={msg.createdAt}
-              text={msg.text}
-              rolls={msg.rolls?.filter(isTruthy)}
-            />
-          ))}
-        </AnimatePresence>
-      )}
+      {messages.fetching
+        ? null
+        : messages.data?.world?.messages
+            ?.filter(isTruthy)
+            .map((msg) => (
+              <ChatMessage
+                key={msg.id}
+                id={msg.id}
+                author={msg.author}
+                createdAt={msg.createdAt}
+                text={msg.text}
+                rolls={msg.rolls?.filter(isTruthy)}
+              />
+            ))}
     </Box>
   );
 }

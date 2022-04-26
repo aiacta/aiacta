@@ -41,6 +41,7 @@ __metadata:
     "@mantine/form": 4.1.5
     "@mantine/hooks": 4.1.5
     "@mantine/notifications": 4.1.5
+    "@mantine/spotlight": 4.1.5
     "@mdx-js/runtime": 2.0.0-next.9
     "@react-three/drei": 9.5.3
     "@react-three/fiber": 8.0.12
@@ -2288,6 +2289,18 @@ __metadata:
     react: ">=16.8.0"
     react-dom: ">=16.8.0"
   checksum: f1746d24f769c0cc0b345df1a707c319a4e4773d3674834478cdbc3998aa05c71c6b31d788137ab4b80b233960d3b5806d9760c0e3dc5943176a6aa5782798ec
+  languageName: node
+  linkType: hard
+
+"@mantine/spotlight@npm:4.1.5":
+  version: 4.1.5
+  resolution: "@mantine/spotlight@npm:4.1.5"
+  peerDependencies:
+    "@mantine/core": 4.1.5
+    "@mantine/hooks": 4.1.5
+    react: ">=16.8.0"
+    react-dom: ">=16.8.0"
+  checksum: 90d102d114db3625021e03cb4329e4ba0774fc2d238155c3d8f52c51107b0258d7dac233ffbdc59ae522186caa4fadf2342f139a5581cd05234009d547925f72
   languageName: node
   linkType: hard
 

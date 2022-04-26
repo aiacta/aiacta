@@ -128,6 +128,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@mantine/form", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:4.1.5"],\
             ["@mantine/hooks", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:4.1.5"],\
             ["@mantine/notifications", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:4.1.5"],\
+            ["@mantine/spotlight", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:4.1.5"],\
             ["@mdx-js/runtime", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:2.0.0-next.9"],\
             ["@react-three/drei", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:9.5.3"],\
             ["@react-three/fiber", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:8.0.12"],\
@@ -3742,6 +3743,40 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react", "npm:18.0.0"],\
             ["react-dom", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:18.0.0"],\
             ["react-transition-group", "virtual:d8de917fa25f886349ca88f1be861f2db443a2dc4364fa048cb2e6ad841fa5d839f33f2cc474d0157afc7a8867d81aa8c40d35bcf7c8d42300cc8e05f432f8d7#npm:4.4.2"]\
+          ],\
+          "packagePeers": [\
+            "@mantine/core",\
+            "@mantine/hooks",\
+            "@types/mantine__core",\
+            "@types/mantine__hooks",\
+            "@types/react-dom",\
+            "@types/react",\
+            "react-dom",\
+            "react"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@mantine/spotlight", [\
+        ["npm:4.1.5", {\
+          "packageLocation": "./.yarn/cache/@mantine-spotlight-npm-4.1.5-17445c2969-90d102d114.zip/node_modules/@mantine/spotlight/",\
+          "packageDependencies": [\
+            ["@mantine/spotlight", "npm:4.1.5"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:4.1.5", {\
+          "packageLocation": "./.yarn/__virtual__/@mantine-spotlight-virtual-5992d551bd/0/cache/@mantine-spotlight-npm-4.1.5-17445c2969-90d102d114.zip/node_modules/@mantine/spotlight/",\
+          "packageDependencies": [\
+            ["@mantine/spotlight", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:4.1.5"],\
+            ["@mantine/core", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:4.1.5"],\
+            ["@mantine/hooks", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:4.1.5"],\
+            ["@types/mantine__core", null],\
+            ["@types/mantine__hooks", null],\
+            ["@types/react", "npm:18.0.6"],\
+            ["@types/react-dom", "npm:18.0.2"],\
+            ["react", "npm:18.0.0"],\
+            ["react-dom", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:18.0.0"]\
           ],\
           "packagePeers": [\
             "@mantine/core",\

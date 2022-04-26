@@ -7,6 +7,7 @@ import { RecoilRoot } from 'recoil';
 import { ApiProvider } from './api';
 import { RollProvider } from './components';
 import { useColorScheme } from './hooks';
+import { Spotlight } from './Spotlight';
 
 export function Provider({ children }: { children: React.ReactNode }) {
   const messages = useMessages();
@@ -18,7 +19,9 @@ export function Provider({ children }: { children: React.ReactNode }) {
           <IntlProvider locale="en" messages={messages}>
             <ApiProvider>
               <BrowserRouter>
-                <RollProvider>{children}</RollProvider>
+                <RollProvider>
+                  <Spotlight>{children}</Spotlight>
+                </RollProvider>
               </BrowserRouter>
             </ApiProvider>
           </IntlProvider>

@@ -4,7 +4,6 @@ import * as React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { isAuthenticatedAtom } from './api';
-import { Omnibox } from './components';
 import { useColorScheme } from './hooks';
 import { LoginPage, WorldPage, WorldsPage } from './pages';
 
@@ -66,7 +65,6 @@ export function App() {
         <Route path="/worlds/new" element={<WorldsPage />} />
         <Route path="/world/:worldId/*" element={<WorldPage />} />
       </Routes>
-      <Omnibox />
     </>
   );
 }

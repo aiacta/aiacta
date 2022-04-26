@@ -14,8 +14,6 @@ export function DieIcon({
   critical?: boolean;
   dropped?: boolean;
 }) {
-  // const classes = useStyles();
-
   const isRolling = React.useContext(RollingContext);
 
   const dieStyles: BoxSx = (theme) => ({
