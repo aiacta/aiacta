@@ -1,5 +1,4 @@
 export * from './Chat';
-export * from './ColorInput';
 export * from './ColorSchemeToggle';
 export * from './Dice';
 export * from './LoginForm';

@@ -19,6 +19,8 @@ const shapes = {
   d20: createShape('d20'),
 };
 
+const simSpeed = 1 / 120;
+
 self.addEventListener('message', (msg) => {
   const { op, ...data } = msg.data;
   switch (op) {
@@ -119,7 +121,7 @@ self.addEventListener('message', (msg) => {
       const { positions, quaternions } = data;
 
       if (world) {
-        world.step(1 / 60);
+        world.step(simSpeed);
 
         world.bodies.forEach((body) => {
           const idx = (body as any).bufferIndex;
@@ -166,7 +168,7 @@ function calculateResults(dice: { id: string; body: Body; type: string }[]) {
 
   let iteration = 0;
   do {
-    world.step(1 / 60);
+    world.step(simSpeed);
   } while (world.hasActiveBodies && ++iteration < 10000);
 
   if (iteration >= 10000) {

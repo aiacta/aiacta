@@ -122,13 +122,13 @@ export function DiceBox() {
         intensity={0.5}
         position={[6, 6, 10]}
         castShadow
-        shadow-mapSize-width={1024}
-        shadow-mapSize-height={1024}
-        shadow-camera-top={-100}
-        shadow-camera-bottom={100}
-        shadow-camera-left={-100}
-        shadow-camera-right={100}
-      />
+        shadow-mapSize={[1024, 1024]}
+      >
+        <orthographicCamera
+          attach="shadow-camera"
+          args={[-100, 100, -100, 100]}
+        />
+      </directionalLight>
       <ContextBridge>
         <Physics>
           <Rolls rolls={rolls.data?.diceRolls.filter(isTruthy)} />

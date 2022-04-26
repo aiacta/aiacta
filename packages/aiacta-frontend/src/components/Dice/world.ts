@@ -15,7 +15,7 @@ export const BarrierMaterial = new Material();
 export const linearDamping = 0.1;
 export const angularDamping = 0.1;
 
-export function createWorld(width: number, height: number, gravity = -200) {
+export function createWorld(width: number, height: number, gravity = -100) {
   const world = new World({ allowSleep: true });
 
   world.broadphase = new NaiveBroadphase();

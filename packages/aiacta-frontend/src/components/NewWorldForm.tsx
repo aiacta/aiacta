@@ -74,7 +74,7 @@ export function NewWorldForm({
         />
 
         <RadioGroup
-          style={{ marginTop: 10 }}
+          sx={{ marginTop: 10 }}
           label={<FormattedMessage defaultMessage="Listing" />}
           description={
             <FormattedMessage defaultMessage="Select how players will join your world" />
@@ -82,21 +82,24 @@ export function NewWorldForm({
           value={form.values.joinMode}
           onChange={(value) => form.setFieldValue('joinMode', value)}
         >
-          <Radio value="open">
-            <FormattedMessage defaultMessage="Open for everyone" />
-          </Radio>
-          <Radio value="password">
-            <FormattedMessage defaultMessage="Password protected" />
-          </Radio>
-          <Radio value="inviteOnly">
-            <FormattedMessage defaultMessage="Invite only" />
-          </Radio>
+          <Radio
+            value="open"
+            label={<FormattedMessage defaultMessage="Open for everyone" />}
+          />
+          <Radio
+            value="password"
+            label={<FormattedMessage defaultMessage="Password protected" />}
+          />
+          <Radio
+            value="inviteOnly"
+            label={<FormattedMessage defaultMessage="Invite only" />}
+          />
         </RadioGroup>
 
         {form.values.joinMode === 'password' && (
           <PasswordInput
             required
-            style={{ marginTop: 10 }}
+            sx={{ marginTop: 10 }}
             placeholder={formatMessage({ defaultMessage: 'Password' })}
             label={<FormattedMessage defaultMessage="Password" />}
             autoComplete="new-password"
@@ -107,12 +110,8 @@ export function NewWorldForm({
           />
         )}
 
-        <Group position="right" style={{ marginTop: 25 }}>
-          <Button
-            color="primary"
-            type="submit"
-            style={{ position: 'relative' }}
-          >
+        <Group position="right" sx={{ marginTop: 25 }}>
+          <Button color="primary" type="submit" sx={{ position: 'relative' }}>
             <LoadingOverlay visible={newWorld.fetching} />
             <FormattedMessage defaultMessage="Create world" />
           </Button>

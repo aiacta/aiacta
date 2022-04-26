@@ -38,6 +38,7 @@ __metadata:
     "@graphql-codegen/typescript-urql": 3.5.7
     "@graphql-codegen/urql-introspection": 2.1.1
     "@mantine/core": 4.1.5
+    "@mantine/form": 4.1.5
     "@mantine/hooks": 4.1.5
     "@mantine/notifications": 4.1.5
     "@mdx-js/runtime": 2.0.0-next.9
@@ -2255,6 +2256,15 @@ __metadata:
     react: ">=16.8.0"
     react-dom: ">=16.8.0"
   checksum: 4a4f2e0d0b597614357c854e2a5dff8d68da26b1850baff2d9b50a4d641097722c9556991503bed9a62e26783fbebc855f41bb4db236f7631c7dd8a19d2e82ca
+  languageName: node
+  linkType: hard
+
+"@mantine/form@npm:4.1.5":
+  version: 4.1.5
+  resolution: "@mantine/form@npm:4.1.5"
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: 02b4e0d545b151befc2cea802b315784ef2165f9ec4193668b9b36d8451e8397903a2131379b1225c4f9e6c7bac7fa19ad1a199fdb221743c172afd5a811fac3
   languageName: node
   linkType: hard
 
@@ -12784,8 +12794,8 @@ __metadata:
   linkType: hard
 
 "three-stdlib@npm:^2.9.1":
-  version: 2.9.1
-  resolution: "three-stdlib@npm:2.9.1"
+  version: 2.10.0
+  resolution: "three-stdlib@npm:2.10.0"
   dependencies:
     "@babel/runtime": ^7.16.7
     "@webgpu/glslang": ^0.0.15
@@ -12799,7 +12809,7 @@ __metadata:
     zstddec: ^0.0.2
   peerDependencies:
     three: ">=0.122.0"
-  checksum: 64bae913b8053fef71a72cd968bb102fcc69a9bbe299918b5ffb255cb9ca72798cdbabc8862aec71f14c7dadeacd8635ac978bb3ac8600a4b91063fe8bde7e6a
+  checksum: a6d5d1a75aff472fa3465bf135cfe2d72073cc5f1c8d24cf890fdc05c5138844db06317f045fcc098347f12348bc7c27c6c6f4cd2825542c95fad43b79c835a0
   languageName: node
   linkType: hard
 

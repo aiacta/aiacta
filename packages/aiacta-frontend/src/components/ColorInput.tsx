@@ -1,27 +1,12 @@
 import {
-  ColorSwatch,
-  Input,
-  InputProps,
+  ColorPicker,
   InputWrapper,
   InputWrapperBaseProps,
+  Sx,
+  useMantineTheme,
 } from '@mantine/core';
 import { useId } from '@mantine/hooks';
 import * as React from 'react';
-import { createUseStyles } from 'react-jss';
-
-const useStyles = createUseStyles({
-  colorSwatch: {
-    '&::-webkit-color-swatch-wrapper': {
-      display: 'none',
-    },
-  },
-  container: {
-    display: 'grid',
-    alignItems: 'center',
-    gridTemplateColumns: 'auto 1fr',
-    gridGap: 8,
-  },
-});
 
 export function ColorInput({
   label,
@@ -29,55 +14,51 @@ export function ColorInput({
   error,
   required,
   id,
-  style,
-  className,
-  elementRef,
+  sx,
   ...inputProps
-}: InputWrapperBaseProps &
-  InputProps<any> & {
-    id?: string;
-    value?: string;
-    elementRef?: React.ForwardedRef<HTMLInputElement>;
-    onChange?: (evt: React.ChangeEvent<HTMLInputElement>) => void;
-    onFocus?: (evt: React.FocusEvent<HTMLInputElement>) => void;
-  }) {
+}: InputWrapperBaseProps & {
+  id?: string;
+  sx?: Sx;
+  value: string;
+  onChange?: (color: string) => void;
+  onFocus?: (evt: React.FocusEvent<HTMLInputElement>) => void;
+}) {
   const [value, setValue] = React.useState('#ffffff');
   const htmlId = useId(id);
 
-  const classes = useStyles();
-
   const uncontrolled = {
     value,
-    onChange: (evt: React.ChangeEvent<HTMLInputElement>) =>
-      setValue(evt.currentTarget.value),
+    onChange: (color: string) => setValue(color),
   };
   const controlled = {
     ...(inputProps.value && { value: inputProps.value }),
     ...(inputProps.onChange && { onChange: inputProps.onChange }),
   };
 
+  const theme = useMantineTheme();
+  const colors = Object.keys(theme.colors).filter((c) => c !== 'dark');
+
   return (
-    <InputWrapper
-      label={label}
-      description={description}
-      error={error}
-      required={required}
-      style={style}
-      className={className}
-      id={htmlId}
-    >
-      <div className={classes.container}>
-        <ColorSwatch
+    <>
+      <InputWrapper
+        label={label}
+        description={description}
+        error={error}
+        required={required}
+        id={htmlId}
+        sx={sx}
+      >
+        <ColorPicker
+          format="hex"
+          swatches={colors.map((color) => theme.colors[color][7])}
+          swatchesPerRow={colors.length}
+          fullWidth
+          withPicker={false}
           {...uncontrolled}
           {...controlled}
-          id={htmlId}
-          component="input"
-          type="color"
-          color={controlled.value ?? uncontrolled.value}
-          className={classes.colorSwatch}
         />
-        <Input {...uncontrolled} {...controlled} {...inputProps} />
-      </div>
-    </InputWrapper>
+        {controlled.value ?? value}
+      </InputWrapper>
+    </>
   );
 }

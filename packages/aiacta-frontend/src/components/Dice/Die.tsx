@@ -35,9 +35,9 @@ export function Die({
   rolledValue: number;
   iteration: number;
 }) {
-  const ref = React.useRef<Mesh>();
+  const ref = React.useRef<Mesh>(null!);
 
-  const audioRef = React.useRef<PositionalAudio>();
+  const audioRef = React.useRef<PositionalAudio>(null!);
   const sound = useLoader(AudioLoader, dieSound);
   React.useEffect(() => {
     audioRef.current?.setRefDistance(40);
@@ -111,7 +111,7 @@ export function Die({
 
   return (
     <mesh
-      // ref={ref}
+      ref={ref}
       name={type}
       geometry={geometry}
       castShadow
@@ -119,15 +119,15 @@ export function Die({
       position={[1000, 0, 0]}
     >
       <shaderMaterial
-        attach="material"
+        attach="material-0"
         fragmentShader={fragmentNoImageShader}
         vertexShader={vertexNoImageShader}
         uniforms={uniforms}
       />
-      {textureMaps.map((texture) => (
+      {textureMaps.map((texture, idx) => (
         <shaderMaterial
           key={texture.uuid}
-          attach="material"
+          attach={`material-${idx + 1}`}
           fragmentShader={fragmentShader}
           vertexShader={vertexShader}
           uniforms={{
@@ -137,7 +137,7 @@ export function Die({
         />
       ))}
       <positionalAudio
-        // ref={audioRef}
+        ref={audioRef}
         buffer={sound}
         args={[new AudioListener()]}
         autoplay={false}

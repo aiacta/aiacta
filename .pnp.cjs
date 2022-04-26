@@ -125,6 +125,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@graphql-codegen/typescript-urql", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:3.5.7"],\
             ["@graphql-codegen/urql-introspection", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:2.1.1"],\
             ["@mantine/core", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:4.1.5"],\
+            ["@mantine/form", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:4.1.5"],\
             ["@mantine/hooks", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:4.1.5"],\
             ["@mantine/notifications", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:4.1.5"],\
             ["@mdx-js/runtime", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:2.0.0-next.9"],\
@@ -3676,6 +3677,28 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@mantine/form", [\
+        ["npm:4.1.5", {\
+          "packageLocation": "./.yarn/cache/@mantine-form-npm-4.1.5-612b4040f6-02b4e0d545.zip/node_modules/@mantine/form/",\
+          "packageDependencies": [\
+            ["@mantine/form", "npm:4.1.5"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:4.1.5", {\
+          "packageLocation": "./.yarn/__virtual__/@mantine-form-virtual-dd627cf9cf/0/cache/@mantine-form-npm-4.1.5-612b4040f6-02b4e0d545.zip/node_modules/@mantine/form/",\
+          "packageDependencies": [\
+            ["@mantine/form", "virtual:48c49e5a38de379171f0b4a7f4b5646dc604b765ca4d1d7433307bb72d399c1130fe8741c2ddf25ffb2b5fc9fb0b6f800ee56ed296430c356069277c8ac2dc54#npm:4.1.5"],\
+            ["@types/react", "npm:18.0.6"],\
+            ["react", "npm:18.0.0"]\
+          ],\
+          "packagePeers": [\
+            "@types/react",\
+            "react"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@mantine/hooks", [\
         ["npm:4.1.5", {\
           "packageLocation": "./.yarn/cache/@mantine-hooks-npm-4.1.5-88bce94f02-10217a0727.zip/node_modules/@mantine/hooks/",\
@@ -4660,7 +4683,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["suspend-react", "virtual:8fb652d3d3c48e575188d82db926a45eb3bf7ba9e708b240a032460ac015dca4bb38cfaa0d282adfaac4504055f3fc88a3a1154079ba98935807bcc7c733b7d0#npm:0.0.8"],\
             ["three", "npm:0.139.2"],\
             ["three-mesh-bvh", "virtual:8fb652d3d3c48e575188d82db926a45eb3bf7ba9e708b240a032460ac015dca4bb38cfaa0d282adfaac4504055f3fc88a3a1154079ba98935807bcc7c733b7d0#npm:0.5.10"],\
-            ["three-stdlib", "virtual:8fb652d3d3c48e575188d82db926a45eb3bf7ba9e708b240a032460ac015dca4bb38cfaa0d282adfaac4504055f3fc88a3a1154079ba98935807bcc7c733b7d0#npm:2.9.1"],\
+            ["three-stdlib", "virtual:8fb652d3d3c48e575188d82db926a45eb3bf7ba9e708b240a032460ac015dca4bb38cfaa0d282adfaac4504055f3fc88a3a1154079ba98935807bcc7c733b7d0#npm:2.10.0"],\
             ["troika-three-text", "virtual:8fb652d3d3c48e575188d82db926a45eb3bf7ba9e708b240a032460ac015dca4bb38cfaa0d282adfaac4504055f3fc88a3a1154079ba98935807bcc7c733b7d0#npm:0.46.4"],\
             ["utility-types", "npm:3.10.0"],\
             ["zustand", "virtual:8fb652d3d3c48e575188d82db926a45eb3bf7ba9e708b240a032460ac015dca4bb38cfaa0d282adfaac4504055f3fc88a3a1154079ba98935807bcc7c733b7d0#npm:3.7.2"]\
@@ -16466,17 +16489,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["three-stdlib", [\
-        ["npm:2.9.1", {\
-          "packageLocation": "./.yarn/cache/three-stdlib-npm-2.9.1-75dc021ab6-64bae913b8.zip/node_modules/three-stdlib/",\
+        ["npm:2.10.0", {\
+          "packageLocation": "./.yarn/cache/three-stdlib-npm-2.10.0-896d619391-a6d5d1a75a.zip/node_modules/three-stdlib/",\
           "packageDependencies": [\
-            ["three-stdlib", "npm:2.9.1"]\
+            ["three-stdlib", "npm:2.10.0"]\
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:8fb652d3d3c48e575188d82db926a45eb3bf7ba9e708b240a032460ac015dca4bb38cfaa0d282adfaac4504055f3fc88a3a1154079ba98935807bcc7c733b7d0#npm:2.9.1", {\
-          "packageLocation": "./.yarn/__virtual__/three-stdlib-virtual-6f701773f1/0/cache/three-stdlib-npm-2.9.1-75dc021ab6-64bae913b8.zip/node_modules/three-stdlib/",\
+        ["virtual:8fb652d3d3c48e575188d82db926a45eb3bf7ba9e708b240a032460ac015dca4bb38cfaa0d282adfaac4504055f3fc88a3a1154079ba98935807bcc7c733b7d0#npm:2.10.0", {\
+          "packageLocation": "./.yarn/__virtual__/three-stdlib-virtual-0db021e838/0/cache/three-stdlib-npm-2.10.0-896d619391-a6d5d1a75a.zip/node_modules/three-stdlib/",\
           "packageDependencies": [\
-            ["three-stdlib", "virtual:8fb652d3d3c48e575188d82db926a45eb3bf7ba9e708b240a032460ac015dca4bb38cfaa0d282adfaac4504055f3fc88a3a1154079ba98935807bcc7c733b7d0#npm:2.9.1"],\
+            ["three-stdlib", "virtual:8fb652d3d3c48e575188d82db926a45eb3bf7ba9e708b240a032460ac015dca4bb38cfaa0d282adfaac4504055f3fc88a3a1154079ba98935807bcc7c733b7d0#npm:2.10.0"],\
             ["@babel/runtime", "npm:7.17.9"],\
             ["@types/three", "npm:0.139.0"],\
             ["@webgpu/glslang", "npm:0.0.15"],\

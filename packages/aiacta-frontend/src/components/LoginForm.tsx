@@ -9,7 +9,7 @@ import {
   TextInput,
   useMantineTheme,
 } from '@mantine/core';
-import { useForm } from '@mantine/hooks';
+import { useForm } from '@mantine/form';
 import * as React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useLoginMutation, useSignUpMutation } from '../api';
@@ -30,12 +30,14 @@ export function LoginForm() {
       color: theme.colors[colors[Math.floor(Math.random() * colors.length)]][7],
     },
 
-    validationRules: {
+    validate: {
       color: (color) =>
         /^#([\da-f]{3}){1,2}$|^#([\da-f]{4}){1,2}$/i.test(color) ||
         /(rgb)a?\((\s*\d+%?\s*?,?\s*){2}(\s*\d+%?\s*?,?\s*\)?)(\s*,?\s*\/?\s*(0?\.?\d+%?\s*)?|1|0)?\)$/i.test(
           color,
-        ),
+        )
+          ? null
+          : 'Invalid color',
     },
   });
 
@@ -44,7 +46,7 @@ export function LoginForm() {
 
   return (
     <Container size="xs">
-      <Paper p="sm" shadow="sm" style={{ marginTop: '20vh' }}>
+      <Paper p="sm" shadow="sm" sx={{ marginTop: '20vh' }}>
         <form
           id={mode}
           onSubmit={form.onSubmit((values) => {
@@ -57,7 +59,7 @@ export function LoginForm() {
         >
           <TextInput
             key={`${mode}_name`}
-            style={{ marginTop: 10 }}
+            sx={{ marginTop: 10 }}
             required
             placeholder={formatMessage({ defaultMessage: 'Your name' })}
             label={<FormattedMessage defaultMessage="Name" />}
@@ -76,7 +78,7 @@ export function LoginForm() {
 
           <PasswordInput
             key={`${mode}_pw`}
-            style={{ marginTop: 10 }}
+            sx={{ marginTop: 10 }}
             required
             placeholder={formatMessage({ defaultMessage: 'Password' })}
             label={<FormattedMessage defaultMessage="Password" />}
@@ -89,13 +91,11 @@ export function LoginForm() {
 
           {mode === 'signup' && (
             <ColorInput
-              style={{ marginTop: 10 }}
+              sx={{ marginTop: 10 }}
               required
               label={<FormattedMessage defaultMessage="Color" />}
               value={form.values.color}
-              onChange={(event: any) =>
-                form.setFieldValue('color', event.currentTarget.value)
-              }
+              onChange={(color) => form.setFieldValue('color', color)}
               onFocus={() => form.setFieldError('color', false)}
               error={
                 form.errors.color && (
@@ -106,12 +106,12 @@ export function LoginForm() {
           )}
 
           {(mode === 'signin' ? signingIn : signingUp).error && (
-            <Text color="red" size="sm" style={{ marginTop: 10 }}>
+            <Text color="red" size="sm" sx={{ marginTop: 10 }}>
               {(mode === 'signin' ? signingIn : signingUp).error?.message}
             </Text>
           )}
 
-          <Group position="apart" style={{ marginTop: 25 }}>
+          <Group position="apart" sx={{ marginTop: 25 }}>
             <Button
               variant="subtle"
               color="gray"
@@ -144,11 +144,7 @@ export function LoginForm() {
                 <FormattedMessage defaultMessage="Don't want to register? Use the test account" />
               </Button>
             )}
-            <Button
-              color="primary"
-              type="submit"
-              style={{ position: 'relative' }}
-            >
+            <Button color="primary" type="submit" sx={{ position: 'relative' }}>
               <LoadingOverlay
                 visible={signingIn.fetching || signingUp.fetching}
               />
