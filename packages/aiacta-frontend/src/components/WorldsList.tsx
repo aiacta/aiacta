@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Container,
   Group,
@@ -9,41 +10,13 @@ import {
 import { BiLock } from 'react-icons/bi';
 import { GiWorld } from 'react-icons/gi';
 import { FormattedMessage } from 'react-intl';
-import { createUseStyles } from 'react-jss';
 import { Link, useMatch, useNavigate } from 'react-router-dom';
 import { useAvailableWorldsQuery, useMeQuery } from '../api';
 import { isTruthy } from '../util';
 import { JoinWorldForm } from './JoinWorldForm';
 import { NewWorldForm } from './NewWorldForm';
 
-const useStyles = createUseStyles({
-  container: {
-    position: 'relative',
-    display: 'grid',
-    gridTemplateRows: '1fr auto',
-    marginTop: '15vh',
-    maxHeight: '70vh',
-    '@media screen and (max-width: 425px)': {
-      marginTop: '10vh',
-      maxHeight: '70vh',
-    },
-  },
-  worlds: {
-    listStyle: 'none',
-    padding: 0,
-    overflow: 'auto',
-  },
-  world: {
-    display: 'grid',
-    gridTemplateColumns: 'auto 1fr auto',
-    gridGap: 8,
-    alignItems: 'center',
-  },
-});
-
 export function WorldsList() {
-  const classes = useStyles();
-
   const [availableWorlds] = useAvailableWorldsQuery();
   const [me] = useMeQuery();
 
@@ -54,11 +27,41 @@ export function WorldsList() {
   return (
     <>
       <Container size="sm">
-        <Paper p="sm" shadow="sm" className={classes.container}>
+        <Paper
+          p="sm"
+          shadow="sm"
+          sx={{
+            position: 'relative',
+            display: 'grid',
+            gridTemplateRows: '1fr auto',
+            marginTop: '15vh',
+            maxHeight: '70vh',
+            '@media screen and (max-width: 425px)': {
+              marginTop: '10vh',
+              maxHeight: '70vh',
+            },
+          }}
+        >
           <LoadingOverlay visible={availableWorlds.fetching} />
-          <ul className={classes.worlds}>
+          <Box
+            component="ul"
+            sx={{
+              listStyle: 'none',
+              padding: 0,
+              overflow: 'auto',
+            }}
+          >
             {availableWorlds.data?.worlds?.filter(isTruthy).map((world) => (
-              <li key={world.id} className={classes.world}>
+              <Box
+                component="li"
+                key={world.id}
+                sx={{
+                  display: 'grid',
+                  gridTemplateColumns: 'auto 1fr auto',
+                  gridGap: 8,
+                  alignItems: 'center',
+                }}
+              >
                 <div>
                   <GiWorld size={40} style={{ marginTop: 5 }} />
                 </div>
@@ -97,9 +100,9 @@ export function WorldsList() {
                     <FormattedMessage defaultMessage="Join world" />
                   </Button>
                 )}
-              </li>
+              </Box>
             ))}
-          </ul>
+          </Box>
           <Group position="center">
             <Button
               size="xl"
